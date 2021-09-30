@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 const pool = require('../mysql').pool
 const bcrypt = require('bcrypt')
-
+const jwt = require('jsonwebtoken')
 
 router.post('/cadastro',(req,res,next)=>{
     pool.getConnection((error,conn)=>{
@@ -32,6 +32,7 @@ router.post('/cadastro',(req,res,next)=>{
                                     hash
                                 ],
                                 (error,resul,fiel)=>{
+                                    conn.release()
                                     if(error){return res.status(500).send({error:error})}
                                     const response = {
                                         mensagem: "usuário criado com sucesso",
@@ -50,6 +51,53 @@ router.post('/cadastro',(req,res,next)=>{
                 )
             }
         )
+    })
+})
+
+router.post('/login',(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        const sql_query = req.body.cpf ? "SELECT * FROM Usuario WHERE cpf = ?" : "SELECT * FROM Usuario WHERE email = ?"
+        conn.query(
+            sql_query,
+            [(req.body.cpf ? req.body.cpf : req.body.email)],
+            (error,results,fields)=>{
+                if(error){return res.status(500).send({error:error})}
+                if(results.length<1){return res.status(401).send({mensagem: "falha na autenticação"})}
+                bcrypt.compare(req.body.senha,results[0].senha,(err,result)=>{
+                    if(err){return res.status(401).send({mensagem: "falha na autenticação"})}
+
+                    if(result){
+                        var key;
+                        switch(results[0].tipo){
+                            case "G":
+                                key = process.env.GERENTE_JWT_KEY;
+                                break;
+                            case "M":
+                                key = process.env.MEDICO_JWT_KEY;
+                                break;
+                            default:
+                                key = process.env.PACIENTE_JWT_KEY;
+                        }
+                        const token =  jwt.sign(
+                            {
+                                id_usuario: results[0].id_usuario,
+                                cpf: results[0].cpf,
+                                email: results[0].email
+                            },
+                            key,
+                            {
+                                expiresIn:"1h"
+                            })
+                            return res.status(200).send({
+                                mensagem: "autenticado com sucesso",
+                                token: token
+                            })
+
+                    }
+                    return res.status(401).send({mensagem: "falha na autenticação"})
+                })
+            })
     })
 })
 
