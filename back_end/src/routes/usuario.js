@@ -3,8 +3,10 @@ const router = express.Router()
 const pool = require('../mysql').pool
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const cadastro_medico = require('../middleware/cadastro_medico');
 
-router.post('/cadastro',(req,res,next)=>{
+
+router.post('/cadastro',cadastro_medico,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query(
@@ -69,6 +71,7 @@ router.post('/login',(req,res,next)=>{
 
                     if(result){
                         var key;
+                        console.log(results[0].tipo)
                         switch(results[0].tipo){
                             case "G":
                                 key = process.env.GERENTE_JWT_KEY;
