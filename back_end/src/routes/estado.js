@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const pool = require("../mysql").pool;
 
-router.get("/",(req,res,next)=>{
+const paci_op = require('../middleware/login_paciente_op') 
+
+
+router.get("/",paci_op,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query('SELECT * FROM estado;',(error,results,fields)=>{
