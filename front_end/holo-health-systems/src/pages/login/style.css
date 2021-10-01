@@ -1,0 +1,93 @@
+
+.login-page {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+@media (min-width: 750px) {
+    .login-page {
+        display: flex;
+        height: 100%;
+        width: 100%;
+    }
+}
+
+
+.hero-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+
+}
+
+
+@media (min-width: 750px) {
+    .hero-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        height: 100%;
+        background-color: var(--primary-color);   
+    }
+}
+
+
+.hero-container p {
+    display: none;
+}
+
+@media (min-width: 750px) {
+    .hero-container p {
+        position: absolute;
+        z-index: 10;
+        font-size: 2.5rem;
+        width: 30%;
+    
+        color: #ffffff;
+    
+    }
+}
+
+.login-container {
+    top: 15px;
+    left: 15px;
+    bottom: 15px;
+    right: 15px;
+    position: fixed;
+    background-color: #ffffff;
+
+}
+
+@media (min-width: 750px) {
+    .login-container {
+        position: static;
+        margin-top: 15vh;
+        width: 70%;
+    }
+
+}
+
+
+.img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+}
+
+
+@media (min-width: 750px) {
+    .img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        opacity: 0.5;
+    }
+
+}
+

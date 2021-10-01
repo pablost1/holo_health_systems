@@ -1,0 +1,35 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.7em;
+    width: 80%;
+    max-width: 350px;
+    margin: 1em auto 0 auto;
+}
+
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+
+.form-group input {
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: .6em .3em;
+
+}
+
+.form-group input:focus {
+    outline: none;
+}
+
+.form-login {
+    display: flex;
+    align-items: center;
+}

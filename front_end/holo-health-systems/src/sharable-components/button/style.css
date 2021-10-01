@@ -1,0 +1,41 @@
+.button {
+    color: var(--background-color);
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 50px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color .3s ease;
+}
+
+.button:active {
+    background-color: var(--primary-color-light);
+    transition: background-color .3s ease;
+}
+
+.small {
+    padding: 10px 15px;
+    font-size: .9rem;
+}
+
+.medium {
+    padding: 13px 30px;
+    font-size: 1.rem;
+}
+
+.large {
+    padding: 13px 30px;
+    font-size: 1.5rem;
+}
+
+.primary {
+    background-color: var(--primary-color);
+}
+
+.danger {
+    background-color: var(--negative-color);
+}
+
+.danger:active {
+    background-color: var(--negative-color-light);
+}
