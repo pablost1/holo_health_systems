@@ -1,11 +1,12 @@
 const jwt =  require("jsonwebtoken");
+const gerente = require("./login_gerente")
 module.exports = (req,res,next)=>{
     try{
         const token = req.headers.authorization.split(' ')[1]
         const decode = jwt.verify(token,process.env.MEDICO_JWT_KEY)
         req.usuario = decode
         next()
-    } catch(error){
-        next()
+    } catch(error){ 
+        gerente(req,res,next)
     }
 }

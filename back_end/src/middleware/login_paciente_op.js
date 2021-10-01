@@ -1,4 +1,5 @@
 const jwt =  require("jsonwebtoken");
+const med_op = require("./login_medico_op")
 module.exports = (req,res,next)=>{
     try{
         const token = req.headers.authorization.split(' ')[1]
@@ -6,6 +7,7 @@ module.exports = (req,res,next)=>{
         req.usuario = decode
         next()
     } catch(error){
-        next()
+        console.log(1)
+        med_op(req,res,next)
     }
 }
