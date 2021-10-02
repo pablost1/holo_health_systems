@@ -61,6 +61,7 @@ router.patch('/',gerente,(req,res,next)=>{
                 if(error){return res.status(500).send({error:error})}
                 if(result.length>0){return res.status(409).send({mensagem:"estado já cadastrado"})}
                 conn.query('UPDATE estado SET nome = ? WHERE id_estado = ?',[req.body.nome,req.body.id_estado],(error,resul,fiel)=>{
+                    conn.release()
                     if(error){return res.status(500).send({error:error})}
                     const response = {
                         mensagem:"estado alterado com sucesso",
@@ -70,11 +71,24 @@ router.patch('/',gerente,(req,res,next)=>{
                         }
                     
                     }
-                    return res.status(201).send(response)
+                    return res.status(202).send(response)
                 })
             })
         })
     })
 })
 
+router.delete('/',gerente,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        conn.query(
+            'DELETE FROM estado WHERE id_estado = ?',
+            [req.body.id_estado],
+            (error,result,field)=>{
+                if(error){return res.status(500).send({error:error})}
+                return res.status(202).send({mensagem:"removido com sucesso"})
+            }
+        )
+    })
+})
 module.exports = router
