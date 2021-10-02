@@ -4,6 +4,8 @@ const morgan =  require('morgan');
 const app = express();
 
 const routerUsuario = require('./routes/usuario')
+const routerEstado = require('./routes/estado')
+
 
 //tratamento inicio
 app.use(morgan('dev'));
@@ -24,7 +26,9 @@ app.use((req,res,next)=>{
 })
 
 //rotas
+
 app.use('/usuario',routerUsuario)
+app.use('/estado',routerEstado)
 
 //tratamento fim
 app.use((req,res,next)=>{
