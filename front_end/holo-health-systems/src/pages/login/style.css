@@ -54,6 +54,9 @@
 }
 
 .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     top: 15px;
     left: 15px;
     bottom: 15px;
@@ -66,7 +69,7 @@
 @media (min-width: 750px) {
     .login-container {
         position: static;
-        margin-top: 15vh;
+        margin-top: 5vh;
         width: 70%;
     }
 
@@ -91,3 +94,6 @@
 
 }
 
+.logo {
+    transform: scale(.7);
+}

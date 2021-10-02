@@ -1,5 +1,6 @@
 import './style.css'
 import LoginForm from '../../sharable-components/login-form'
+import { ReactComponent as Logo } from '../../media/logo.svg'
 
 
 function LoginPage() {
@@ -10,6 +11,7 @@ function LoginPage() {
                 <img className="img"src="https://www.healthpeople.org/wp-content/uploads/2015/01/HLtop.jpg" />
             </div>
             <div className="login-container">
+                <Logo className="logo"/>
                 <LoginForm />
             </div>
             
