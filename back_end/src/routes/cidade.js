@@ -50,7 +50,7 @@ router.post('/',gerente,(req,res,next)=>{
                                     cidadeCriada:{
                                         id_cidade: resul.insertId,
                                         nome: req.body.nome,
-                                        id_estado: req.body.estado
+                                        id_estado: req.body.id_estado
                                     }
                                 }
                                 return res.status(201).send(response)
