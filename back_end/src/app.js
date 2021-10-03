@@ -7,7 +7,7 @@ const routerUsuario = require('./routes/usuario')
 const routerEstado = require('./routes/estado')
 const routerCidade = require('./routes/cidade')
 const routerConsultorio = require('./routes/consultorio')
-
+const routerEspecialidades = require('./routes/especialidades')
 
 //tratamento inicio
 app.use(morgan('dev'));
@@ -33,6 +33,7 @@ app.use('/usuario',routerUsuario)
 app.use('/estado',routerEstado)
 app.use('/cidade',routerCidade)
 app.use('/consultorio',routerConsultorio)
+app.use('/especialidade',routerEspecialidades)
 
 //tratamento fim
 app.use((req,res,next)=>{
