@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
@@ -40,4 +40,41 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <script>
+
+    let initialHeight = window.innerHeight
+
+
+
+    window.addEventListener('resize', () => {
+        document.documentElement.style.setProperty('overflow', 'auto')
+        const metaViewport = document.querySelector('meta[name=viewport]')
+        metaViewport.setAttribute('content', 'height=' + initialHeight + 'px, width=device-width, initial-scale=1.0')
+        console.log(metaViewport)
+    })
+    // let initialHeight = window.innerHeight
+
+    // document.querySelectorAll('input').forEach( (element) => {
+    //   element.addEventListener('focus', () => {
+    //     if(initialHeight > window.innerHeight) {
+    //       console.log(initialHeight)
+    //       document.documentElement.style.setProperty('overflow', 'auto')
+    //       const metaViewport = document.querySelector('meta[name=viewport]')
+    //       metaViewport.setAttribute('content', 'height=' + initialHeight + 'px, width=device-width, initial-scale=1.0')
+    //   }
+    //   })
+    // })
+
+    // document.addEventListener('focus', () => {
+    //   console.log('did work')
+    //   if(initialHeight > window.innerHeight) {
+    //     document.documentElement.style.setProperty('overflow', 'auto')
+    //     const metaViewport = document.querySelector('meta[name=viewport]')
+    //     metaViewport.setAttribute('content', 'height=' + initialHeight + 'px, width=device-width, initial-scale=1.0')
+    //   }
+    // })
+    
+
+    
+  </script>
 </html>
