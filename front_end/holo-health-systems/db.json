@@ -1,7 +1,17 @@
 {
-  "signup": [
-
+  "users": [
+    {
+      "email": "chenrique452@gmail.com",
+      "password": "$2a$10$3HRo906cl7feUvWY7FagcO4v/x9C.9ykJz9nxCMNTIGSWqFs54GZm",
+      "id": 1
+    },
+    {
+      "email": "carlos.vonrecife@gmail.com",
+      "password": "$2a$10$duJ7Bss5QLIgVtBPwbXci.ZOsH4n42DNKhTln3erIDaocXd0A/bvS",
+      "id": 2
+    }
   ],
+  "signup": [],
   "register": [
     {
       "email": "olivier@mail.com",

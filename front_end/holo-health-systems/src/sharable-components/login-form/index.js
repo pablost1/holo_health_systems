@@ -2,8 +2,16 @@ import  './style.css'
 import Button from '../button'
 import { Lock } from '@material-ui/icons';
 
+import { useContext } from 'react';
+import { AuthContext } from '../../auth/authContext'
+
+
 
 function LoginForm() {
+
+    const { checkLocalStorage } = useContext(AuthContext)
+    
+
     return (
         <form className="form">
             <div className="form-group">
@@ -20,7 +28,7 @@ function LoginForm() {
                 </span>
                 <Lock style={{fontSize: '1.1rem'}}/>
 
-                <Button size="medium"  style={{ marginLeft: '1em'}}>Login</Button>
+                <Button onClick={checkLocalStorage} size="medium"  style={{ marginLeft: '1em'}}>Login</Button>
             </div>
             
         </form>

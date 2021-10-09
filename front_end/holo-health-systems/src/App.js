@@ -1,22 +1,24 @@
-import logo from './logo.svg';
+
 import './App.css';
-import React from 'react';
-import Button  from './sharable-components/button';
-import LoginForm from './sharable-components/login-form';
-import LoginPage from './pages/login';
+import React, { useState, useContext } from 'react';
+
+
+import { AuthorizationContext }  from './auth/authContext';
+import Components from './pages/components';
+import Home from './pages/home';
+
 
 function App() {
   
-
-
-
-
   
-
-  return (
-    <div className="App">
-      <LoginPage />
-    </div>
+  
+  return (  
+    <AuthorizationContext >
+      <div className="App">
+        <Home />
+      </div>
+    </AuthorizationContext>
+    
   );
 }
 

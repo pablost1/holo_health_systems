@@ -1,17 +1,11 @@
 import './style.css'
 import LoginForm from '../../sharable-components/login-form'
 import { ReactComponent as Logo } from '../../media/logo.svg'
-import { useState, useEffect } from 'react'
+import { useContext } from 'react';
 
 
 function LoginPage() {
-
-    useEffect(() => {
-
-
-        
-    })
-
+    
     return (
         <div className="login-page">
             <div className="hero-container">

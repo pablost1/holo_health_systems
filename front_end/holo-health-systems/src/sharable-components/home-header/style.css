@@ -1,0 +1,64 @@
+.home-header-container {
+    
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+
+header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: .3rem 0;
+}
+
+.home-header__logo {
+   width: 50px;
+   height: 50px;
+   background-color: #ffffff;
+}
+
+.home-header__input {
+    margin-left: .5rem;
+    margin-right: 1rem;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    width: 70%;
+    max-width: 500px;
+    padding-left: .3rem;
+}
+
+
+
+.home-header__input:focus {
+    outline: none;
+}
+
+
+
+.icon-container {
+}
+
+.home-header__icon {
+    margin-left: .2rem;
+    margin-top: .2rem;
+    color: #ffffff;
+
+    
+    
+
+}
+
+.home-header__logout-button {
+    display: block;
+    background-color: #ffffff;
+    padding:  .5em 1rem;
+    border-radius: 0px;
+    margin-left: auto;
+    margin-right: .5em;
+    border-radius: 5px;
+    color: var(--primary-color);
+    cursor: pointer;
+
+}
