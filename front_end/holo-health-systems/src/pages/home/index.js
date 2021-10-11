@@ -5,8 +5,10 @@ import './style.css'
 import MainContainer from '../../sharable-components/main-container'
 import ScheduleButton from '../../sharable-components/schedule-button/index';
 import Subtitle from '../../sharable-components/subtitle';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 
-
+import Consulta from '../../sharable-components/consulta';
 
 
 export default function Home() {
@@ -19,7 +21,10 @@ export default function Home() {
                     <ScheduleButton>Minhas consultas</ScheduleButton>
                     <ScheduleButton>Minhas consultas</ScheduleButton>
                     <ScheduleButton>Minhas consultas</ScheduleButton>
+                    
                 </div>
+                <Consulta />
+            
             </MainContainer>
         </div>
     )

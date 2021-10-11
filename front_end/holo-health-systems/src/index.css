@@ -13,7 +13,7 @@
 
 
 
-html, body, *::before, *::after {
+html, body,   *::before, *::after {
   margin: 0;
   padding: 0;
   
