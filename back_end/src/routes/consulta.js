@@ -145,7 +145,7 @@ router.post('/paciente/consultas_disponiveis',paciente,(req,res,next)=>{
                         if(error){return res.status(500).send({error:error})}
                         if(results.length==0){return res.status(404).send({mensagem:"consultorio não encontrado"})}
                         conn.query(
-                            "SELECT * FROM Consulta WHERE id_especialidade=? AND id_consultorio=?",
+                            "SELECT * FROM Consulta WHERE id_especialidade=? AND id_consultorio=? AND estado='disponivel'",
                             [req.body.id_especialidade,req.body.id_consultorio],
                             (error,results,fields)=>{
                                 if(error){return res.status(500).send({error:error})}
@@ -166,6 +166,28 @@ router.post('/paciente/consultas_disponiveis',paciente,(req,res,next)=>{
                                 return res.status(200).send(response)
                             }
                         )
+                    }
+                )
+            }
+        )
+    })
+})
+
+router.patch('/paciente/marcar_consulta',paciente,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        conn.query(
+            "SELECT * FROM Consulta WHERE id_consulta = ?",
+            [req.body.id_consulta],
+            (error,results,fields)=>{
+                if(error){return res.status(500).send({error:error})}
+                if(results.length==0){return res.status(404).send({mensagem:"consulta não encontrada"})}
+                conn.query(
+                    "UPDATE Consulta SET id_paciente=?, estado='marcada' WHERE id_consulta=?",
+                    [req.usuario.id_usuario,req.body.id_consulta],
+                    (error,results,fields)=>{
+                        if(error){return res.status(500).send({error:error})}
+                        return res.status(202).send({mensagem:"consulta marcada com sucesso"})
                     }
                 )
             }
