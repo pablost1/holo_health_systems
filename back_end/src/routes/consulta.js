@@ -194,5 +194,26 @@ router.patch('/paciente/marcar_consulta',paciente,(req,res,next)=>{
         )
     })
 })
+router.delete('/paciente/cancelar_consulta',paciente,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        conn.query(
+            "SELECT * FROM Consulta WHERE id_consulta=?",
+            [req.body.id_consulta],
+            (error,results,fields)=>{
+                if(error){return res.status(500).send({error:error})}
+                if(results[0].id_paciente!=req.usuario.id_usuario){return res.status(401).send({mensagem:"cancelamento não autorizado"})}
+                conn.query(
+                    "UPDATE Consulta SET id_paciente=null, estado='disponivel' WHERE id_consulta=?",
+                    [req.body.id_consulta],
+                    (error,results,fields)=>{
+                        if(error){return res.status(500).send({error:error})}
+                        return res.status(202).send({mensagem:"consulta cancelada com sucesso"})
+                    }
+                )
+            }
+        )
+    })
+})
 
 module.exports = router
