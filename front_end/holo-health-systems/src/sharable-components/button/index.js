@@ -9,13 +9,12 @@ function fool(e) {
 function Button(props) {
     
     function Action(e) {
-        e.preventDefault()
         if(props.onClick) props.onClick(e)
         
     }
 
     
-    return <button  onClick={Action} style={props.style} className={`button  ${props.size ? props.size : ''} ${props.status ? props.status : ''}`}>{ props.children }</button>
+    return <button type={props.type} onClick={Action} style={props.style} className={`button  ${props.size ? props.size : ''} ${props.status ? props.status : ''}`}>{ props.children }</button>
 }
 
 export default Button

@@ -1,0 +1,64 @@
+.cadastro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.validation-field {
+    background-color: rgb(238, 68, 68);
+    color: white;
+    border-radius: 10px;
+}
+
+.validation-field > p {
+    
+    margin: .8rem 0 .8rem 2rem;
+
+}
+
+.has-error {
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(184, 43, 43);
+    padding: .6em .3em;
+    width: inherit;
+}
+
+.is-valid {
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(107, 184, 43);
+    padding: .6em .3em;
+    width: inherit;
+}
+
+.cadastro-container__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    max-width: 400px;
+    margin-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+
+.form-group > .input {
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    
+    padding: .6em .3em;
+    width: inherit;
+}

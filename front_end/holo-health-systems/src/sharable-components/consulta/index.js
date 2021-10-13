@@ -4,8 +4,6 @@ import { Timer } from "@material-ui/icons"
 import './style.css'
 
 export default function Consulta() {
-
-
     return (
         <div className="consulta">
             <div className="consulta__profissional">
