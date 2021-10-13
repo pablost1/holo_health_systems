@@ -13,6 +13,7 @@ function HomeHeader() {
                 <AccountCircle fontSize="large"className="home-header__icon"/>
                 <input  className="home-header__input" type="text" placeholder="Buscar consulta . . ."/>
                 <a className="home-header__logout-button">Sair</a>
+                
             </header>
         </div>
     )

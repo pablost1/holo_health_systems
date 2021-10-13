@@ -1,4 +1,20 @@
 .home-container {
     display: flex;
     flex-direction: column;
+    padding-bottom: 3rem;
+}
+
+.lista-afazeres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1rem;
+    padding: 0 .7rem;
+}
+
+.lista-consulta {
+    display: flex;
+    gap: 50px;
+    width: 100%;
+    overflow-x: auto;
 }

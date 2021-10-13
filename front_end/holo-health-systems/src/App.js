@@ -6,6 +6,7 @@ import React, { useState, useContext } from 'react';
 import { AuthorizationContext }  from './auth/authContext';
 import Components from './pages/components';
 import Home from './pages/home';
+import Cadastro from './pages/cadastro';
 
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
   return (  
     <AuthorizationContext >
       <div className="App">
-        <Home />
+        <Cadastro />
       </div>
     </AuthorizationContext>
     
