@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require("../mysql").pool;
 
 const medico = require('../middleware/login_medico') 
+const paciente = require('../middleware/login_paciente')
 const gerente = require('../middleware/login_gerente')
 
 router.get('/medico/consultas',medico,(req,res,next)=>{
@@ -26,7 +27,7 @@ router.get('/medico/consultas',medico,(req,res,next)=>{
                     }
                 })
             }
-            return res.status(200).send({response})
+            return res.status(200).send(response)
             
         })
     })
@@ -99,6 +100,76 @@ router.delete('/medico/cancelarConsultas',medico,(req,res,next)=>{
             horaInicio[1]=0
             }
         return res.status(202).send({mensagem: "consultas removidas com sucesso"})
+    })
+})
+router.get('/paciente/consultas',paciente,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        conn.query(
+            'SELECT * FROM Consulta WHERE id_paciente = ?',
+            [req.usuario.id_usuario],
+            (error,results,fields)=>{
+            if(error){return res.status(500).send({error:error})}
+            const response = {
+                consultas: results.map(consulta =>{
+                    return {
+                        id_consulta: consulta.id_consulta,
+                        data: consulta.data,
+                        hora: consulta.hora,
+                        estado:consulta.estado,
+                        id_paciente: consulta.id_paciente,
+                        id_medico: consulta.id_medico,
+                        id_especialidade:consulta.id_especialidade,
+                        id_consultorio: consulta.id_consultorio
+                    }
+                })
+            }
+            return res.status(200).send(response)
+            
+        })
+    })
+})
+router.post('/paciente/consultas_disponiveis',paciente,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        conn.query(
+            "SELECT * FROM Especialidade WHERE id_especialidade=?",
+            [req.body.id_especialidade],
+            (error,results,fields)=>{
+                if(error){return res.status(500).send({error:error})}
+                if(results.length==0){return res.status(404).send({mensagem:"especialidade não encontrada"})}
+                conn.query(
+                    "SELECT * FROM Consultorio WHERE id_consultorio=?",
+                    [req.body.id_consultorio],
+                    (error,results,fields)=>{
+                        if(error){return res.status(500).send({error:error})}
+                        if(results.length==0){return res.status(404).send({mensagem:"consultorio não encontrado"})}
+                        conn.query(
+                            "SELECT * FROM Consulta WHERE id_especialidade=? AND id_consultorio=?",
+                            [req.body.id_especialidade,req.body.id_consultorio],
+                            (error,results,fields)=>{
+                                if(error){return res.status(500).send({error:error})}
+                                const response  = {
+                                    consultas: results.map(consulta =>{
+                                        return {
+                                            id_consulta: consulta.id_consulta,
+                                            data: consulta.data,
+                                            hora: consulta.hora,
+                                            estado:consulta.estado,
+                                            id_paciente: consulta.id_paciente,
+                                            id_medico: consulta.id_medico,
+                                            id_especialidade:consulta.id_especialidade,
+                                            id_consultorio: consulta.id_consultorio
+                                        }
+                                    })
+                                }
+                                return res.status(200).send(response)
+                            }
+                        )
+                    }
+                )
+            }
+        )
     })
 })
 
