@@ -68,8 +68,10 @@ export default function Cadastro() {
                 validationSchema={validation}
 
                 onSubmit={ (value) => {
-                    console.log(value)
+                    
                     axios.post('http://localhost:3001/usuarios', value)
+                        .then( (res) => alert(res))
+                        .catch( (err) => alert(err))
                         
                 }}
                 
