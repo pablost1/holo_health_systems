@@ -69,7 +69,7 @@ export default function Cadastro() {
 
                 onSubmit={ (value) => {
                     
-                    axios.post('http://localhost:3001/usuarios', value)
+                    axios.post('https://jsonplaceholder.typicode.com/posts', value)
                         .then( res => alert(res))
                         
                         

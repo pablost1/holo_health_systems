@@ -1,12 +1,15 @@
 
 import './App.css';
 import React, { useState, useContext } from 'react';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 
 import { AuthorizationContext }  from './auth/authContext';
 import Components from './pages/components';
 import Home from './pages/home';
 import Cadastro from './pages/cadastro';
+import { render } from '@testing-library/react';
+import LoginPage from './pages/login/index';
 
 
 function App() {
@@ -15,9 +18,22 @@ function App() {
   
   return (  
     <AuthorizationContext >
-      <div className="App">
-        <Cadastro />
-      </div>
+      <Router>
+        <div className="App">
+          <Switch>
+            <Route exact path="/">
+              <Redirect to="/login"/>
+              
+            </Route>
+            <Route render={LoginPage} path="/login" />
+            <Route render={Home} path="/home"/>
+            <Route render={Cadastro} path="/cadastro"/>
+            
+          </Switch>
+
+          
+        </div>
+      </Router>
     </AuthorizationContext>
     
   );
