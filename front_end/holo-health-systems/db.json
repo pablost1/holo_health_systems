@@ -29,6 +29,12 @@
     },
     {
       "id": 3
+    },
+    {
+      "id": 4
+    },
+    {
+      "id": 5
     }
   ],
   "comments": [
@@ -60,5 +66,27 @@
   ],
   "profile": {
     "name": "typicode"
-  }
+  },
+  "usuarios": [
+    {
+      "id": 1,
+      "nome": "carlos",
+      "sobrenome": "henrique",
+      "cpf": "923982398",
+      "tipo": "P",
+      "senha": "jajaisjisaas"
+    },
+    {
+      "id": 2
+    },
+    {
+      "nome": "Carlos",
+      "sobrenome": "Henrique",
+      "email": "chenrique452@gmail.com",
+      "cpf": "18278127812713",
+      "tipo": "P",
+      "senha": "12938120938123",
+      "id": 3
+    }
+  ]
 }
