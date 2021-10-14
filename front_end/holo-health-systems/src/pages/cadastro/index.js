@@ -70,8 +70,9 @@ export default function Cadastro() {
                 onSubmit={ (value) => {
                     
                     axios.post('http://localhost:3001/usuarios', value)
-                        .then( (res) => alert(res))
-                        .catch( (err) => alert(err))
+                        .then( res => alert(res))
+                        
+                        
                         
                 }}
                 
@@ -101,11 +102,10 @@ export default function Cadastro() {
                         </div>
                         <div className="form-group">
                             <label>Tipo</label>
-                            <Field as="select" className="input" name="tipo">
+                            <Field defaultValue={'M'} as="select" className="input" name="tipo">
                                 
                                 <option value="M">Médico</option>
                                 <option value="P">Paciente</option>
-                                <option selected>Selecione um tipo de usuário</option>
                             </Field>
                             {errors.tipo && touched.tipo ? <ValidationField error={errors.tipo} /> : ''}
                         </div>
