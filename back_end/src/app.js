@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan =  require('morgan');
+const cors = require('cors')
 
 const app = express();
 
@@ -17,15 +18,20 @@ app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 
 app.use((req,res,next)=>{
-    res.header('Access-Control-Allow-Origin','*')
-    res.header(
-        'Access-Control-Allow-Header',
-        'Origin, X-Requested-With,Content-Type,Accept,Authorization'
-        )
-    if(req.method === "OPTIONS"){
-        res.header('Access-Control-Allow-Methods','PUT,POST,PATCH,DELETE,GET')
-        return res.status(200).send({})
-    }
+    // res.header('Access-Control-Allow-Origin','*')
+    // res.header(
+    //     'Access-Control-Allow-Header',
+    //     'Origin, X-Requested-With,Content-Type,Accept,Authorization'
+    //     )
+    // if(req.method === "OPTIONS"){
+    //     res.header('Access-Control-Allow-Methods','PUT,POST,PATCH,DELETE,GET')
+    //     return res.status(200).send({})
+    // }
+
+    cors({
+        origin: 'http://localhost:3000/login',
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
+    })
     next();
 })
 
