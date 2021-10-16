@@ -71,7 +71,6 @@ router.post('/login',(req,res,next)=>{
 
                     if(result){
                         var key;
-                        console.log(results[0].tipo)
                         switch(results[0].tipo){
                             case "G":
                                 key = process.env.GERENTE_JWT_KEY;
