@@ -5,9 +5,26 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cadastro_medico = require('../middleware/cadastro_medico');
 
-
+/** Rota para cadastro
+ *  
+ *          Formato da requisição
+ *{
+ *      "cpf"       :   XXXXXXXXXXX,
+ *      "email"     :   "abcd@-mail.com",
+ *      "nome"      :   "John",
+ *      "sobrenome" :   "Johns",
+ *      "tipo"      :   "P" || "M" || "G"
+ *}
+ * 
+ * cpf:          TODO
+ * email:        TODO
+ * nome:         TODO
+ * sobrenome:    TODO
+ * tipo:         TODO
+ * 
+ */
 router.post('/cadastro',cadastro_medico,(req,res,next)=>{
-    pool.getConnection((error,conn)=>{
+    pool.getConnection((error,conn)=>{  
         if(error){return res.status(500).send({error:error})}
         conn.query(
             'SELECT * FROM Usuario WHERE cpf = ?',
@@ -21,7 +38,9 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
                     (error,result,field)=>{
                         if(error){return res.status(500).send({error:error})}
                         if(result.length>0){return res.status(409).send({mensagem: "email já cadastrado"})}
-                        bcrypt.hash(req.body.senha,10,(errorBcrypt,hash)=>{
+                        const saltRounds = 10
+                        bcrypt.genSalt(saltRounds, function(err, salt){
+                            bcrypt.hash(req.body.senha, salt, (errorBcrypt,hash)=>{     
                             if(errorBcrypt){return res.status(500).send({error:errorBcrypt})}
                             conn.query(
                                 'INSERT INTO Usuario (cpf,email,nome,sobrenome,tipo,senha) VALUES (?,?,?,?,?,?)',
@@ -33,13 +52,13 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
                                     req.body.tipo,
                                     hash
                                 ],
-                                (error,resul,fiel)=>{
+                                (error,result,field)=>{
                                     conn.release()
                                     if(error){return res.status(500).send({error:error})}
                                     const response = {
-                                        mensagem: "usuário criado com sucesso",
+                                        mensagem: "Usuário criado com sucesso",
                                         usuarioCriado: {
-                                            id_usuario: resul.insertId,
+                                            id_usuario: result.insertId,
                                             cpf: req.body.cpf,
                                             email: req.body.email
                                             
@@ -49,6 +68,8 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
                                 }
                             )
                         })
+                        })
+                        
                     }
                 )
             }
@@ -56,6 +77,17 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
     })
 })
 
+/** Rota para login
+ * 
+ *  Formato para requisição
+ * {
+ *      "login" : e-mail ou CPF
+ *      "senha" : XXXXXXXX 
+ * }
+ * 
+ *  login:      TODO
+ *  senha:      TODO
+ */
 router.post('/login',(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
