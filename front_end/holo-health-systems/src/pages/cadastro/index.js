@@ -11,12 +11,15 @@ import axios from 'axios';
 
 
 
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+>>>>>>> 625091c81b35aca1471e3f6b3fe3f934ea065503
 function ValidationField({error}) {
     return (
         <div className="validation-field">
@@ -67,11 +70,15 @@ export default function Cadastro() {
                 validationSchema={validation}
 
                 onSubmit={ (value) => {
-                    
-                    axios.post('https://jsonplaceholder.typicode.com/posts', value)
-                        .then( res => alert(res))
-                        
-                        
+                    console.log(value.data)
+                    axios({
+                        method: 'post',
+                        headers: { 'Content-Type': 'application/json' },
+                        url: 'http://127.0.0.1:3001/usuario/cadastro',
+                        data: value
+                      }).then(function (response) {
+                        console.log(response.data);
+                      });    
                         
                         
                 }}
@@ -111,7 +118,7 @@ export default function Cadastro() {
                         </div>
                         <div className="form-group">
                             <label>Senha</label>
-                            <Field className="input" name="senha" />
+                            <Field className="input" name="senha" type="password" />
                             {errors.senha && touched.senha ? <ValidationField error={errors.senha} /> : ''}
                         </div>
                         <Button size="medium">Registrar</Button>
