@@ -10,6 +10,7 @@ import Home from './pages/home';
 import Cadastro from './pages/cadastro';
 import { render } from '@testing-library/react';
 import LoginPage from './pages/login/index';
+import MarcarConsulta from './pages/marcar-consulta';
 
 
 function App() {
@@ -23,12 +24,11 @@ function App() {
           <Switch>
             <Route exact path="/">
               <Redirect to="/login"/>
-              
             </Route>
             <Route render={LoginPage} path="/login" />
             <Route render={Home} path="/home"/>
             <Route render={Cadastro} path="/cadastro"/>
-            
+            <Route render={MarcarConsulta} path="/marcar-consulta" />
           </Switch>
 
           

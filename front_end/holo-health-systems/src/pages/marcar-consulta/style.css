@@ -1,0 +1,22 @@
+.marcar-consulta {
+    
+}
+
+
+.hidden {
+    display: none;
+}
+
+
+.marcar-consulta__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 2rem 0 0 2rem;
+    width: 50%;
+}
+
+
+.label-bigger {
+    font-size: 1.6rem;
+}

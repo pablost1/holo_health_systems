@@ -1,0 +1,13 @@
+.description-header {
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 1rem 1rem;
+}
+
+.description-header > h2 {
+    margin: 0 auto;
+    
+    
+}

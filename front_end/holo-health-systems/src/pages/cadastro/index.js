@@ -12,6 +12,11 @@ import axios from 'axios';
 
 
 
+
+
+
+
+
 function ValidationField({error}) {
     return (
         <div className="validation-field">
@@ -19,12 +24,6 @@ function ValidationField({error}) {
         </div>
     )
 }
-
-
-
-
-
-
 
 export default function Cadastro() {
 
@@ -74,6 +73,7 @@ export default function Cadastro() {
                         
                         
                         
+                        
                 }}
                 
             >
@@ -115,8 +115,7 @@ export default function Cadastro() {
                             {errors.senha && touched.senha ? <ValidationField error={errors.senha} /> : ''}
                         </div>
                         <Button size="medium">Registrar</Button>
-                    </Form>
-                    
+                    </Form>    
                 )}
             </Formik>
         </div>
