@@ -35,26 +35,20 @@ router.get('/medico/consultas',medico,(req,res,next)=>{
 router.post("/medico/criarConsultas",medico,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
-        console.log(1)
         conn.query(
             "SELECT * FROM Especialidade WHERE id_especialidade = ?",
             [req.body.id_especialidade],
             (error,results,fields)=>{
-                console.log(2)
                 if(error){return res.status(500).send({error:error})}
                 if(results.length == 0){return res.status(404).send({mensagem: "especialidade não encontrada"})}
-                console.log(3)
-                console.log(req.body.id_consultorio)
                 conn.query(
                     'SELECT * FROM Consultorio WHERE id_consultorio = ?',
                     [req.body.id_consultorio],
                     (error,results,fields)=>{
-                        console.log(4)
                         if(error){return res.status(500).send({error:error})}
                         if(results.length == 0){return res.status(404).send({mensagem:"consultorio não encontrado"})}
                         const horaInicio = req.body.horaInicio.split(":").map(x =>{return parseInt(x)})
                         const horaFim = req.body.horaFim.split(":").map(x =>{return parseInt(x)})
-                        console.log(3)
                         for(;horaInicio[0]<=horaFim[0];horaInicio[0]++){
                             
                             for(;horaInicio[1]<(horaInicio[0]==horaFim[0] ? horaFim[1] : 59);horaInicio[1]+=10){
