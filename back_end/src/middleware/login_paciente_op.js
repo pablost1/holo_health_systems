@@ -7,7 +7,6 @@ module.exports = (req,res,next)=>{
         req.usuario = decode
         next()
     } catch(error){
-        console.log(1)
         med_op(req,res,next)
     }
 }
