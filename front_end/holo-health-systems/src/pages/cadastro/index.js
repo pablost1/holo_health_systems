@@ -1,25 +1,18 @@
 import './style.css'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Button from '../../sharable-components/button/index';
 import { Formik, Form, Field, useFormik } from 'formik'
-import * as EmailValidator from 'email-validator';
 import * as Yup from 'yup'
-import { cpf } from 'cpf-cnpj-validator';
 import axios from 'axios';
 
-
-
-
-
-<<<<<<< HEAD
+let http = axios.create({
+    baseURL: 'http://localhost:3001',
+})
 
 
 
 
 
-
-=======
->>>>>>> 625091c81b35aca1471e3f6b3fe3f934ea065503
 function ValidationField({error}) {
     return (
         <div className="validation-field">
@@ -29,7 +22,7 @@ function ValidationField({error}) {
 }
 
 export default function Cadastro() {
-
+    const [state, setstate] = useState('')
     
     
     const validation = Yup.object().shape({
@@ -70,15 +63,21 @@ export default function Cadastro() {
                 validationSchema={validation}
 
                 onSubmit={ (value) => {
-                    console.log(value.data)
-                    axios({
-                        method: 'post',
-                        headers: { 'Content-Type': 'application/json' },
-                        url: 'http://127.0.0.1:3001/usuario/cadastro',
-                        data: value
-                      }).then(function (response) {
-                        console.log(response.data);
-                      });    
+                    
+                    // axios({
+                    //     method: 'post',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     url: 'http://127.0.0.1:3001/usuario/cadastro',
+                    //     data: value
+                    //   }).then(function (response) {
+                    //     console.log(response.data);
+                    //   });
+                    http.post('/register', {
+                        email: 'chenrique452@gmail.com',
+                        password: 'my-secret-pw'
+                    })
+                        .then( res => alert(res))
+                        .catch( (err) => alert(err))
                         
                         
                 }}

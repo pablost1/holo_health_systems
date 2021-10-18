@@ -5,15 +5,20 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 
 
 import { AuthorizationContext }  from './auth/authContext';
-import Components from './pages/components';
 import Home from './pages/home';
 import Cadastro from './pages/cadastro';
-import { render } from '@testing-library/react';
 import LoginPage from './pages/login/index';
 import MarcarConsulta from './pages/marcar-consulta';
 
 
+import { AuthContext } from './auth/authContext';
+
+
+
+
+
 function App() {
+  
   
   
   
@@ -25,10 +30,10 @@ function App() {
             <Route exact path="/">
               <Redirect to="/login"/>
             </Route>
-            <Route render={LoginPage} path="/login" />
-            <Route render={Home} path="/home"/>
-            <Route render={Cadastro} path="/cadastro"/>
-            <Route render={MarcarConsulta} path="/marcar-consulta" />
+            <Route component={LoginPage} path="/login" />
+            <Route component={Home} path="/home"/>
+            <Route component={Cadastro} path="/cadastro"/>
+            <Route component={MarcarConsulta} path="/marcar-consulta" />
           </Switch>
 
           

@@ -2,34 +2,41 @@ import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header/index.js'
-import { useState } from 'react';
+
 
 import axios from 'axios'
+import { useState, useEffect } from 'react';
 
 
 
-
-const http = axios.create({
-    baseURL: 'urlbaseaqui',
+axios.create({
+    baseURL: 'http://locahost:3001'
 })
 
 
 
 
+// async function CarregarDropdown(para='estados') {
+//     return await  axios.get(`/${para}`)
+// }
 
 
-async function CarregarDropdown() {
-    const estados = await axios.get('/estados')
-    return estados     
-}
+function MarcarConsulta() {
 
 
-export default function MarcarConsulta() {
+    const [ estado, setEstado ] = useState([])
+    const [cidade, setcidade] = useState([])
+    const [especialidade, setespecialidade] = useState([])
 
-    
-    // const [cidades, setcidades] = useState([])
-    // const [especialidade, setespecialidade] = useState([])
-     
+
+    // useEffect(async () => {
+    //     let estados = CarregarDropdown()
+    //     setEstado(estados)
+    // })
+
+
+
+
 
 
     return (
@@ -45,17 +52,26 @@ export default function MarcarConsulta() {
                 }}
 
             >
-                {({ errors, touched, values }) => (
+                {({ errors, touched, values, handleChange }) => (
                     <Form className="marcar-consulta__form">
                         <div className="form-group">
                             <label className="label-bigger">Selecione um estado estado</label>
                             <Field
                                 name="estado"
                                 as="select"
-                                className="input"  
+                                className="input"
+                                onChange={ (e) => {
+                                    handleChange(e)
+
+                                    
+
+                                }}
                                 
                             >
                                 <option value="" select="selected">Estado</option>
+                                {
+                                    
+                                }
                                 <option value="PE">Pernambuco</option>
                                 <option value="PB">Paraiba</option>
                             </Field>
@@ -86,3 +102,5 @@ export default function MarcarConsulta() {
         </div>  
     )
 }
+
+export default MarcarConsulta

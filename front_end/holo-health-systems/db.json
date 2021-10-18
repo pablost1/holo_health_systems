@@ -1,63 +1,12 @@
 {
-  "users": [
-    {
-      "email": "chenrique452@gmail.com",
-      "password": "$2a$10$3HRo906cl7feUvWY7FagcO4v/x9C.9ykJz9nxCMNTIGSWqFs54GZm",
-      "id": 1
-    },
-    {
-      "email": "carlos.vonrecife@gmail.com",
-      "password": "$2a$10$duJ7Bss5QLIgVtBPwbXci.ZOsH4n42DNKhTln3erIDaocXd0A/bvS",
-      "id": 2
-    }
-  ],
-  "signup": [],
-  "register": [
-    {
-      "email": "olivier@mail.com",
-      "password": "bestPassw0rd"
-    }
-  ],
   "posts": [
     {
       "id": 1,
       "title": "json-server",
       "author": "typicode"
-    },
-    {
-      "id": 2
-    },
-    {
-      "id": 3
-    },
-    {
-      "id": 4
-    },
-    {
-      "id": 5
     }
   ],
   "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    },
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    },
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    },
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    },
     {
       "id": 1,
       "body": "some comment",
@@ -67,55 +16,12 @@
   "profile": {
     "name": "typicode"
   },
-  "usuarios": [
+  "register": [],
+  "users": [
     {
-      "id": 1,
-      "nome": "carlos",
-      "sobrenome": "henrique",
-      "cpf": "923982398",
-      "tipo": "P",
-      "senha": "jajaisjisaas"
-    },
-    {
-      "id": 2
-    },
-    {
-      "nome": "Carlos",
-      "sobrenome": "Henrique",
       "email": "chenrique452@gmail.com",
-      "cpf": "18278127812713",
-      "tipo": "P",
-      "senha": "12938120938123",
-      "id": 3
-    },
-    {
-      "nome": "Carlos",
-      "sobrenome": "Henrique",
-      "email": "chenrique452@gmail.com",
-      "cpf": "1829182739182371",
-      "tipo": "P",
-      "senha": "918379128",
-      "id": 4
-    }
-  ],
-  "pessoas": [
-    {
-      "nome": "Carlos",
-      "sobrenome": "Henrique",
-      "email": "chenrique452@gmail.com",
-      "cpf": "1829182739182371",
-      "tipo": "P",
-      "senha": "918379128",
+      "password": "$2a$10$5Gc4.piu27mKbeyAQiqB/ugu3OqTWkXEjirFxyjh8iSoZNzQEoEpS",
       "id": 1
-    },
-    {
-      "nome": "Carlos",
-      "sobrenome": "Henrique",
-      "email": "chenrique452@gmail.com",
-      "cpf": "1829182739182371",
-      "tipo": "P",
-      "senha": "918379128",
-      "id": 2
     }
   ]
 }

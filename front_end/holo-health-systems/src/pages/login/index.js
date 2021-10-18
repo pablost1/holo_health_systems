@@ -1,10 +1,30 @@
 import './style.css'
 import LoginForm from '../../sharable-components/login-form'
 import { ReactComponent as Logo } from '../../media/logo.svg'
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { Formik, Field, Form } from 'formik';
+import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../../auth/authContext';
+
+
 
 
 function LoginPage() {
+
+    const { isLoggedin } = useContext(AuthContext)
+    const history = useHistory()
+
+    
+
+    useEffect(() => {
+        if(isLoggedin) {
+            history.push('/home')
+        }
+    })
+    
+
+    
+
     
     return (
         <div className="login-page">
@@ -14,6 +34,10 @@ function LoginPage() {
             </div>
             
             <div className="login-container">
+                <button onClick={ () => {
+                    const token = JSON.parse(localStorage.getItem('token'))
+                    console.log(token)
+                }}>check token</button>
                 <Logo className="logo"/>
                 <LoginForm />
                 
