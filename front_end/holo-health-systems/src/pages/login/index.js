@@ -34,10 +34,6 @@ function LoginPage() {
             </div>
             
             <div className="login-container">
-                <button onClick={ () => {
-                    const token = JSON.parse(localStorage.getItem('token'))
-                    console.log(token)
-                }}>check token</button>
                 <Logo className="logo"/>
                 <LoginForm />
                 

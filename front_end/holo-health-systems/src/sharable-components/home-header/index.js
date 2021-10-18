@@ -21,10 +21,6 @@ function HomeHeader() {
 
     
 
-    function checkToken() {
-        const token = localStorage.getItem('token')
-        console.log(token)
-    }
 
     
 
@@ -34,7 +30,7 @@ function HomeHeader() {
                 <AccountCircle fontSize="large"className="home-header__icon"/>
                 <input  className="home-header__input" type="text" placeholder="Buscar consulta . . ."/>
                 <a className="home-header__logout-button" onClick={handleLogout} >Sair</a>
-                <a className="home-header__logout-button" onClick={checkToken} >Check Token</a>
+                <a className="home-header__logout-button" >Check Token</a>
                 
             </header>
         </div>

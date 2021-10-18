@@ -16,6 +16,19 @@ import { AuthContext } from './auth/authContext';
 
 
 
+const PrivateRoute = ({ component: Component, ...rest }) => {
+
+  const { isLoggedin } = useContext(AuthContext)
+
+  return (
+    <Route {...rest} render={props => (
+      isLoggedin ? <Component /> : <Redirect to="/login"/>
+    )}/>
+  )
+}
+
+
+
 
 function App() {
   
@@ -31,7 +44,7 @@ function App() {
               <Redirect to="/login"/>
             </Route>
             <Route component={LoginPage} path="/login" />
-            <Route component={Home} path="/home"/>
+            <PrivateRoute component={Home} exact  />
             <Route component={Cadastro} path="/cadastro"/>
             <Route component={MarcarConsulta} path="/marcar-consulta" />
           </Switch>
