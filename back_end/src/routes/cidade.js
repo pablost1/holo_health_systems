@@ -5,6 +5,7 @@ const pool = require("../mysql").pool;
 const paci_op = require('../middleware/login_paciente_op') 
 const gerente = require('../middleware/login_gerente')
 
+/** Retorna todas as cidades cadastradas */
 router.get('/',paci_op,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -16,7 +17,6 @@ router.get('/',paci_op,(req,res,next)=>{
                         id_cidade: cidade.id_cidade,
                         id_estado: cidade.id_estado,
                         nome: cidade.nome
-
                     }
                 })
             }
@@ -25,6 +25,15 @@ router.get('/',paci_op,(req,res,next)=>{
     })
 })
 
+/**
+ * Cadastra uma cidade
+ * 
+ *  Formato da requisição
+ * {
+ *      "nome"             : String,   // Nome do estado.
+ *      "id_estado"        : Integer   // Numero identificador do estado. 
+ * }
+ */
 router.post('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -43,12 +52,12 @@ router.post('/',gerente,(req,res,next)=>{
                         conn.query(
                             'INSERT INTO Cidade (nome,id_estado) VALUES (?,?)',
                             [req.body.nome,req.body.id_estado],
-                            (error,resul,fiel)=>{
+                            (error,result,field)=>{
                                 if(error){return res.status(500).send({error:error})}
                                 const response = {
                                     mensagem:"Cidade criada com sucesso",
                                     cidadeCriada:{
-                                        id_cidade: resul.insertId,
+                                        id_cidade: result.insertId,
                                         nome: req.body.nome,
                                         id_estado: req.body.id_estado
                                     }
@@ -63,6 +72,16 @@ router.post('/',gerente,(req,res,next)=>{
     })
 })
 
+/**
+ * Atualiza uma cidade
+ * 
+ *  Formato da requisição
+ * {
+ *      "nome"             : String,   // Nome do estado.
+ *      "id_estado"        : Integer   // Numero identificador do estado. 
+ *      "id_cidade"        : Integer   // Numero identificador da cidade. 
+ * }
+ */
 router.patch('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -73,7 +92,7 @@ router.patch('/',gerente,(req,res,next)=>{
             conn.query('SELECT * FROM Cidade WHERE nome = ?',[req.body.nome],(error,result,field)=>{
                 if(error){return res.status(500).send({error:error})}
                 if(result.length>0){return res.status(409).send({mensagem:"cidade já cadastrada"})}
-                conn.query('UPDATE Cidade SET nome = ? WHERE id_cidade = ?',[req.body.nome,req.body.id_cidade],(error,resul,fiel)=>{
+                conn.query('UPDATE Cidade SET nome = ? WHERE id_cidade = ? AND id_estado = ?',[req.body.nome, req.body.id_cidade, req.body.id_estado],(error,resul,fiel)=>{
                     conn.release()
                     if(error){return res.status(500).send({error:error})}
                     const response = {
@@ -91,6 +110,14 @@ router.patch('/',gerente,(req,res,next)=>{
     })
 })
 
+/**
+ * Deleta uma cidade
+ * 
+ *  Formato da requisição
+ * {
+ *      "id_cidade"        : Integer   // Numero identificador da cidade. 
+ * }
+ */
 router.delete('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}

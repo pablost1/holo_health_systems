@@ -6,6 +6,14 @@ const medico = require('../middleware/login_medico')
 const paciente = require('../middleware/login_paciente')
 const gerente = require('../middleware/login_gerente')
 
+/**
+ * Retorna todas consultas criadas pelo médico solicitante.
+ * 
+ * Formato da requisição
+ * {
+ *      "id_usuario"        : Integer,  // Numero identificador do médico. 
+ * }
+ */
 router.get('/medico/consultas',medico,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -32,6 +40,20 @@ router.get('/medico/consultas',medico,(req,res,next)=>{
         })
     })
 })
+
+/**
+ * Cria uma consulta
+ * 
+ * Formato da requisição
+ * {
+ *      "data"              : String,   // Data em que ocorrerá a consulta. Formato : DD/MM/AAAA
+ *      "horaInicio"        : String,   // Momento do dia em que ocorrerá a consulta. Formato : HH:MM
+ *      "horaFim"           : String,   // Momento do dia em que a consulta será encerrada. Fromato : HH:MM
+ *      "id_usuario"        : Integer,  // Numero identificador do médico 
+ *      "id_especialidade"  : Integer,  // Numero identificador da especialidade do médico
+ *      "id_consultorio"    : Integer   // Numero identificador do consultorio onde ocorrerá a consulta
+ * }
+ */
 router.post("/medico/criarConsultas",medico,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -72,6 +94,17 @@ router.post("/medico/criarConsultas",medico,(req,res,next)=>{
     })
 })
 
+/**
+ * Deleta  uma consulta
+ * 
+ * Formato da requisição
+ * {
+ *      "data"              : String,   // Data em que ocorrerá a consulta. Formato : DD/MM/AAAA
+ *      "horaInicio"        : String,   // Momento do dia em que ocorrerá a consulta. Formato : HH:MM
+ *      "horaFim"           : String,   // Momento do dia em que a consulta será encerrada. Fromato : HH:MM
+ *      "id_usuario"        : Integer,  // Numero identificador do usuário 
+ * }
+ */
 router.delete('/medico/cancelarConsultas',medico,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -96,6 +129,15 @@ router.delete('/medico/cancelarConsultas',medico,(req,res,next)=>{
         return res.status(202).send({mensagem: "consultas removidas com sucesso"})
     })
 })
+
+/**
+ * Cria uma consulta
+ * 
+ * Formato da requisição
+ * {
+ *      "id_usuario"        : Integer,  // Numero identificador do paciente 
+ * }
+ */
 router.get('/paciente/consultas',paciente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -119,10 +161,18 @@ router.get('/paciente/consultas',paciente,(req,res,next)=>{
                 })
             }
             return res.status(200).send(response)
-            
         })
     })
 })
+/**
+ * Retorna todas as consultas disponíveis de uma especialidade em um consultório específico.
+ * 
+ * Formato da requisição
+ * {
+ *      "id_especialidade"  : Integer,  // Numero identificador da especialidade desejada
+ *      "id_consultorio"    : Integer   // Numero identificador do consultorio onde há a consulta
+ * }
+ */
 router.post('/paciente/consultas_disponiveis',paciente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -149,10 +199,10 @@ router.post('/paciente/consultas_disponiveis',paciente,(req,res,next)=>{
                                             id_consulta: consulta.id_consulta,
                                             data: consulta.data,
                                             hora: consulta.hora,
-                                            estado:consulta.estado,
+                                            estado: consulta.estado,
                                             id_paciente: consulta.id_paciente,
                                             id_medico: consulta.id_medico,
-                                            id_especialidade:consulta.id_especialidade,
+                                            id_especialidade: consulta.id_especialidade,
                                             id_consultorio: consulta.id_consultorio
                                         }
                                     })
@@ -167,6 +217,15 @@ router.post('/paciente/consultas_disponiveis',paciente,(req,res,next)=>{
     })
 })
 
+/**
+ * Marca uma consulta associando o identificador de um usuário ao registro do banco de dados e mudando seu estado para "marcada".
+ * 
+ * Formato da requisição
+ * {
+ *      "id_usuario"        : Integer,  // Numero identificador do paciente 
+ *      "id_consulta"       : Integer   // Numero identificador da consulta.
+ * }
+ */
 router.patch('/paciente/marcar_consulta',paciente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -188,6 +247,16 @@ router.patch('/paciente/marcar_consulta',paciente,(req,res,next)=>{
         )
     })
 })
+
+/**
+ * Desmarca uma consulta desassociando o identificador de um usuário ao registro do banco de dados e mudando seu estado para "disponivel".
+ * 
+ * Formato da requisição
+ * {
+ *      "id_usuario"        : Integer,  // Numero identificador do paciente 
+ *      "id_consulta"       : Integer   // Numero identificador da consulta.
+ * }
+ */
 router.delete('/paciente/cancelar_consulta',paciente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}

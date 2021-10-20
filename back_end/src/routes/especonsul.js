@@ -5,6 +5,10 @@ const pool = require("../mysql").pool;
 const paci_op = require('../middleware/login_paciente_op') 
 const gerente = require('../middleware/login_gerente')
 
+/**
+ * Retorna todos os identificadores de especialidade e consultório que estão relacionados.
+ *
+ */
 router.get('/',paci_op,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -25,6 +29,16 @@ router.get('/',paci_op,(req,res,next)=>{
     })
 })
 
+/**
+ * Associa uma especialidade a um consultório
+ * 
+ * Formato da requisição
+ * {
+ * 
+ *      "id_consultorio"        : Integer,  // Numero identificador do consultório. 
+ *      "id_especialidade"      : Integer,  // Numero identificador da especialidade. 
+ * }
+ */
 router.post('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -36,7 +50,7 @@ router.post('/',gerente,(req,res,next)=>{
                 if(results.length == 0 ){return res.status(404).send({mensagem: "consultorio não encontrado"})}
                 conn.query(
                     'SELECT * FROM Especialidade WHERE id_especialidade = ?',
-                    [req.body.id_consultorio],
+                    [req.body.id_especialidade],
                     (error,results,fields)=>{
                         if(error){return res.status(500).send({error:error})}
                         if(results.length == 0 ){return res.status(404).send({mensagem: "Especialidade não encontrada"})}

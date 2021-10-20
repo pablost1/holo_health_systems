@@ -5,6 +5,7 @@ const pool = require("../mysql").pool;
 const paci_op = require('../middleware/login_paciente_op') 
 const gerente = require('../middleware/login_gerente')
 
+/** Consulta o nome de todas as especialidades */
 router.get("/",paci_op,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -24,6 +25,15 @@ router.get("/",paci_op,(req,res,next)=>{
         })
     })
 })
+
+ /**
+ * Cadastra uma nova especialidade ao fornecer um nome
+ * 
+ * Formato da requisição
+ * {
+ *      "nome"              : String,   // nome da especialidade a ser registrada
+ * }
+ */
 router.post('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -50,6 +60,15 @@ router.post('/',gerente,(req,res,next)=>{
     })
 })
 
+/**
+ * Atualiza o nome de uma especialidade a partir de seu numero identificador.
+ * 
+ *  Formato da requisição
+ * {
+ *      "id_especialidade" : Integer,  // Numero identificador da especialidade a ser alterada.
+ *      "nome"             : String,   // Novo nome da especialidade.
+ * }
+ */
 router.patch('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -77,6 +96,14 @@ router.patch('/',gerente,(req,res,next)=>{
     })
 })
 
+/**
+ * Deleta uma especialidade a partir de seu numero identificador
+ * 
+ * Formato de requisição
+ * {
+ *      "id_especialidade" : : Integer,   // Numero identificador da especialidade.
+ * }
+ */
 router.delete('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}

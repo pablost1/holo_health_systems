@@ -5,6 +5,10 @@ const pool = require("../mysql").pool;
 const paci_op = require('../middleware/login_paciente_op') 
 const gerente = require('../middleware/login_gerente')
 
+/**
+ * Consulta todos os consultórios existentes
+ * 
+ */
 router.get('/',paci_op,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -25,6 +29,15 @@ router.get('/',paci_op,(req,res,next)=>{
     })
 })
 
+/**
+ *  Cadastra um consultório.
+ * 
+ *  Formato da requisição
+ * {
+ *      "nome"             : String,   // Nome do consultório.
+ *      "id_cidade"        : Integer   // Numero identificador da cidade. 
+ * }
+ */
 router.post('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -62,11 +75,20 @@ router.post('/',gerente,(req,res,next)=>{
             )
     })
 })
+
+/**
+ *  Atualiza um consultório
+ * 
+ *  Formato da requisição
+ * {
+ *      "nome"                  : String,   // Nome do consultório.
+ *      "id_consultório"        : Integer   // Numero identificador do consultório. 
+ * }
+ */
 router.patch('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
-        conn.query('SELECT * FROM Consultorio WHERE id_consultorio = ?', [req.body.id_consultorio],(error,results,fields)=>{
-                
+        conn.query('SELECT * FROM Consultorio WHERE id_consultorio = ?', [req.body.id_consultorio],(error,results,fields)=>{  
             if(error){return res.status(500).send({error:error})}
             if(results.length==0){return res.status(404).send({mensagem:"Consultorio não encontrado"})}
             conn.query('SELECT * FROM Consultorio WHERE nome = ?',[req.body.nome],(error,result,field)=>{
@@ -89,6 +111,15 @@ router.patch('/',gerente,(req,res,next)=>{
         })
     })
 })
+
+/**
+ * Deleta um consultório
+ * 
+ *  Formato da requisição
+ * {
+ *      "id_consultorio"        : Integer   // Numero identificador do consultorio. 
+ * }
+ */
 router.delete('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}

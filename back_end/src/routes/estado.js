@@ -5,6 +5,7 @@ const pool = require("../mysql").pool;
 const paci_op = require('../middleware/login_paciente_op') 
 const gerente = require('../middleware/login_gerente')
 
+/** Consultar todos os estados disponíveis */
 router.get("/",paci_op,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -25,6 +26,15 @@ router.get("/",paci_op,(req,res,next)=>{
     })
 })
 
+/**
+ *  Registra um novo Estado
+ * 
+ *  Formato da requisição
+ * 
+ * {
+ *      "nome"             : String,   // Nome do Estado a ser registrado.
+ * }
+ */
 router.post('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -51,6 +61,16 @@ router.post('/',gerente,(req,res,next)=>{
     })
 })
 
+/**
+ * Altera um Estado existente ao fornecer o seu numero identificador e um novo nome.
+ * 
+ * Formato da requisição
+ * 
+ * {
+ *      "id_estado"        : Integer,  // Numero identificador do Estado.
+ *      "nome"             : String,   // Nome do Estado a ser alterado.
+ * }
+ */
 router.patch('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -78,6 +98,13 @@ router.patch('/',gerente,(req,res,next)=>{
     })
 })
 
+/**
+ * Remove um Estado a partir de seu numero identificador
+ * 
+ * {
+ *      "id_estado"        : Integer,  // Numero identificador do Estado.
+ * }
+ */
 router.delete('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}

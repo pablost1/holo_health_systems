@@ -5,23 +5,17 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cadastro_medico = require('../middleware/cadastro_medico');
 
-/** Rota para cadastro
- *  
- *          Formato da requisição
- *{
- *      "cpf"       :   XXXXXXXXXXX,
- *      "email"     :   "abcd@-mail.com",
- *      "nome"      :   "John",
- *      "sobrenome" :   "Johns",
- *      "tipo"      :   "P" || "M" || "G"
- *}
+ /**
+ * Rota para cadastro dos usuários
  * 
- * cpf:          TODO
- * email:        TODO
- * nome:         TODO
- * sobrenome:    TODO
- * tipo:         TODO
- * 
+ * Formato da requisição
+ * {
+ *      "cpf"              : Integer,  // Numero do CPF do novo usuário
+ *      "email"            : String,   // E-mail de cadastro do novo usuario
+ *      "nome"             : String,   // Nome principal do usuario
+ *      "sobrenome"        : String,   // Ultimo nome do usuario
+ *      "tipo"             : String,   // Tipo de usuario cadastrado: Paciente = P, Médico = M, Gerente = G
+ * }
  */
 router.post('/cadastro',cadastro_medico,(req,res,next)=>{
     pool.getConnection((error,conn)=>{  
@@ -67,7 +61,7 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
                                     return res.status(201).send(response)
                                 }
                             )
-                        })
+                            })
                         })
                         
                     }
@@ -81,12 +75,9 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
  * 
  *  Formato para requisição
  * {
- *      "login" : e-mail ou CPF
- *      "senha" : XXXXXXXX 
+ *      "login" : Integer/String // Numero do CPF / Endereço de e-mail
+ *      "senha" : Integer        // Senha de acesso   
  * }
- * 
- *  login:      TODO
- *  senha:      TODO
  */
 router.post('/login',(req,res,next)=>{
     pool.getConnection((error,conn)=>{
