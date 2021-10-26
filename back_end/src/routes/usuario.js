@@ -10,7 +10,8 @@ const cadastro_medico = require('../middleware/cadastro_medico');
  * 
  * Formato da requisição
  * {
- *      "cpf"              : Integer,  // Numero do CPF do novo usuário
+ *      "cpf"              : String,  // Numero do CPF do novo usuário
+ *      "senha"            : String,   // Senha do usuario
  *      "email"            : String,   // E-mail de cadastro do novo usuario
  *      "nome"             : String,   // Nome principal do usuario
  *      "sobrenome"        : String,   // Ultimo nome do usuario
@@ -32,7 +33,7 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
                     (error,result,field)=>{
                         if(error){return res.status(500).send({error:error})}
                         if(result.length>0){return res.status(409).send({mensagem: "email já cadastrado"})}
-                        const saltRounds = 10
+                        const saltRounds = 5
                         bcrypt.genSalt(saltRounds, function(err, salt){
                             bcrypt.hash(req.body.senha, salt, (errorBcrypt,hash)=>{     
                             if(errorBcrypt){return res.status(500).send({error:errorBcrypt})}

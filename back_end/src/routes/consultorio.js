@@ -60,7 +60,7 @@ router.post('/',gerente,(req,res,next)=>{
                                 if(error){return res.status(500).send({error:error})}
                                 const response = {
                                     mensagem:"Consultorio criado com sucesso",
-                                    cidadeCriada:{
+                                    consultorioCriado:{
                                         id_consultorio: resul.insertId,
                                         nome: req.body.nome,
                                         id_cidade: req.body.id_cidade
