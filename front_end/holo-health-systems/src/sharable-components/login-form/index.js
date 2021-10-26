@@ -22,7 +22,7 @@ let http = axios.create({
 let schema = Yup.object().shape({
     email: Yup.string()
         .email().required('Um e-mail é necessário'),
-    password: Yup.string()
+    senha: Yup.string()
         .required('Uma senha é necessária')
 })
 
@@ -42,12 +42,13 @@ function LoginForm() {
         <Formik
             initialValues={{
                 email: '',
-                password: ''
+                senha: ''
             }}
 
             validationSchema={schema}
 
             onSubmit={(value) => {
+                console.log(value)
                handleLogin(value)
             }}
         >
@@ -61,8 +62,8 @@ function LoginForm() {
                     </div>
                     <div className="form-group">
                         <label>Senha</label>
-                        <Field name="password" class="input"/>
-                        { errors.password && touched.password ? <p>{errors.password} </p> : '' }
+                        <Field name="senha" class="input"/>
+                        { errors.senha && touched.senha ? <p>{errors.senha} </p> : '' }
                     </div>
                     <div className="form-login">
                         <span style={{fontSize: '.8rem'}}>
@@ -70,7 +71,7 @@ function LoginForm() {
                         </span>
                         <Lock style={{fontSize: '1.1rem'}}/>
 
-                        <Button size="medium"  style={{ marginLeft: '1em'}}>Login</Button>
+                        <button type="submit">Login</button>
                     </div>
             
                 </Form>

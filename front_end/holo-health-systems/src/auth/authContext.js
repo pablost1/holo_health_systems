@@ -31,7 +31,7 @@ function AuthorizationContext({children}) {
     
     
     async function handleLogin(user) {
-        const { data } = await http.post('/login', user)
+        const { data } = await http.post('/usuario/login', user)
         localStorage.setItem('token', JSON.stringify(data))
         setisLoggedin(true)
 

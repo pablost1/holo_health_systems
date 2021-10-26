@@ -18,7 +18,7 @@ export default function Home() {
     const { isLoggedin } = useContext(AuthContext)
 
 
-    const { user } = JSON.parse(localStorage.getItem('token'))
+
 
 
     return (
@@ -26,7 +26,7 @@ export default function Home() {
             <HomeHeader />
             <MainContainer>
                 
-                <Subtitle>{ user.email }</Subtitle>
+                
                 <div className="lista-afazeres">
                     <ScheduleButton>Minhas consultas</ScheduleButton>
                     <ScheduleButton>Minhas consultas</ScheduleButton>
