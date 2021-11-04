@@ -10,6 +10,27 @@
     
 }
 
+.consulta-apagavel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    font-size: .7rem;
+    padding: 1rem;
+    box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.25);
+    width: 90%;
+    margin: auto;
+
+}
+
+
+@media (max-width: 829px) {
+    .consulta-apagavel {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 
 .profissional {
     font-size: 1.2rem;
@@ -52,4 +73,19 @@
     border-radius: 50px;
     background-color: var(--primary-color);
     color: #ffffff;
+}
+
+.consulta__horario-apagavel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: .5rem 1rem;
+    border-radius: 50px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.consulta__actions {
+    display: flex;
+    gap: 10px;
 }

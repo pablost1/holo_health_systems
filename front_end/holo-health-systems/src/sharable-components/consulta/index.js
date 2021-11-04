@@ -2,10 +2,26 @@ import { LocationOn } from "@material-ui/icons"
 import { CalendarToday } from "@material-ui/icons"
 import { Timer } from "@material-ui/icons"
 import './style.css'
+import Button from '../button/index';
 
-export default function Consulta() {
+
+export default function Consulta(props) {
+
+
+
+    function CancelarConsulta() {
+        console.log('consulta cancelada!')
+    }
+
+
+
+
+
+
+    
+
     return (
-        <div className="consulta">
+        <div className={`${props.type === 'delete'? 'consulta-apagavel' : 'consulta'}`}>
             <div className="consulta__profissional">
                 <h3 className="profissional">Otorrinolaringologia</h3>
                 <span className="nome-profissional">Maria de fátima bezerra</span>
@@ -26,11 +42,20 @@ export default function Consulta() {
                     </div>
                 </div>
             </div>
-            <span className="consulta__horario">
-                <Timer fontSize="small"/>
-                <span>Horário 9:30</span>
+            <div className="consulta__actions">
+                <span className={`${props.type === 'delete' ? 'consulta__horario-apagavel' : 'consulta__horario'}`}>
+                    <Timer fontSize="small"/>
+                    <span>Horário 9:30</span>
+                </span>
+                {
 
-            </span>
+                    props.type === 'delete' && props.hasDeleteButton ? <Button size="small" status="danger">Cancelar consulta</Button> : null
+                }
+                
+            </div>
+            
+            
+            
         </div>
     )
 }

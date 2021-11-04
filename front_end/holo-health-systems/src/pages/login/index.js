@@ -1,8 +1,6 @@
 import './style.css'
 import LoginForm from '../../sharable-components/login-form'
-import { ReactComponent as Logo } from '../../media/logo.svg'
 import { useContext, useEffect } from 'react';
-import { Formik, Field, Form } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../auth/authContext';
 
@@ -34,7 +32,7 @@ function LoginPage() {
             </div>
             
             <div className="login-container">
-                <Logo className="logo"/>
+                
                 <LoginForm />
                 
             </div>

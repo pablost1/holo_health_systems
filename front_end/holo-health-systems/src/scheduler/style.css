@@ -1,0 +1,61 @@
+.scheduler {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    margin: 0 auto;
+    max-width: 1000px;
+    height: 100vh;
+}
+
+
+tr {
+    width: 130px;
+}
+
+.scheduler-header {
+    display: flex;
+    align-items: center;
+    padding: 2rem 1rem;
+}
+
+.scheduler-date {
+    margin: 0 0 0 1.8rem;
+}
+
+
+.scheduler-table {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 60px;
+
+}
+
+table {
+    min-width: 100px;
+    text-align: center;
+}
+
+.horario {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    background-color: #ffffff;
+    color: black;
+    width: 130px;
+    
+}
+
+.horario__items {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: .3rem 0 .5rem .3rem;
+}
+
+.medico {
+    font-size: 1rem;
+}
+
+.especialidade-horario {
+    font-size: .8rem;
+}

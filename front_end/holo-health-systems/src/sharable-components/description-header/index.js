@@ -1,12 +1,16 @@
 import { ArrowBack, ArrowBackIos } from "@material-ui/icons"
+import { Link } from 'react-router-dom';
 import './style.css'
 
 
-export default function DescriptionHeader() {
+export default function DescriptionHeader({children}) {
     return (
         <div className="description-header">
-            <ArrowBackIos />
-            <h2>Marcar consulta </h2>
+            <Link to="/home" style={{ color: 'white'}}>
+                <ArrowBackIos />
+            </Link>
+            
+            <h2>{children}</h2>
         </div>
     )
 }

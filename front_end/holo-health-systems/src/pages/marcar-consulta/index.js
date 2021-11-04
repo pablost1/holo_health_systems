@@ -1,11 +1,10 @@
 import { Formik, Field, Form } from 'formik'
-import * as Yup from 'yup'
 import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header/index.js'
 
 
 import axios from 'axios'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 
 
@@ -24,9 +23,9 @@ axios.create({
 function MarcarConsulta() {
 
 
-    const [ estado, setEstado ] = useState([])
-    const [cidade, setcidade] = useState([])
-    const [especialidade, setespecialidade] = useState([])
+    // const [ estado, setEstado ] = useState([])
+    // const [cidade, setcidade] = useState([])
+    // const [especialidade, setespecialidade] = useState([])
 
 
     // useEffect(async () => {
@@ -37,12 +36,12 @@ function MarcarConsulta() {
 
 
 
-
+    console.log('loaded')
 
     return (
-        <div class="marcar-consulta">
+        <div className="marcar-consulta">
             
-            <DescriptionHeader />
+            <DescriptionHeader>Marcar consulta</DescriptionHeader>
             
             <Formik
                 initialValues={{
@@ -52,7 +51,7 @@ function MarcarConsulta() {
                 }}
 
             >
-                {({ errors, touched, values, handleChange }) => (
+                {({  values, handleChange }) => (
                     <Form className="marcar-consulta__form">
                         <div className="form-group">
                             <label className="label-bigger">Selecione um estado estado</label>

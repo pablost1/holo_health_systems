@@ -17,8 +17,7 @@ const http = axios.create({
 
 function AuthorizationContext({children}) {
     const [isLoggedin, setisLoggedin] = useState(false)
-    const history = useHistory()
-
+    const [modalState, setmodalState] = useState({ modalMode: ''})
 
     useEffect( () => {
 
@@ -28,12 +27,53 @@ function AuthorizationContext({children}) {
             setisLoggedin(true)
         }
     })
+
+    function RegisteSchedule(component) {
+        setmodalState({
+            modalMode: 'register',
+            childComponent: component
+        })
+    }
+
+    function handleError(message) {
+
+        setmodalState({
+            modalMode: 'error',
+            errorMessage: message
+        })
+    }
+
+    function dismissable(action){
+        setmodalState({
+            modalMode: 'confirmable',
+            message: 'Você tem certeza?',
+            dismissFunction: action
+        })
+    }
+
+    function closeModal() {
+        setmodalState({ modalMode: '', errorMessage: ''})
+    }
+
+
+    
     
     
     async function handleLogin(user) {
-        const { data } = await http.post('/usuario/login', user)
-        localStorage.setItem('token', JSON.stringify(data))
-        setisLoggedin(true)
+
+
+        try {
+            const { data } = await http.post('/usuario/login', user)
+            localStorage.setItem('token', JSON.stringify(data))
+            setisLoggedin(true)
+            
+        } catch(error) {
+            const message = error.response.data.mensagem
+            handleError(message)
+        }
+
+        
+        
 
 
 
@@ -47,12 +87,19 @@ function AuthorizationContext({children}) {
 
     }
 
+
+
     return (
         <AuthContext.Provider value={{
             
             handleLogin,
             handleLogout,
-            isLoggedin
+            isLoggedin,
+            handleError,
+            closeModal,
+            RegisteSchedule,
+            modalState,
+            dismissable
 
         }}>
             { children }
