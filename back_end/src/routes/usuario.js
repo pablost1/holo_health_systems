@@ -10,15 +10,17 @@ const cadastro_medico = require('../middleware/cadastro_medico');
  * 
  * Formato da requisição
  * {
- *      "cpf"              : String,  // Numero do CPF do novo usuário
+ *      "cpf"              : Integer,  // Numero do CPF do novo usuário
  *      "senha"            : String,   // Senha do usuario
  *      "email"            : String,   // E-mail de cadastro do novo usuario
  *      "nome"             : String,   // Nome principal do usuario
  *      "sobrenome"        : String,   // Ultimo nome do usuario
  *      "tipo"             : String,   // Tipo de usuario cadastrado: Paciente = P, Médico = M, Gerente = G
+ *      "especialidade"    : Int       // numero identificador da especialidade do médico, [APENAS PARA MÉDICOS]
  * }
  */
 router.post('/cadastro',cadastro_medico,(req,res,next)=>{
+    if (req.body.tipo == "M" && !(req.body.especialidade)) { return res.status(500).send({error:"Insira a especialidade para cadastrar o médico"})}
     pool.getConnection((error,conn)=>{  
         if(error){return res.status(500).send({error:error})}
         conn.query(
@@ -49,6 +51,15 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
                                 ],
                                 (error,result,field)=>{
                                     conn.release()
+                                    if(req.body.tipo == "M"){
+                                        conn.query(
+                                            'INSERT INTO Especialidade_Medico (id_medico,id_especialidade) VALUES (?,?)',
+                                            [
+                                                result.insertId,
+                                                req.body.especialidade
+                                            ],
+                                        )
+                                    }
                                     if(error){return res.status(500).send({error:error})}
                                     const response = {
                                         mensagem: "Usuário criado com sucesso",
