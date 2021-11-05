@@ -1,7 +1,6 @@
 import './style.css'
-import { useState, useContext } from 'react';
 import Button from '../../sharable-components/button/index';
-import { Formik, Form, Field, useFormik } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios';
 
@@ -22,7 +21,7 @@ function ValidationField({error}) {
 }
 
 export default function Cadastro() {
-    const [state, setstate] = useState('')
+    
     
     
     const validation = Yup.object().shape({
@@ -36,7 +35,7 @@ export default function Cadastro() {
             .required('Um sobrenome é necessário'),
         email: Yup.string()
             .email('E-mail inválido').required('Um e-mail é necessário'),
-        cpf: Yup.string()
+        cpf: Yup.number()
             .required('Um CPF é necessário'),
         senha: Yup.string()
             .required('Uma senha é necessária'),
@@ -55,7 +54,7 @@ export default function Cadastro() {
                     nome: '',
                     sobrenome: '',
                     email: '',
-                    cpf: '',
+                    cpf: 0,
                     tipo: '',
                     senha: ''
                 }}
@@ -63,23 +62,9 @@ export default function Cadastro() {
                 validationSchema={validation}
 
                 onSubmit={ (value) => {
-                    
-                    // axios({
-                    //     method: 'post',
-                    //     headers: { 'Content-Type': 'application/json' },
-                    //     url: 'http://127.0.0.1:3001/usuario/cadastro',
-                    //     data: value
-                    //   }).then(function (response) {
-                    //     console.log(response.data);
-                    //   });
-                    http.post('/register', {
-                        email: 'chenrique452@gmail.com',
-                        password: 'my-secret-pw'
-                    })
-                        .then( res => alert(res))
-                        .catch( (err) => alert(err))
-                        
-                        
+                    console.log(value)
+                    http.post('/usuario/cadastro', value)
+                        .then(res => console.log(res))
                 }}
                 
             >

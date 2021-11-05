@@ -1,6 +1,6 @@
 
 import './App.css';
-import React, { useState, useContext } from 'react';
+import React, {  useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 
@@ -9,9 +9,18 @@ import Home from './pages/home';
 import Cadastro from './pages/cadastro';
 import LoginPage from './pages/login/index';
 import MarcarConsulta from './pages/marcar-consulta';
+import Scheduler from './scheduler';
 
 
 import { AuthContext } from './auth/authContext';
+import ConsultasAnteriores from './pages/consultas-anteriores/index';
+import Modal from './utils/modal';
+
+import MinhasConsultas from './pages/minhas-consultas';
+
+
+
+
 
 
 
@@ -44,13 +53,21 @@ function App() {
               <Redirect to="/login"/>
             </Route>
             <Route component={LoginPage} path="/login" />
-            <PrivateRoute component={Home} exact  />
             <Route component={Cadastro} path="/cadastro"/>
-            <Route component={MarcarConsulta} path="/marcar-consulta" />
+            <PrivateRoute component={Home} path="/home"  />
+            <PrivateRoute component={MarcarConsulta} path="/marcar-consulta" />
+            <Route component={ConsultasAnteriores} path="/consultas-anteriores" />
+            <Route component={MinhasConsultas} path="/minhas-consultas" />
+            <Route component={Scheduler} path="/definir-horario" />
+
+            
+
+            {/* <PrivateRoute component={ConsultasAnteriores} path="/consultas-anteriores"  /> */}
           </Switch>
 
           
         </div>
+        <Modal/>
       </Router>
     </AuthorizationContext>
     
