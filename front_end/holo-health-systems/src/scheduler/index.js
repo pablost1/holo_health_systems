@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './style.css'
 import moment from 'moment'
-
 import { Add, ArrowForwardIos } from '@material-ui/icons'
 import { ArrowBackIos } from '@material-ui/icons';
 import axios from 'axios'
 import Column from './column/index';
 import Modal from '../utils/modal';
 import { AuthContext } from '../auth/authContext'
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+
+
+
+
+
 
 moment.locale('pt-br')
 
@@ -42,56 +46,35 @@ let days = [
 ]
 
 
-const schedules = [
-        {
-            medico: 'Sara Talita',
-            especialidade: 'Ortopedista',
-            data: '12/01/2021',
-            horario: '10-12'
-        },
-        {
-            medico: 'Amaury',
-            especialidade: 'Ortopedista',
-            data: moment().format("L"),
-            horario: '12-14'
-        },
-        {
-            medico: 'Sara Talita',
-            especialidade: 'Ortopedista',
-            data: '11/02/2021',
-            horario: '14-16'
-        },
-        {
-            medico: 'Sara Talita',
-            especialidade: 'Ortopedista',
-            data: '11/02/2021',
-            horario: '14-16'
-        },
-        {
-            medico: 'Sara Talita',
-            especialidade: 'Ortopedista',
-            data: '11/03/2021',
-            horario: '14-16'
-        },
-        {
-            medico: 'Sara Talita',
-            especialidade: 'Ortopedista',
-            data: '11/04/2021',
-            horario: '14-16'
-        }
-]
+
+
+
 
 
 function Scheduler() {
 
-
+    const [schedules, setschedules] = useState([])
     const authContext = useContext(AuthContext)
     const [initialDate, setinitialDate] = useState(moment())
     const [showInitialDate, setShowInitialDate] = useState('')
 
-    useEffect(() => {
-        setShowInitialDate(initialDate.format('LL'))
-    })
+    useEffect( () => {
+
+        async function fetchData() {
+            const { data }  = await axios.get('http://localhost:3001/horarios')
+
+            setschedules(data)
+            setShowInitialDate(initialDate.format('LL'))
+        }
+
+        fetchData()
+
+        console.log('parent mounted')
+        
+        
+        
+        
+    }, [showInitialDate])
 
 
     function goForward() {
@@ -118,8 +101,13 @@ function Scheduler() {
     }
 
     function addSchedule(schedule) {
-        schedules = [...schedules, schedule]
+        setschedules([...schedules, schedule])
     }
+
+
+
+
+
 
 
 
@@ -145,6 +133,7 @@ function Scheduler() {
                                 day={day} 
                                 currentDate={initialDate}
                                 findMonday={getMonday}
+                                addSchedule={addSchedule}
                             />
                         ))   
                     }

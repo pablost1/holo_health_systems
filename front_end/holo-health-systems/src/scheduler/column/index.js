@@ -1,13 +1,15 @@
 import './style.css'
 import moment from 'moment'
 import { Add } from '@material-ui/icons';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../auth/authContext';
 import Modal from '../../utils/modal';
 
 import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik';
 import Button from '../../sharable-components/button/index';
+import axios from 'axios'
+
 
 
 
@@ -17,9 +19,9 @@ function Horario(props) {
     return (
         <div className="horario">
             <div className="horario__items">
-                <span className="medico">{props.schedule.medico}</span>
+                <span className="medico">{props.schedule.profissional}</span>
                 <span className="especialidade-horario">{props.schedule.especialidade}</span>
-                <span className="especialidade-horario">{props.schedule.horario}</span>
+                <span className="especialidade-horario">{props.schedule.horarioInicial}</span>
             </div>
             
         </div>
@@ -56,15 +58,20 @@ function ScheduleForm(props) {
                 <Formik
                     initialValues={{
                         data: props.thisDay,
-                        profissional: '',
-                        especialidade: '',
-                        horarioInicial: '400',
-                        horarioFinal: '320'
+                        profissional: 'Maria José',
+                        especialidade: 'Proctologia',
+                        horarioInicial: '',
+                        horarioFinal: ''
                     }}
 
                     validationSchema={validation}
-                    onSubmit={ () => {
-                        alert('submited')
+                    onSubmit={ (value) => {
+                        axios.post('http://localhost:3001/horarios', value)
+                            .then( res => {
+                                alert(res.statusText)
+                                props.closeRegister()
+                                
+                            })
                     }}
                 >
                     {({errors, touched}) => (
@@ -125,16 +132,30 @@ function ScheduleForm(props) {
 
 
 export default function Column(props) {
+    // const [monday, setmonday] = useState('')
 
+    // useEffect(() => {
+    //     setmonday(props.findMonday())
+    // }, [props.findMonday()])
 
     const [ isOpened, setisOpened]  =  useState(false)
-    const { RegisteSchedule, handleError } =   useContext(AuthContext)
-    const monday = props.findMonday()
-    const columnMoment = moment(monday).add(props.day.id, 'days').format('L')
-    let thisDaySchedules = props.dates.filter( (schedule) => schedule.data === columnMoment )
+    let monday
+    let columnMoment
+    let thisDaySchedules
+    const { RegisteSchedule, handleError } =   useContext(AuthContext)  
+
+
+
     
 
 
+        
+    monday = props.findMonday()
+    columnMoment = moment(monday).add(props.day.id, 'days').format('L')
+    thisDaySchedules = props.dates.filter( (schedule) => schedule.data === columnMoment )
+    
+
+    
     function openRegister() {
         setisOpened(true)
     }
@@ -159,7 +180,12 @@ export default function Column(props) {
                 
             }
             
-        <ScheduleForm isOpend={isOpened}thisDay={columnMoment} />
+        <ScheduleForm
+            isOpend={isOpened}
+            closeRegister={closeRegister}
+            thisDay={monday}
+            toSchedule={props.addSchedule}
+        />
         </div>
     )
 }

@@ -10,6 +10,10 @@ import Cadastro from './pages/cadastro';
 import LoginPage from './pages/login/index';
 import MarcarConsulta from './pages/marcar-consulta';
 import Scheduler from './scheduler';
+import NovoConsultorio from './master-pages/novo-consultorio';
+import AdicionarInformacoes from './master-pages/adicionar-informacoes';
+
+
 
 
 import { AuthContext } from './auth/authContext';
@@ -17,6 +21,9 @@ import ConsultasAnteriores from './pages/consultas-anteriores/index';
 import Modal from './utils/modal';
 
 import MinhasConsultas from './pages/minhas-consultas';
+import MasterHome from './master-pages/home/index';
+import Consultorios from './master-pages/consultorios/index';
+import ConsultorioPage from './master-pages/consultorio/index';
 
 
 
@@ -54,12 +61,17 @@ function App() {
             </Route>
             <Route component={LoginPage} path="/login" />
             <Route component={Cadastro} path="/cadastro"/>
-            <PrivateRoute component={Home} path="/home"  />
-            <PrivateRoute component={MarcarConsulta} path="/marcar-consulta" />
+            <Route component={Home} path="/home"  />
+            <Route component={MarcarConsulta} path="/marcar-consulta" />
             <Route component={ConsultasAnteriores} path="/consultas-anteriores" />
             <Route component={MinhasConsultas} path="/minhas-consultas" />
             <Route component={Scheduler} path="/definir-horario" />
-
+            <Route component={MasterHome} path="/master-home" />
+            <Route component={NovoConsultorio} path="/novo-consultorio"/>
+            <Route component={Consultorios} path="/consultorios" />
+            <Route component={ConsultorioPage} path="/consultorio" />
+            <Route component={AdicionarInformacoes} path="/adicionar-informacoes" />
+            
             
 
             {/* <PrivateRoute component={ConsultasAnteriores} path="/consultas-anteriores"  /> */}

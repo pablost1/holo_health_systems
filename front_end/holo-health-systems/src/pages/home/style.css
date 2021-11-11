@@ -6,6 +6,7 @@
 
 .lista-afazeres {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 1rem;
     padding: 0 .7rem;
