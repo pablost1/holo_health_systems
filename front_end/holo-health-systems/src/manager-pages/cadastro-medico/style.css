@@ -1,0 +1,22 @@
+
+.cadastro-medico {
+    width: 95%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding-top: 5rem;
+}
+
+@media (min-width: 500px) {
+
+    .cadastro-medico {
+        margin: 0 auto 0 2rem;
+        
+    }
+}
+
+.medico-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+

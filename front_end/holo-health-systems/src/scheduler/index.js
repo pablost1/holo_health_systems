@@ -5,7 +5,6 @@ import { Add, ArrowForwardIos } from '@material-ui/icons'
 import { ArrowBackIos } from '@material-ui/icons';
 import axios from 'axios'
 import Column from './column/index';
-import Modal from '../utils/modal';
 import { AuthContext } from '../auth/authContext'
 import { useContext, useEffect, useState } from 'react';
 
@@ -58,24 +57,31 @@ function Scheduler() {
     const [initialDate, setinitialDate] = useState(moment())
     const [showInitialDate, setShowInitialDate] = useState('')
 
+    async function fetchData() {
+        const { data }  = await axios.get('http://localhost:3001/horarios')
+
+        setschedules(data)
+        setShowInitialDate(initialDate.format('LL'))
+    }
+
     useEffect( () => {
 
-        async function fetchData() {
-            const { data }  = await axios.get('http://localhost:3001/horarios')
-
-            setschedules(data)
-            setShowInitialDate(initialDate.format('LL'))
-        }
-
         fetchData()
+   
+    }, [showInitialDate, initialDate])
 
-        console.log('parent mounted')
-        
-        
-        
-        
-    }, [showInitialDate])
 
+
+    function deleteSchedule(id) {
+        axios.delete(`http://localhost:3001/horarios/${id}`)
+            .then( res => {
+                alert('Deletado com sucesso')
+                fetchData()
+            })
+            
+            .catch( err => alert(err.err))
+            
+    }
 
     function goForward() {
         initialDate.add(7, 'days')
@@ -121,14 +127,16 @@ function Scheduler() {
 
                     
                     <ArrowForwardIos onClick={goForward} style={{
-                        marginLeft: 'auto'
+                        marginLeft: '1rem'
                     }} />
                 </div>
                 <div className="scheduler-table">
 
                     {
                         days.map( (day) => (
-                            <Column 
+                            <Column
+                                deleteSchedule={deleteSchedule}
+                                loadData={fetchData}
                                 dates={schedules} 
                                 day={day} 
                                 currentDate={initialDate}

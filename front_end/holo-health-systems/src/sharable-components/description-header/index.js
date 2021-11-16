@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import './style.css'
 
 
-export default function DescriptionHeader({children}) {
+export default function DescriptionHeader(props) {
     return (
         <div className="description-header">
-            <Link to="/home" style={{ color: 'white'}}>
+            <Link to={props.path} style={{ color: 'white'}}>
                 <ArrowBackIos />
             </Link>
             
-            <h2>{children}</h2>
+            <h2>{props.children}</h2>
         </div>
     )
 }

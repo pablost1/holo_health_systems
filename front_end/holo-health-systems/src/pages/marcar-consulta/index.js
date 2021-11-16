@@ -41,7 +41,7 @@ function MarcarConsulta() {
     return (
         <div className="marcar-consulta">
             
-            <DescriptionHeader>Marcar consulta</DescriptionHeader>
+            <DescriptionHeader path="/home">Marcar consulta</DescriptionHeader>
             
             <Formik
                 initialValues={{

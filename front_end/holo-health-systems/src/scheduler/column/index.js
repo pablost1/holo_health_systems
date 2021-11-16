@@ -1,6 +1,6 @@
 import './style.css'
 import moment from 'moment'
-import { Add } from '@material-ui/icons';
+import { Add, Delete, DeleteForever } from '@material-ui/icons';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../auth/authContext';
 import Modal from '../../utils/modal';
@@ -15,6 +15,8 @@ import axios from 'axios'
 
 
 
+
+
 function Horario(props) {
     return (
         <div className="horario">
@@ -22,6 +24,13 @@ function Horario(props) {
                 <span className="medico">{props.schedule.profissional}</span>
                 <span className="especialidade-horario">{props.schedule.especialidade}</span>
                 <span className="especialidade-horario">{props.schedule.horarioInicial}</span>
+                <Delete
+                    style={{
+                        marginLeft: 'auto'
+                    }}
+                    onClick={() => props.deleteSchedule(props.schedule.id)}
+                />
+                
             </div>
             
         </div>
@@ -31,10 +40,10 @@ function Horario(props) {
 
 
 const validation = Yup.object().shape({
-    profissional: Yup.string()
-        .required('Um profissional é necessário'),
-    especialidade: Yup.string()
-        .required('Uma especialidade é necessária'),
+    profissional: Yup.string(),
+        // .required('Um profissional é necessário'),
+    especialidade: Yup.string(),
+        // .required('Uma especialidade é necessária'),
     horarioInicial: Yup.string()
         .required('O horário inicial é necessário'),
     horarioFinal: Yup.string()
@@ -46,8 +55,13 @@ const validation = Yup.object().shape({
 
 
 function ScheduleForm(props) {
+
+
+    
+
     return ( 
-        <div className={`schedule-form ${props.isOpend ? '' : 'closed'}`} >
+        <div className={`schedule-form`} >
+            
             <div style={{
                 padding: '2rem',
                 backgroundColor: '#ffffff',
@@ -55,6 +69,7 @@ function ScheduleForm(props) {
                 borderRadius: '5px',
                 minWidth: '300px'
             }}>
+                <Button size="small" hasEvent={true} readonly={true} onClick={props.close}>fechar</Button>
                 <Formik
                     initialValues={{
                         data: props.thisDay,
@@ -69,7 +84,9 @@ function ScheduleForm(props) {
                         axios.post('http://localhost:3001/horarios', value)
                             .then( res => {
                                 alert(res.statusText)
-                                props.closeRegister()
+                                props.close()
+                                props.loadData()
+                                
                                 
                             })
                     }}
@@ -84,6 +101,7 @@ function ScheduleForm(props) {
                                 <label>Data</label>
                                 <Field
                                     name="data"
+                                    readOnly
                                     
                                 />
                                 { errors.profissional && touched.profissional ? <p>{errors.profissional}</p> : ''  }
@@ -94,7 +112,10 @@ function ScheduleForm(props) {
                                     name="profissional"
                                     as="select"
                                     className="input" 
-                                />
+                                >
+                                    <option value="otorrino">Otorrino</option>
+                                </Field>
+                                
                                 { errors.profissional && touched.profissional ? <p>{errors.profissional}</p> : ''  }
                             </div>
                             <div className="form-group">
@@ -103,7 +124,10 @@ function ScheduleForm(props) {
                                     name="especialidade"
                                     as="select"
                                     className="input" 
-                                />
+                                >
+                                    <option value="otorrino">Otorrino</option>
+                                </Field>
+                                
                                 { errors.especialidade && touched.especialidade ? <p>{errors.especialidade}</p> : ''  }
                             </div>
                             <div className="form-group">
@@ -121,7 +145,7 @@ function ScheduleForm(props) {
                                 />
                                 { errors.horarioFinal && touched.horarioFinal ? <p>{errors.horarioFinal}</p> : ''  }
                             </div>
-                            <Button hasEvent="true" size="medium">Marcar horário</Button>
+                            <Button size="medium">Marcar horário</Button>
                         </Form>
                     )}
                 </Formik>
@@ -143,12 +167,6 @@ export default function Column(props) {
     let columnMoment
     let thisDaySchedules
     const { RegisteSchedule, handleError } =   useContext(AuthContext)  
-
-
-
-    
-
-
         
     monday = props.findMonday()
     columnMoment = moment(monday).add(props.day.id, 'days').format('L')
@@ -166,26 +184,47 @@ export default function Column(props) {
 
     return (
         <div className="scheduler-column">
-            <span>{ moment(columnMoment).format('D') }</span>
+            
             <div className="scheduler-column__description">
+                <span>{ moment(columnMoment).format('D') }</span>
                 <h3 className="day-description">{props.day.day}</h3>
                 <Add className="add-button" onClick={openRegister}  />
             </div>
-            
-            {
-                thisDaySchedules.map( (schedule) => (
-                    <Horario schedule={schedule} />
+            <div className="scheduler-column__schedules">
+                {
+                    thisDaySchedules.map( (schedule) => (
+                        <Horario
+                            schedule={schedule}
+                            key={schedule.id} 
+                            deleteSchedule={props.deleteSchedule}
+                            loadData={props.loadData}
+                        />
+                        
+                    ))
                     
-                ))
-                
-            }
+                }
+            </div>
             
-        <ScheduleForm
-            isOpend={isOpened}
-            closeRegister={closeRegister}
-            thisDay={monday}
-            toSchedule={props.addSchedule}
-        />
+        {
+            isOpened ? (
+                <ScheduleForm
+                    
+                    loadData={props.loadData}
+                    close={closeRegister}
+                    isOpend={isOpened}
+                    thisDay={columnMoment}
+                    toSchedule={props.addSchedule}
+                    
+                />
+            )
+            :
+            
+            ''
+        }
+        
+
+
+
         </div>
     )
 }

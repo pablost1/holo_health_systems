@@ -62,7 +62,7 @@ export default function Cadastro() {
                 validationSchema={validation}
 
                 onSubmit={ (value) => {
-                    console.log(value)
+                    
                     http.post('/usuario/cadastro', value)
                         .then(res => console.log(res))
                 }}

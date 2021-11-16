@@ -7,7 +7,7 @@ import Consulta from '../../sharable-components/consulta';
 export default function MinhasConsultas(props) {
     return (
         <div className="minhas-consultas">
-            <DescriptionHeader>Minhas Consultas</DescriptionHeader>
+            <DescriptionHeader path="/home">Minhas Consultas</DescriptionHeader>
             <div className="minhas-consultas__lista">
                 <Consulta type="delete" hasDeleteButton={true} />
                 <Consulta type="delete" hasDeleteButton={true} />
