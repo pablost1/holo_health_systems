@@ -1,7 +1,7 @@
 import React from 'react'
 import './style.css'
 import moment from 'moment'
-import { Add, ArrowForwardIos } from '@material-ui/icons'
+import { ArrowForwardIos } from '@material-ui/icons'
 import { ArrowBackIos } from '@material-ui/icons';
 import axios from 'axios'
 import Column from './column/index';

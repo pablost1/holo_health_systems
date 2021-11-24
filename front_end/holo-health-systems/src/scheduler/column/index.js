@@ -1,9 +1,9 @@
 import './style.css'
 import moment from 'moment'
-import { Add, Delete, DeleteForever } from '@material-ui/icons';
-import { useContext, useState, useEffect } from 'react';
+import { Add, Delete } from '@material-ui/icons';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../auth/authContext';
-import Modal from '../../utils/modal';
+
 
 import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik';
@@ -166,7 +166,7 @@ export default function Column(props) {
     let monday
     let columnMoment
     let thisDaySchedules
-    const { RegisteSchedule, handleError } =   useContext(AuthContext)  
+    // const { RegisteSchedule, handleError } =   useContext(AuthContext)  
         
     monday = props.findMonday()
     columnMoment = moment(monday).add(props.day.id, 'days').format('L')

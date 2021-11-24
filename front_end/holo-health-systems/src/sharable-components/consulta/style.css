@@ -89,3 +89,8 @@
     display: flex;
     gap: 10px;
 }
+
+.consulta__em-andamento {
+    background-color: rgb(12, 197, 12);
+    margin-left: auto;
+}

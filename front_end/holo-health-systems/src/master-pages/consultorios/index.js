@@ -2,12 +2,17 @@ import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header/index';
 import MainContainer from '../../sharable-components/main-container/index';
 import Button from '../../sharable-components/button/index';
+import { useHistory } from 'react-router-dom';
 
 
 function Consultorio() {
+    const history =  useHistory()
 
+    function IrParaSalas() {
+        history.push('/salas')
+    }
     return (
-        <div className="consultorio">
+        <div className="consultorio" onClick={IrParaSalas}>
             <h3>Nome consultório</h3>
             <span>Cidade</span>
             <span>Estado</span>

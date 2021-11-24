@@ -14,6 +14,11 @@ import Informacoes from '../master-pages/informacoes/index';
 import CadastroMedico from '../manager-pages/cadastro-medico/index';
 import HomeManager from '../manager-pages/home-manager/index';
 import NovoConsultorio from '../master-pages/novo-consultorio';
+import MedicoHome from '../medico-pages/home/index';
+import MeusHorarios from '../medico-pages/meus-horarios';
+import EmAndamento from '../medico-pages/em-andamento/index';
+import SalasConsultorio from '../master-pages/salas-consultorio/index';
+
 
 
 export const routes = [
@@ -94,5 +99,27 @@ export const routes = [
         Component: MasterHome,
         privacy: 'm'
     },
+    {
+        path: '/medico-home',
+        Component: MedicoHome,
+        privacy: 'doctor'
+    },
+    {
+        path: '/meus-horarios',
+        Component: MeusHorarios,
+        privacy: 'doctor'
+    },
+    {
+        path: '/em-andamento',
+        Component: EmAndamento,
+        privacy: 'doctor'
+    },
+    {
+        path: '/salas',
+        Component: SalasConsultorio,
+        privacy: 'master'
+    }
+
+
     
 ]
