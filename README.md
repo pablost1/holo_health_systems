@@ -27,4 +27,9 @@ Basicamente, desejamos ligar as pontas interessadas em uma consulta médica da m
 
 ## Quadro Kanban
 ![image](https://user-images.githubusercontent.com/51882911/143334811-f8c0a68d-6ac5-45b9-8b86-3a1cad5073cb.png)
-https://trello.com/b/H5sbX1QL/holo-health-systems
+Link: https://trello.com/b/H5sbX1QL/holo-health-systems
+
+## Business Model Canvas
+![Business Model](https://user-images.githubusercontent.com/51882911/143369188-0265af80-1990-4c54-8d7e-f412032f23ba.jpg)
+
+
