@@ -22,13 +22,13 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
     pool.getConnection((error,conn)=>{  
         if(error){return res.status(500).send({error:error})}
         conn.query(
-            'SELECT * FROM Usuario WHERE cpf = ?',
+            'SELECT * FROM usuario WHERE cpf = ?',
             [req.body.cpf],
             (error,results,fields)=>{
                 if(error){return res.status(500).send({error:error})}
                 if(results.length>0){return res.status(409).send({mensagem: "cpf já cadastrado"})}
                 conn.query(
-                    'SELECT * FROM Usuario WHERE email = ?',
+                    'SELECT * FROM usuario WHERE email = ?',
                     [req.body.email],
                     (error,result,field)=>{
                         if(error){return res.status(500).send({error:error})}
@@ -38,7 +38,7 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
                             bcrypt.hash(req.body.senha, salt, (errorBcrypt,hash)=>{     
                             if(errorBcrypt){return res.status(500).send({error:errorBcrypt})}
                             conn.query(
-                                'INSERT INTO Usuario (cpf,email,nome,sobrenome,tipo,senha) VALUES (?,?,?,?,?,?)',
+                                'INSERT INTO usuario (cpf,email,nome,sobrenome,tipo,senha) VALUES (?,?,?,?,?,?)',
                                 [
                                     req.body.cpf,
                                     req.body.email,
