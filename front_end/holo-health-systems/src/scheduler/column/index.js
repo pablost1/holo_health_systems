@@ -1,15 +1,12 @@
 import './style.css'
 import moment from 'moment'
-import { Add, Delete } from '@material-ui/icons';
-import { useContext, useState } from 'react';
-import { AuthContext } from '../../auth/authContext';
-
-
 import * as Yup from 'yup'
+import { Add, Delete } from '@material-ui/icons';
+import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import Button from '../../sharable-components/button/index';
 import axios from 'axios'
-
+import TimePicker from 'react-time-picker'
 
 
 
@@ -23,10 +20,13 @@ function Horario(props) {
             <div className="horario__items">
                 <span className="medico">{props.schedule.profissional}</span>
                 <span className="especialidade-horario">{props.schedule.especialidade}</span>
-                <span className="especialidade-horario">{props.schedule.horarioInicial}</span>
+                <span className="especialidade-horario">{props.schedule.horarioInicial} - {props.schedule.horarioFinal}</span>
                 <Delete
                     style={{
-                        marginLeft: 'auto'
+                        
+                        alignSelf: 'flex-end',
+                        marginRight: '10px',
+                        color: 'red'
                     }}
                     onClick={() => props.deleteSchedule(props.schedule.id)}
                 />
@@ -56,7 +56,8 @@ const validation = Yup.object().shape({
 
 function ScheduleForm(props) {
 
-
+    const [ initialTime, setInitialTime] = useState('00:00')
+    const [ finalTime, setFinalTime] = useState('00:00')
     
 
     return ( 
@@ -75,20 +76,31 @@ function ScheduleForm(props) {
                         data: props.thisDay,
                         profissional: 'Maria José',
                         especialidade: 'Proctologia',
-                        horarioInicial: '',
-                        horarioFinal: ''
+                        horarioInicial: initialTime,
+                        horarioFinal: finalTime
                     }}
 
                     validationSchema={validation}
                     onSubmit={ (value) => {
+                        
+                        const moment = moment()
+
+                        moment(value.horario)
+
+                        value.horarioInicial = initialTime
+                        value.horarioFinal = finalTime
+                        
+
+                        
+
                         axios.post('http://localhost:3001/horarios', value)
                             .then( res => {
                                 alert(res.statusText)
                                 props.close()
                                 props.loadData()
-                                
-                                
                             })
+                        
+                        
                     }}
                 >
                     {({errors, touched}) => (
@@ -102,10 +114,23 @@ function ScheduleForm(props) {
                                 <Field
                                     name="data"
                                     readOnly
-                                    
                                 />
                                 { errors.profissional && touched.profissional ? <p>{errors.profissional}</p> : ''  }
                             </div>
+                            <label>Início</label>
+                            <TimePicker
+                                className="time-picker"
+                                onChange={setInitialTime}
+                                value={initialTime}
+
+                            />
+                            <label>Fim</label>
+                            <TimePicker
+                                className="time-picker"
+                                onChange={setFinalTime}
+                                value={finalTime}
+
+                            />
                             <div className="form-group">
                                 <label>Profissional</label>
                                 <Field
@@ -130,21 +155,22 @@ function ScheduleForm(props) {
                                 
                                 { errors.especialidade && touched.especialidade ? <p>{errors.especialidade}</p> : ''  }
                             </div>
-                            <div className="form-group">
+                            {/* <div className="form-group">
                                 <label>Horário inicial</label>
                                 <Field
                                     name="horarioInicial"
                                 />
                                 { errors.horarioInicial && touched.horarioInicial ? <p>{errors.horarioInicial}</p> : ''  }
                         
-                            </div>
-                            <div className="form-group">
+                            </div> */}
+                            { errors.horarioFinal && touched.horarioFinal ? <p>{errors.horarioFinal}</p> : ''  }
+                            {/* <div className="form-group">
                                 <label>Horário final</label>
                                 <Field
                                     name="horarioFinal"
                                 />
-                                { errors.horarioFinal && touched.horarioFinal ? <p>{errors.horarioFinal}</p> : ''  }
-                            </div>
+                                
+                            </div> */}
                             <Button size="medium">Marcar horário</Button>
                         </Form>
                     )}

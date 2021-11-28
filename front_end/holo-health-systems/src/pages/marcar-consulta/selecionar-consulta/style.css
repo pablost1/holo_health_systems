@@ -1,0 +1,41 @@
+.selecionar-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.selecionar-consulta {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0 1rem;
+    list-style-type: none;
+    max-height: 100px;
+    width: 60px;
+    overflow-y: auto;
+}
+
+.selecionar-consulta > li {
+    margin: 0;
+    padding: .2rem;
+    
+    
+}
+
+
+.is-selected {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 2px;
+}
+
+
+.selectable {
+    cursor: pointer;
+}
+
+.is-reserved {
+    pointer-events: none;
+    background-color: rgb(90, 88, 88);
+    color: white;
+}

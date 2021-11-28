@@ -1,11 +1,13 @@
 
 import './App.css';
 import React from 'react';
+import Modal from './utils/modal';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { AuthorizationContext }  from './auth/authContext';
-import Modal from './utils/modal';
 import { routes } from './routes';
+import moment from 'moment'
 
+moment.locale('pt-br')    
 // import { AuthContext } from './auth/authContext' {  useContext };
 // const PrivateRoute = ({ component: Component, ...rest }) => {
 
@@ -17,6 +19,8 @@ import { routes } from './routes';
 //     )}/>
 //   )
 // }
+
+
 
 function App() {
   
@@ -38,7 +42,6 @@ function App() {
         </Router>
       </React.Suspense>
     </AuthorizationContext>
-    
   );
 }
 

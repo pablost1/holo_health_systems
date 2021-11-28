@@ -14,6 +14,7 @@
     flex-direction: column;
     align-items: start;
     padding: .3rem 0 .5rem .3rem;
+    width: 100%;
 }
 
 
@@ -74,6 +75,13 @@
     display: none;
 }
 
+
+
+.time-picker > div {
+    padding: .3rem;
+    border-color: black;
+    border-radius: 10px;
+}
 
 
 

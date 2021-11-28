@@ -1,6 +1,5 @@
 import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header/index';
-import MainContainer from '../../sharable-components/main-container/index';
 import Button from '../../sharable-components/button/index';
 import { useHistory } from 'react-router-dom';
 

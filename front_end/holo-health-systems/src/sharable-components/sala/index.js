@@ -9,7 +9,6 @@ export default function Sala() {
     function IrParaScheduler() {
         history.push('/scheduler')
 
-
     }
 
     return (

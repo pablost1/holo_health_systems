@@ -13,7 +13,7 @@ import { useContext, useEffect, useState } from 'react';
 
 
 
-moment.locale('pt-br')
+
 
 
 let days = [
@@ -51,7 +51,7 @@ let days = [
 
 
 function Scheduler() {
-
+    moment.locale('pt-br')
     const [schedules, setschedules] = useState([])
     const authContext = useContext(AuthContext)
     const [initialDate, setinitialDate] = useState(moment())
@@ -62,6 +62,9 @@ function Scheduler() {
 
         setschedules(data)
         setShowInitialDate(initialDate.format('LL'))
+
+
+        
     }
 
     useEffect( () => {

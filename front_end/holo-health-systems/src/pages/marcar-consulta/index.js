@@ -1,10 +1,13 @@
 import { Formik, Field, Form } from 'formik'
 import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header/index.js'
-
-
 import axios from 'axios'
 import { useState } from 'react';
+import FreeModal from '../../utils/free-modal/index';
+import SelecionarConsulta from './selecionar-consulta/index';
+import Reserva from './reserva/index';
+
+
 
 
 
@@ -33,10 +36,26 @@ function MarcarConsulta() {
     //     setEstado(estados)
     // })
 
+    const [ modalState, setModalState ] = useState(true)
+    const [ consultorio, setConsultorio] = useState('')
 
 
 
-    console.log('loaded')
+    function AbrirModal() {
+        setModalState(true)
+        
+    }
+
+    function MarcaConsulta() {
+        alert('consulta marcada com sucesso')
+        setModalState(false)
+    }
+
+
+    function SelecionarConsultorio(consultorio) {
+
+        setConsultorio(consultorio)
+    }
 
     return (
         <div className="marcar-consulta">
@@ -91,13 +110,26 @@ function MarcarConsulta() {
                                 <option value="otorrino">Otorrinolaringologia</option>
                                 <option value="pediatria">Pediatria</option>
                             </Field>
-
-
                         </div>
                     </Form>
                 )}
-                
+                 
             </Formik>
+            <h2 className="unidades-disponiveis">Unidades disponíveis</h2>
+            <div className="lista-reservas">
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+            </div>
+            <FreeModal opened={modalState}  >
+                <SelecionarConsulta consultorio={consultorio} marcar={MarcaConsulta} />
+            </FreeModal>
         </div>  
     )
 }
