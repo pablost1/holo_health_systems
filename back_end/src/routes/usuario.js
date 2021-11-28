@@ -18,7 +18,7 @@ const cadastro_medico = require('../middleware/cadastro_medico');
  *      "tipo"             : String,   // Tipo de usuario cadastrado: Paciente = P, Médico = M, Gerente = G
  * }
  */
-router.post('/cadastro',cadastro_medico,(req,res,next)=>{
+router.post('/cadastro',(req,res,next)=>{
     pool.getConnection((error,conn)=>{  
         if(error){return res.status(500).send({error:error})}
         conn.query(
@@ -36,27 +36,26 @@ router.post('/cadastro',cadastro_medico,(req,res,next)=>{
                         const saltRounds = 5
                         bcrypt.genSalt(saltRounds, function(err, salt){
                             bcrypt.hash(req.body.senha, salt, (errorBcrypt,hash)=>{     
-                            if(errorBcrypt){return res.status(500).send({error:errorBcrypt})}
+                            if(errorBcrypt){return res.status(500).send({error:errorBcrypt.message})}
+                            
                             conn.query(
-                                'INSERT INTO usuario (cpf,email,nome,sobrenome,tipo,senha) VALUES (?,?,?,?,?,?)',
+                                'INSERT INTO usuario (cpf,nome,sobrenome,dt_nascimento,email,senha) VALUES (?,?,?,?,?,?)',
                                 [
                                     req.body.cpf,
-                                    req.body.email,
                                     req.body.nome,
                                     req.body.sobrenome,
-                                    req.body.tipo,
+                                    req.body.dt_nascimento,
+                                    req.body.email,
                                     hash
                                 ],
                                 (error,result,field)=>{
                                     conn.release()
                                     if(error){return res.status(500).send({error:error})}
                                     const response = {
-                                        mensagem: "Usuário criado com sucesso",
+                                        mensagem: "Paciente cadastrado com sucesso",
                                         usuarioCriado: {
-                                            id_usuario: result.insertId,
                                             cpf: req.body.cpf,
                                             email: req.body.email
-                                            
                                         }
                                     }
                                     return res.status(201).send(response)
