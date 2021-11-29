@@ -16,8 +16,9 @@ const http = axios.create({
 
 
 function AuthorizationContext({children}) {
-    const [isLoggedin, setisLoggedin] = useState(false)
+    const [isLoggedin, setisLoggedin] = useState(true)
     const [modalState, setmodalState] = useState({ modalMode: ''})
+    const [ userType, setUserType ] = useState('mestre')
 
     useEffect( () => {
 
@@ -99,7 +100,8 @@ function AuthorizationContext({children}) {
             closeModal,
             RegisteSchedule,
             modalState,
-            dismissable
+            dismissable,
+            userType
 
         }}>
             { children }

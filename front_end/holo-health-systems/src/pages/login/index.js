@@ -9,14 +9,23 @@ import { AuthContext } from '../../auth/authContext';
 
 function LoginPage() {
 
-    const { isLoggedin } = useContext(AuthContext)
+    const { isLoggedin, userType } = useContext(AuthContext)
     const history = useHistory()
 
     
 
     useEffect(() => {
         if(isLoggedin) {
-            history.push('/home')
+            // switch (userType) {
+            //     case 'paciente':
+            //         history.push('/home')
+            //     case 'gerente':
+            //         console.log('é gerente krl')
+            //         history.push('/home-manager')
+            //     case 'mestre':
+            //         history.push('/master-home')
+            // }
+
         }
     })
     
