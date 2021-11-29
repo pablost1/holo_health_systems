@@ -82,7 +82,7 @@ router.post('/cadastro',(req,res,next)=>{
 router.post('/login',(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
-        const sql_query = req.body.cpf ? "SELECT * FROM Usuario WHERE cpf = ?" : "SELECT * FROM Usuario WHERE email = ?"
+        const sql_query = req.body.cpf ? "SELECT * FROM usuario WHERE cpf = ?" : "SELECT * FROM usuario WHERE email = ?"
         conn.query(
             sql_query,
             [(req.body.cpf ? req.body.cpf : req.body.email)],
@@ -91,36 +91,90 @@ router.post('/login',(req,res,next)=>{
                 if(results.length<1){return res.status(401).send({mensagem: "falha na autenticação"})}
                 bcrypt.compare(req.body.senha,results[0].senha,(err,result)=>{
                     if(err){return res.status(401).send({mensagem: "falha na autenticação"})}
-
-                    if(result){
-                        var key;
-                        switch(results[0].tipo){
-                            case "G":
-                                key = process.env.GERENTE_JWT_KEY;
-                                break;
-                            case "M":
-                                key = process.env.MEDICO_JWT_KEY;
-                                break;
-                            default:
-                                key = process.env.PACIENTE_JWT_KEY;
-                        }
-                        const token =  jwt.sign(
-                            {
-                                id_usuario: results[0].id_usuario,
-                                cpf: results[0].cpf,
-                                email: results[0].email
-                            },
-                            key,
-                            {
-                                expiresIn:"1h"
-                            })
-                            return res.status(200).send({
-                                mensagem: "autenticado com sucesso",
-                                token: token
-                            })
-
+                    
+                    conn.query("SELECT * FROM gerente WHERE cpf_gerente= ?",
+                        [results[0].cpf],
+                        (error,result,field)=>{
+                            if(error){return res.status(500).send({error:error})}
+                            if(result.length==0){
+                                conn.query("SELECT * FROM medico WHERE cpf_medico=?",[results[0].cpf],(error,result,fields)=>{
+                                    if(error){return res.status(500).send({error:error})}
+                                    if(result.length==0){
+                                        if(results[0].cpf=="62318902364"){
+                                            key=process.env.MASTER_JWT_KEY
+                                            tipo="Mestre"
+                                        }
+                                        else{
+                                            key=process.env.PACIENTE_JWT_KEY
+                                            tipo="Paciente"
+                                        }
+                                        const token =  jwt.sign(
+                                            {
+                                                id_usuario: results[0].id_usuario,
+                                                cpf: results[0].cpf,
+                                                email: results[0].email
+                                            },
+                                            key,
+                                            {
+                                                expiresIn:"1h"
+                                            })
+                                            return res.status(200).send({
+                                                mensagem: "autenticado com sucesso",
+                                                token: token,
+                                                tipo: tipo
+                                            })
+                                    }
+                                    else{
+                                        key=process.env.MEDICO_JWT_KEY
+                                        tipo="Medico" 
+                                        const token =  jwt.sign(
+                                            {
+                                                id_usuario: results[0].id_usuario,
+                                                cpf: results[0].cpf,
+                                                email: results[0].email
+                                            },
+                                            key,
+                                            {
+                                                expiresIn:"1h"
+                                            })
+                                            return res.status(200).send({
+                                                mensagem: "autenticado com sucesso",
+                                                token: token,
+                                                tipo: tipo
+                                            })
+                                    }
+                                })
+                            }
+                            else{
+                                key=process.env.GERENTE_JWT_KEY 
+                                tipo="Gerente"
+                                const token =  jwt.sign(
+                                    {
+                                        id_usuario: results[0].id_usuario,
+                                        cpf: results[0].cpf,
+                                        email: results[0].email
+                                    },
+                                    key,
+                                    {
+                                        expiresIn:"1h"
+                                    })
+                                    return res.status(200).send({
+                                        mensagem: "autenticado com sucesso",
+                                        token: token,
+                                        tipo: tipo
+                                    })
+                            }
+                        })
+                    
+                    if(results[0].cpf=="62318902364"){
+                        key=process.env.MASTER_JWT_KEY
+                        tipo="Mestre"
                     }
-                    return res.status(401).send({mensagem: "falha na autenticação"})
+                    else{
+                        key=process.env.PACIENTE_JWT_KEY
+                        tipo="Paciente"
+                    }
+                    
                 })
             })
     })
