@@ -278,7 +278,7 @@ router.post('/login',(req,res,next)=>{
                                 tipo="Gerente"
                                 const token =  jwt.sign(
                                     {
-                                        id_usuario: results[0].id_usuario,
+                                        id_consultorio: result[0].id_consultorio,
                                         cpf: results[0].cpf,
                                         email: results[0].email
                                     },
