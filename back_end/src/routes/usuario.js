@@ -4,7 +4,7 @@ const pool = require('../mysql').pool
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cadastro_medico = require('../middleware/cadastro_medico');
-
+const cadastro_gerente = require('../middleware/cadastro_gerente');
  /**
  * Rota para cadastro dos usuários
  * 
@@ -70,7 +70,7 @@ router.post('/cadastro',(req,res,next)=>{
         )
     })
 })
-router.post("/cadastro/gerente",(req,res,next)=>{
+router.post("/cadastro/gerente",cadastro_gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query(
@@ -131,6 +131,67 @@ router.post("/cadastro/gerente",(req,res,next)=>{
         )
     })
 })
+router.post("/cadastro/medico",cadastro_medico,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        conn.query(
+            'SELECT * FROM usuario WHERE cpf = ?',
+            [req.body.cpf],
+            (error,results,fields)=>{
+                if(error){return res.status(500).send({error:error})}
+                if(results.length>0){return res.status(409).send({mensagem: "cpf já cadastrado"})}
+                conn.query(
+                    'SELECT * FROM usuario WHERE email = ?',
+                    [req.body.email],
+                    (error,result,field)=>{
+                        if(error){return res.status(500).send({error:error})}
+                        if(result.length>0){return res.status(409).send({mensagem: "email já cadastrado"})}
+                        conn.query("SELECT * FROM medico WHERE crm=?",[req.body.crm],(error,results,fields)=>{
+                            if(error){return res.status(500).send({error:error})}
+                            if(results.length>0){return res.status(409).send({mensagem: "CRM já cadastrado"})}
+                            const saltRounds = 5
+                        bcrypt.genSalt(saltRounds, function(err, salt){
+                            bcrypt.hash(req.body.senha, salt, (errorBcrypt,hash)=>{     
+                            if(errorBcrypt){return res.status(500).send({error:errorBcrypt.message})}
+                            
+                            conn.query(
+                                'INSERT INTO usuario (cpf,nome,sobrenome,dt_nascimento,email,senha) VALUES (?,?,?,?,?,?)',
+                                [
+                                    req.body.cpf,
+                                    req.body.nome,
+                                    req.body.sobrenome,
+                                    req.body.dt_nascimento,
+                                    req.body.email,
+                                    hash
+                                ],
+                                (error,result,field)=>{
+                                    if(error){return res.status(500).send({error:error})}
+                                    conn.query('INSERT INTO medico (crm,especialidade,cpf_medico,geral) VALUES (?,?,?,?)',[req.body.crm,req.body.especialidade,req.body.cpf,req.body.geral],(error,results,fields)=>{
+                                        conn.release()
+                                        if(error){return res.status(500).send({error:error})}
+                                        const response = {
+                                            mensagem: "Medico cadastrado com sucesso",
+                                            usuarioCriado: {
+                                                cpf: req.body.cpf,
+                                                email: req.body.email,
+                                                crm:req.body.crm
+                                            }
+                                        }
+                                        return res.status(201).send(response)
+                                    })
+                                }
+                            )
+                            })
+                        })
+                        })
+                        
+                        
+                    }
+                )
+            }
+        )
+    })
+})
 /** Rota para login
  * 
  *  Formato para requisição
@@ -165,7 +226,7 @@ router.post('/login',(req,res,next)=>{
                                     if(result.length==0){
                                         
                                         if(results[0].cpf=="62318902364"){
-                                            key=process.env.MASTER_JWT_KEY
+                                            key=process.env.MESTRE_JWT_KEY
                                             tipo="Mestre"
                                         }
                                         else{
