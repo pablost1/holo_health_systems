@@ -257,7 +257,7 @@ router.post('/login',(req,res,next)=>{
                                         tipo="Medico" 
                                         const token =  jwt.sign(
                                             {
-                                                id_usuario: results[0].id_usuario,
+                                                crm: result[0].crm,
                                                 cpf: results[0].cpf,
                                                 email: results[0].email
                                             },

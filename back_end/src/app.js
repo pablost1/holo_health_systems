@@ -11,6 +11,8 @@ const routerEspecialidades = require('./routes/especialidades')
 const routerEspeconsul = require('./routes/especonsul')
 const routerConsultas = require('./routes/consulta')
 const routerSala = require('./routes/sala')
+const routerMedico = require('./routes/medico');
+const router = require("./routes/usuario");
 
 //tratamento inicio
 app.use(morgan('dev'));
@@ -43,6 +45,8 @@ app.use('/especialidade',routerEspecialidades)
 app.use('/especialidade_consultorio',routerEspeconsul)
 app.use('/consulta',routerConsultas)
 app.use('/sala',routerSala)
+app.use('/medico',routerMedico)
+
 
 //tratamento fim
 app.use((req,res,next)=>{
