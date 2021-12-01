@@ -1,0 +1,31 @@
+.adicionar-informacoes {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 5rem;
+    width: 95%;
+    max-width: 500px;
+    margin: 0 auto;
+   
+}
+
+
+@media (min-width: 500px) {
+
+    .adicionar-informacoes {
+        margin: 0 auto 0 2rem;
+        
+        
+    }
+}
+
+
+.info-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+
+

@@ -16,5 +16,11 @@
   "profile": {
     "name": "typicode"
   },
-  "login": []
+  "login": [],
+  "estados": [
+    {
+      "id": 1,
+      "nome": "Paraná"
+    }
+  ]
 }

@@ -46,7 +46,7 @@ router.get('/medico/consultas',medico,(req,res,next)=>{
  * 
  * Formato da requisição
  * {
- *      "data"              : String,   // Data em que ocorrerá a consulta. Formato : DD/MM/AAAA
+ *      "data"              : String,   // Data em que ocorrerá a consulta. Formato : AAAA-MM-DD
  *      "horaInicio"        : String,   // Momento do dia em que ocorrerá a consulta. Formato : HH:MM
  *      "horaFim"           : String,   // Momento do dia em que a consulta será encerrada. Fromato : HH:MM
  *      "id_usuario"        : Integer,  // Numero identificador do médico 
@@ -55,21 +55,29 @@ router.get('/medico/consultas',medico,(req,res,next)=>{
  * }
  */
 router.post("/medico/criarConsultas",medico,(req,res,next)=>{
+    console.log("DALE 1") // DEBUG
     pool.getConnection((error,conn)=>{
+        console.log("DALE 2") // DEBUG
         if(error){return res.status(500).send({error:error})}
         conn.query(
             "SELECT * FROM Especialidade WHERE id_especialidade = ?",
             [req.body.id_especialidade],
             (error,results,fields)=>{
+                console.log("DALE 3") // DEBUG
                 if(error){return res.status(500).send({error:error})}
+                console.log("DALE 4") // DEBUG
                 if(results.length == 0){return res.status(404).send({mensagem: "especialidade não encontrada"})}
                 conn.query(
                     'SELECT * FROM Consultorio WHERE id_consultorio = ?',
                     [req.body.id_consultorio],
                     (error,results,fields)=>{
+                        console.log("DALE 5") // DEBUG
                         if(error){return res.status(500).send({error:error})}
+                        console.log("DALE 6") // DEBUG
                         if(results.length == 0){return res.status(404).send({mensagem:"consultorio não encontrado"})}
+                        console.log("DALE 7") // DEBUG
                         const horaInicio = req.body.horaInicio.split(":").map(x =>{return parseInt(x)})
+                        console.log("DALE 8") // DEBUG
                         const horaFim = req.body.horaFim.split(":").map(x =>{return parseInt(x)})
                         for(;horaInicio[0]<=horaFim[0];horaInicio[0]++){
                             
@@ -77,7 +85,14 @@ router.post("/medico/criarConsultas",medico,(req,res,next)=>{
                                 let horaFormatada = horaInicio[0].toString()+":"+horaInicio[1].toString()+":00"
                                 conn.query(
                                     "insert into Consulta (data,hora,estado,id_medico,id_especialidade,id_consultorio) VALUES (?,?,?,?,?,?)",
-                                    [req.body.data,horaFormatada,"disponivel",req.usuario.id_usuario,req.body.id_especialidade,req.body.id_consultorio],
+                                    [
+                                        req.body.data,
+                                        horaFormatada,
+                                        "disponivel",
+                                        req.usuario.id_usuario,
+                                        req.body.id_especialidade,
+                                        req.body.id_consultorio
+                                    ],
                                     (error,results,fields)=>{
                                         if(error){return res.status(500).send({error:error})}
                                     }
@@ -86,7 +101,9 @@ router.post("/medico/criarConsultas",medico,(req,res,next)=>{
                             }
                             horaInicio[1]=0
                             }
+                        console.log("DALE 9") // DEBUG
                         return res.status(201).send({mensagem: "consultas criadas com sucesso"})
+                        console.log("DALE 10") // DEBUG
                         }
                 )
             }
@@ -236,7 +253,7 @@ router.patch('/paciente/marcar_consulta',paciente,(req,res,next)=>{
                 if(error){return res.status(500).send({error:error})}
                 if(results.length==0){return res.status(404).send({mensagem:"consulta não encontrada"})}
                 conn.query(
-                    "UPDATE Consulta SET id_paciente=?, estado='marcada' WHERE id_consulta=?",
+                    "UPDATE Consulta SET id_paciente=?, status=1 WHERE id_consulta=?",
                     [req.usuario.id_usuario,req.body.id_consulta],
                     (error,results,fields)=>{
                         if(error){return res.status(500).send({error:error})}
@@ -267,7 +284,7 @@ router.delete('/paciente/cancelar_consulta',paciente,(req,res,next)=>{
                 if(error){return res.status(500).send({error:error})}
                 if(results[0].id_paciente!=req.usuario.id_usuario){return res.status(401).send({mensagem:"cancelamento não autorizado"})}
                 conn.query(
-                    "UPDATE Consulta SET id_paciente=null, estado='disponivel' WHERE id_consulta=?",
+                    "UPDATE Consulta SET id_paciente=null, status=0 WHERE id_consulta=?",
                     [req.body.id_consulta],
                     (error,results,fields)=>{
                         if(error){return res.status(500).send({error:error})}

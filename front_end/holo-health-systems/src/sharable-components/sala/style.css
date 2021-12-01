@@ -1,0 +1,6 @@
+.sala {
+    display: flex;
+    box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.25);
+    padding: .5rem .7rem;
+    
+}

@@ -1,0 +1,16 @@
+.consultorio-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 5rem;
+    width: 90%;
+    max-width: 500px;
+    margin: 5rem  auto 0 auto;
+}
+
+
+@media (min-width: 500px) {
+    .consultorio-form {
+        margin: 5rem  auto 0 2rem;
+    }
+}

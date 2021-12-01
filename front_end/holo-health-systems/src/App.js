@@ -1,64 +1,48 @@
 
 import './App.css';
-import React, { useState, useContext } from 'react';
+import React from 'react';
+import Modal from './utils/modal';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-
-
 import { AuthorizationContext }  from './auth/authContext';
-import Home from './pages/home';
-import Cadastro from './pages/cadastro';
-import LoginPage from './pages/login/index';
-import MarcarConsulta from './pages/marcar-consulta';
+import { routes } from './routes';
+import moment from 'moment'
 
+moment.locale('pt-br')    
+// import { AuthContext } from './auth/authContext' {  useContext };
+// const PrivateRoute = ({ component: Component, ...rest }) => {
 
-import { AuthContext } from './auth/authContext';
+//   const { isLoggedin } = useContext(AuthContext)
 
-
-
-
-const PrivateRoute = ({ component: Component, ...rest }) => {
-
-  const { isLoggedin } = useContext(AuthContext)
-
-  return (
-    <Route {...rest} render={props => (
-      isLoggedin ? <Component /> : <Redirect to="/login"/>
-    )}/>
-  )
-}
-
+//   return (
+//     <Route {...rest} render={props => (
+//       isLoggedin ? <Component /> : <Redirect to="/login"/>
+//     )}/>
+//   )
+// }
 
 
 
 function App() {
   
-  
-  
-  
   return (  
     <AuthorizationContext >
-      <Router>
-        <div className="App">
-          <Switch>
-            <Route exact path="/">
-              <Redirect to="/login"/>
-            </Route>
-            <Route component={LoginPage} path="/login" />
-            <PrivateRoute component={Home} exact  />
-            <Route component={Cadastro} path="/cadastro"/>
-            <Route component={MarcarConsulta} path="/marcar-consulta" />
-          </Switch>
-
-          
-        </div>
-      </Router>
+      <React.Suspense fallback={<p>Loading...</p>}>
+        <Router>
+          <div className="App">
+            <Switch>
+              <Route exact path="/">
+                <Redirect to="/login"/>
+              </Route>
+              {routes.map( route => (
+                <Route component={route.Component} path={route.path} />
+              ))}
+            </Switch>
+          </div>
+          <Modal/>
+        </Router>
+      </React.Suspense>
     </AuthorizationContext>
-    
   );
 }
-
-
-
-
 
 export default App;

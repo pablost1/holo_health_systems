@@ -1,0 +1,11 @@
+.lista-salas {
+    display: flex;
+    flex-direction: column;
+    padding-top: 5rem;
+    width: 95%;
+    margin: 0 auto;
+    overflow-y: auto;
+
+}
+
+
