@@ -28,7 +28,7 @@ router.post("/marcar_consulta",login_paciente,(req,res)=>{
 router.get("/minhas_consultas",login_paciente,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}
-        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE cpf_paciente=?",[req.usuario.cpf],(err,results)=>{
+        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE cpf_paciente=? AND status=0",[req.usuario.cpf],(err,results)=>{
             const response = {
                 Consultas: results.map(consulta => {
                     return {
@@ -38,7 +38,8 @@ router.get("/minhas_consultas",login_paciente,(req,res)=>{
                         id_reserva: consulta.id_reserva,
                         data: consulta.data,
                         id_sala: consulta.id_sala,
-                        hor_marc: consulta.hor_marc
+                        hor_marc: consulta.hor_marc,
+                        status: consulta.status
                     }
                 })
             }
@@ -50,7 +51,7 @@ router.get("/minhas_consultas",login_paciente,(req,res)=>{
 router.get("/proxima_consulta",login_paciente,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}
-        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE cpf_paciente=? ORDER BY data ASC, hor_marc ASC",[req.usuario.cpf],(err,results)=>{
+        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE cpf_paciente=? AND status=0 ORDER BY data ASC, hor_marc ASC",[req.usuario.cpf],(err,results)=>{
             const response = {
                 Consultas: results.map(consulta => {
                     return {
@@ -60,7 +61,8 @@ router.get("/proxima_consulta",login_paciente,(req,res)=>{
                         id_reserva: consulta.id_reserva,
                         data: consulta.data,
                         id_sala: consulta.id_sala,
-                        hor_marc: consulta.hor_marc
+                        hor_marc: consulta.hor_marc,
+                        status: consulta.status
                     }
                 })[0]
             }
