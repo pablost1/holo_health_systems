@@ -26,10 +26,15 @@ Basicamente, desejamos ligar as pontas interessadas em uma consulta médica da m
 ![Desenho sem título](https://user-images.githubusercontent.com/51882911/143334485-6ea1f492-4870-45a5-aeef-05934a2d262a.jpg)
 
 ## Quadro Kanban
-![image](https://user-images.githubusercontent.com/51882911/143334811-f8c0a68d-6ac5-45b9-8b86-3a1cad5073cb.png)
+![trello](https://user-images.githubusercontent.com/51882911/144313267-8439ac2b-cd9a-4152-b8da-1a64eea4c275.png)
 Link: https://trello.com/b/H5sbX1QL/holo-health-systems
 
 ## Business Model Canvas
 ![Business Model](https://user-images.githubusercontent.com/51882911/143369188-0265af80-1990-4c54-8d7e-f412032f23ba.jpg)
 
+## Modelo ER
+![ER HHS](https://user-images.githubusercontent.com/51882911/144312887-46523bfe-0296-4f4c-963a-a325e9f5e803.png)
+-------------------------------
+![image](https://user-images.githubusercontent.com/51882911/144313430-9f75002d-74d2-406e-a327-054d386fa7ef.png)
+![image](https://user-images.githubusercontent.com/51882911/144313458-aff0fd31-ad69-4785-8f47-e78a08d9c985.png)
 
