@@ -5,8 +5,9 @@ import { ArrowForwardIos } from '@material-ui/icons'
 import { ArrowBackIos } from '@material-ui/icons';
 import axios from 'axios'
 import Column from './column/index';
-import { AuthContext } from '../auth/authContext'
-import { useContext, useEffect, useState } from 'react';
+// import { AuthContext } from '../auth/authContext'
+import {  useEffect, useState } from 'react';
+// useContext
 
 
 
@@ -53,7 +54,7 @@ let days = [
 function Scheduler() {
     moment.locale('pt-br')
     const [schedules, setschedules] = useState([])
-    const authContext = useContext(AuthContext)
+    // const authContext = useContext(AuthContext)
     const [initialDate, setinitialDate] = useState(moment())
     const [showInitialDate, setShowInitialDate] = useState('')
 

@@ -1,7 +1,6 @@
 
 import Consulta from '../../sharable-components/consulta';
 import DescriptionHeader from '../../sharable-components/description-header/index';
-import MainContainer from '../../sharable-components/main-container/index';
 import './style.css'
 
 

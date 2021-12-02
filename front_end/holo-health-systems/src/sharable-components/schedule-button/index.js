@@ -1,6 +1,5 @@
 import './style.css'
 import { Alarm } from '@material-ui/icons'
-import { Plus } from '@material-ui/icons'
 
 
 export default function ScheduleButton(props) {

@@ -83,9 +83,7 @@ function ScheduleForm(props) {
                     validationSchema={validation}
                     onSubmit={ (value) => {
                         
-                        const moment = moment()
-
-                        moment(value.horario)
+                        
 
                         value.horarioInicial = initialTime
                         value.horarioFinal = finalTime

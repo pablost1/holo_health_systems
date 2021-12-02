@@ -8,7 +8,7 @@ export default function ConsultasAnteriores() {
     return (
         <div className="consultas-anteriores">
             <DescriptionHeader path="/home">Consultas anteriores</DescriptionHeader>
-            <div className="lista-consulta"  className="consultas-anteriores__consultas">
+            <div className="consultas-anteriores__consultas">
                 
                 <Consulta type="delete" hasDeleteButton={false} />
                 <Consulta type="delete" hasDeleteButton={false} />

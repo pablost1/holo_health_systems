@@ -13,7 +13,7 @@ import { AuthContext } from '../../auth/authContext';
 export default function Modal(props) {
     
 
-    const { dismissable, modalState , closeModal } = useContext(AuthContext)
+    const { modalState , closeModal } = useContext(AuthContext)
 
 
 

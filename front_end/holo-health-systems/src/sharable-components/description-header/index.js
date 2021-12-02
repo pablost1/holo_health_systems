@@ -1,4 +1,4 @@
-import { ArrowBack, ArrowBackIos } from "@material-ui/icons"
+import {  ArrowBackIos } from "@material-ui/icons"
 import { Link } from 'react-router-dom';
 import './style.css'
 

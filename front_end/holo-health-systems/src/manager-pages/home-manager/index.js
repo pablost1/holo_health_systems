@@ -1,5 +1,4 @@
 import './style.css'
-import DescriptionHeader from '../../sharable-components/description-header/index';
 import HomeHeader from '../../sharable-components/home-header/index';
 import ScheduleButton from '../../sharable-components/schedule-button/index';
 import MainContainer from '../../sharable-components/main-container/index';

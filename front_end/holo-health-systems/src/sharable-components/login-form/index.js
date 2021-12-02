@@ -2,10 +2,9 @@ import  './style.css'
 import Button from '../button'
 import { Lock } from '@material-ui/icons';
 
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../../auth/authContext'
 import { Formik, Field, Form } from 'formik'
-import axios from 'axios';
 import  * as Yup  from 'yup';
 import InputMask from 'react-input-mask';
 
@@ -15,9 +14,6 @@ import InputMask from 'react-input-mask';
 
 
 
-let http = axios.create({
-    baseURL: 'http://localhost:3001'
-})
 
 
 let schema = Yup.object().shape({
@@ -64,7 +60,7 @@ function LoginForm() {
                     </div>
                     <div className="form-group">
                         <label>Senha</label>
-                        <Field name="senha" className="input"/>
+                        <Field name="senha" className="input" type="password"/>
                         { errors.senha && touched.senha ? <p>{errors.senha} </p> : '' }
                     </div>
                     <div className="form-login">

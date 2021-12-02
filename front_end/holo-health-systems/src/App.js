@@ -3,14 +3,12 @@ import './App.css';
 import React from 'react';
 import Modal from './utils/modal';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { AuthContext, AuthorizationContext }  from './auth/authContext';
+import { AuthContext }  from './auth/authContext';
 import { routes } from './routes';
 import { useContext } from 'react';
-import AcessoNegado from './utils/acesso-negado/index';
 import moment from 'moment'
 import Error404 from './utils/404';
 import LoginPage from './pages/login';
-import LoginForm from './sharable-components/login-form/index';
 
 
 
@@ -86,7 +84,7 @@ function App() {
           }}/>
             
           {routes.map( (route, index) => (
-            <PrivateRoute component={route.Component} privacy={route.privacy} path={route.path} type={userType}/>
+            <PrivateRoute key={index} component={route.Component} privacy={route.privacy} path={route.path} type={userType}/>
           ))}
           <Route path="*" render={ props => <Error404>Erro 404! Página não encontrada!</Error404>}/>
         </Switch>

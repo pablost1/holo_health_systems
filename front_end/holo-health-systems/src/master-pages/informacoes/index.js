@@ -2,7 +2,6 @@
 import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header'
 import Button from '../../sharable-components/button/index';
-import Subtitle from '../../sharable-components/subtitle';
 
 
 

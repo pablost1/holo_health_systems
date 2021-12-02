@@ -37,14 +37,14 @@ function MarcarConsulta() {
     // })
 
     const [ modalState, setModalState ] = useState(true)
-    const [ consultorio, setConsultorio] = useState('')
+    // const [ consultorio, setConsultorio] = useState('')
 
 
 
-    function AbrirModal() {
-        setModalState(true)
+    // function AbrirModal() {
+    //     setModalState(true)
         
-    }
+    // }
 
     function MarcaConsulta() {
         alert('consulta marcada com sucesso')
@@ -52,10 +52,10 @@ function MarcarConsulta() {
     }
 
 
-    function SelecionarConsultorio(consultorio) {
+    // function SelecionarConsultorio(consultorio) {
 
-        setConsultorio(consultorio)
-    }
+    //     setConsultorio(consultorio)
+    // }
 
     return (
         <div className="marcar-consulta">
@@ -128,7 +128,7 @@ function MarcarConsulta() {
                 <Reserva />
             </div>
             <FreeModal opened={modalState}  >
-                <SelecionarConsulta consultorio={consultorio} marcar={MarcaConsulta} />
+                <SelecionarConsulta  marcar={MarcaConsulta} />
             </FreeModal>
         </div>  
     )

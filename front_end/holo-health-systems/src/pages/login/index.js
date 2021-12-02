@@ -1,16 +1,17 @@
 import './style.css'
 import LoginForm from '../../sharable-components/login-form'
-import { useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { AuthContext } from '../../auth/authContext';
+// import { useContext, useEffect } from 'react';
+// import { useEffect } from 'react';
+// import { useHistory } from 'react-router-dom';
+// import { AuthContext } from '../../auth/authContext';
 
 
 
 
 function LoginPage() {
 
-    const { isLoggedin, userType } = useContext(AuthContext)
-    const history = useHistory()
+    // const { isLoggedin, userType } = useContext(AuthContext)
+    // const history = useHistory()
 
     
 
@@ -37,7 +38,7 @@ function LoginPage() {
         <div className="login-page">
             <div className="hero-container">
                 <p >Frase de efeito que ainda vou decidir qual será</p>
-                <img className="img"src="https://www.healthpeople.org/wp-content/uploads/2015/01/HLtop.jpg" />
+                <img alt="jovem-saudavel" className="img"src="https://www.healthpeople.org/wp-content/uploads/2015/01/HLtop.jpg" />
             </div>
             
             <div className="login-container">

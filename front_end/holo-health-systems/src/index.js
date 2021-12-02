@@ -6,11 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import { AuthorizationContext } from './auth/authContext'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <AuthorizationContext>
-      <App />
-    </AuthorizationContext>
-  </React.StrictMode>,
+
+  <AuthorizationContext>
+    <App />
+  </AuthorizationContext>,
   document.getElementById('root')
 );
 

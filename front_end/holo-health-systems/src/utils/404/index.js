@@ -5,7 +5,7 @@ export default function Error404({children}) {
 
     return (
         <div className="error-404">
-            <img className="dwight-pic" src={dwight} />
+            <img alt="dwight" className="dwight-pic" src={dwight} />
             <h1>{children}</h1>
         </div>
     )

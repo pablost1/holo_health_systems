@@ -1,6 +1,6 @@
 import  React, { createContext, useState } from 'react';
 import  axios  from 'axios';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 
 
@@ -27,7 +27,7 @@ function AuthorizationContext({children}) {
         if(token) {
             setisLoggedin(true)
         }
-    })
+    }, [])
 
     function RegisteSchedule(component) {
         setmodalState({
