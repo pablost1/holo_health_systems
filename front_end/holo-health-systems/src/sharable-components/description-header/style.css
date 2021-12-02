@@ -4,6 +4,9 @@
     background-color: var(--primary-color);
     color: #ffffff;
     padding: 1rem 1rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 .description-header > h2 {
