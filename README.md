@@ -1,4 +1,4 @@
-# holo_health_systems
+# Holo Health Systems
 
 ### Membros do projeto
 
@@ -14,13 +14,40 @@ Os usuários podem ser: Médico, o que Verifica seus horários marcados e dispon
 
 Basicamente, desejamos ligar as pontas interessadas em uma consulta médica da melhor maneira possível.
 
+### Ferramentas utilizadas
+
+## Comunicação
+* Telegram
+* Discord
+
+## Organização
+* Trello
+* Github
+
+## Front-end
+* ReactJS
+
+## Back-End
+* NodeJS
+* MySQL
+* Docker
+
+## Testes
+* Postman
 -------------------------------
-### Histórias dos usuários
+## História dos Usuários
 
-* José é um homem de 76 anos, tem uma série de problemas de saúde e deseja alguma ferramenta que ele possa utilizar de maneira fácil, já que ele nao gosta de depender da ajuda dos seus demais familiares.
-* Roberto é um médico de 42, bastante experiente, mesmo depois  de sair da faculdade há muito tempo, esta pessoa ainda tem muita motivação para continuar seu sonho de ajudar das pessoas.
-* Aline é uma mulher de 46 anos, e é gerente de um consultório, a mesma gostaria de uma interface mais bem organizada com funções e descrições claras para que possa fazer as devidas modificações e melhoras em sua unidade.
+```
+José é um homem de 76 anos, tem uma série de problemas de saúde e deseja alguma ferramenta que ele possa utilizar de maneira fácil, já que ele nao gosta de depender da ajuda dos seus demais familiares.
+```
 
+```
+Me chamo Roberto, sou um médico de 42 anos, bastante experiente, mesmo depois  de sair da faculdade há muito tempo, eu ainda ainda tenho muita motivação para continuar meu sonho de ajudar das pessoas, então, eu gostaria de trabalhar numa organização que têm ferramentas mais modernas e que deem um suporte mais completo, tanto para o usuário, quanto para os médicos, que fosse fácil e bem direto, para que eu possa fazer com que o meu trabalho alcance mais pessoas.
+```
+
+```
+Olá! Sou Aline, uma mulher de 52 anos e sou gerente de um consultório, gostaria de uma interface mais bem organizada com funções e descrições claras para que possa fazer as devidas modificações e melhoras na unidade que gerencio, também gostaria de ter mais representações das diversas características relacionadas a minha unidade também, para ajudar nas decisões que irei tomar.
+```
 -------------------------------
 ## Value Proposition Canvas 
 ![Desenho sem título](https://user-images.githubusercontent.com/51882911/143334485-6ea1f492-4870-45a5-aeef-05934a2d262a.jpg)
