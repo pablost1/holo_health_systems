@@ -1,36 +1,27 @@
 import  './style.css'
 import Button from '../button'
-import { ErrorSharp, Lock } from '@material-ui/icons';
+import { Lock } from '@material-ui/icons';
 
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../../auth/authContext'
 import { Formik, Field, Form } from 'formik'
-import axios from 'axios';
 import  * as Yup  from 'yup';
-import { useHistory } from 'react-router-dom';
+import InputMask from 'react-input-mask';
 
 
 
 
 
 
-let http = axios.create({
-    baseURL: 'http://localhost:3001'
-})
+
 
 
 let schema = Yup.object().shape({
-    email: Yup.string()
+    cpf: Yup.string()
         .email().required('Um e-mail é necessário'),
     senha: Yup.string()
         .required('Uma senha é necessária')
 })
-
-
-
-
-
-
 
 function LoginForm() {
 
@@ -41,14 +32,13 @@ function LoginForm() {
     return (
         <Formik
             initialValues={{
-                email: '',
+                cpf: '',
                 senha: ''
             }}
 
             validationSchema={schema}
 
             onSubmit={(value) => {
-                console.log(value)
                handleLogin(value)
             }}
         >
@@ -56,23 +46,33 @@ function LoginForm() {
 
                 <Form className="form">
                     <div className="form-group">
-                        <label>Usuário</label>
-                        <Field name="email" class="input"/>
+                        <label>CPF</label>
+                        <Field 
+                            name="cpf"
+                            render={({field}) => (
+                                <InputMask
+                                    
+                                    mask="999.999.999-99"
+                                />
+                            )}
+                        />
                         { errors.email && touched.email ? <p>{errors.email}</p> : '' }
                     </div>
                     <div className="form-group">
                         <label>Senha</label>
-                        <Field name="senha" class="input"/>
+                        <Field name="senha" className="input" type="password"/>
                         { errors.senha && touched.senha ? <p>{errors.senha} </p> : '' }
                     </div>
                     <div className="form-login">
-                        <span style={{fontSize: '.8rem'}}>
+                        <Button size="medium">Login</Button>
+                        <span style={{fontSize: '.8rem', marginLeft: '15px'}}>
                             Esqueci minha senha
                         </span>
                         <Lock style={{fontSize: '1.1rem'}}/>
-
-                        <button type="submit">Login</button>
+                        
+                        
                     </div>
+                    
             
                 </Form>
             )}

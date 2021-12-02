@@ -1,0 +1,27 @@
+.reserva-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    gap: 20px;
+    padding: 20px;
+    box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.25);
+}
+
+@media (min-width: 600px) {
+    .reserva-container {
+        margin: 0;
+    }
+}
+
+.consultorio-doutor {
+    display: flex;
+    flex-direction: column;
+}
+
+.data-hora {
+    display: flex;
+    gap: 10px;
+}

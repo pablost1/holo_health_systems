@@ -1,0 +1,22 @@
+.error-404 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: rgb(59, 58, 58);
+    height: 100%;
+    width: 100%;
+}
+
+.error-404 > h1 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.dwight-pic {
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+}

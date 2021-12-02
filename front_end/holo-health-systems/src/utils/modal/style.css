@@ -1,0 +1,52 @@
+.modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    animation-name: modal-oppend;
+    animation-duration: .5s;
+
+}
+
+
+@keyframes modal-oppend {
+    0% {
+      background-color: transparent;  
+      opacity: 0;
+    }
+
+    100% {
+        background-color: rgba(0, 0, 0, 0.1);
+        opacity: 1;
+    }
+}
+
+
+.modal-message-child {
+    background-color: #ffffff;
+
+
+    
+}
+
+
+
+.modal-message {
+    background-color: #ffffff;
+    color: black;
+    border-radius: 10px;
+    min-width: 300px;
+    padding: 1rem;
+    
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+}

@@ -1,0 +1,14 @@
+.paciente {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+    width: 95%;
+    margin: 0 auto;
+    box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.25);
+    padding: 1rem 0;
+}
+
+.paciente__nome {
+    margin-left: 1rem;
+}

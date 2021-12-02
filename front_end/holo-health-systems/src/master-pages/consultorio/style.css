@@ -1,0 +1,27 @@
+.sala {
+    display: flex;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    align-items: center;
+}
+
+.numero-sala {
+    margin-left: .5rem;
+}
+
+.consultorio-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 95%;
+    margin: 0 auto;
+}
+
+
+.lista-salas {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 400px;
+    overflow-y: scroll;
+}

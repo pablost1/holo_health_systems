@@ -16,6 +16,142 @@
   "profile": {
     "name": "typicode"
   },
+  "estados": [
+    {
+      "id": 1,
+      "nome": "Paraná"
+    },
+    {
+      "estado": "Pernambuco",
+      "id": 2
+    },
+    {
+      "estado": "Paraíba",
+      "id": 3
+    },
+    {
+      "estado": "Maranhão",
+      "id": 4
+    },
+    {
+      "estado": "Rio grande do sul",
+      "id": 5
+    },
+    {
+      "estado": "Rondônia",
+      "id": 6
+    },
+    {
+      "estado": "Bahia",
+      "id": 7
+    },
+    {
+      "estado": "Rio de Janeiro",
+      "id": 8
+    },
+    {
+      "estado": "Acre",
+      "id": 9
+    },
+    {
+      "estado": "Amazônia",
+      "id": 10
+    },
+    {
+      "estado": "Rio grande",
+      "id": 11
+    },
+    {
+      "estado": "Espírito Santo",
+      "id": 12
+    },
+    {
+      "estado": "Santa Catarina",
+      "id": 13
+    },
+    {
+      "estado": "Amapá",
+      "id": 14
+    },
+    {
+      "estado": "Goiás",
+      "id": 15
+    },
+    {
+      "estado": "Ceará",
+      "id": 16
+    },
+    {
+      "estado": "Frankfurt",
+      "id": 17
+    },
+    {
+      "estado": "Pará",
+      "id": 18
+    },
+    {
+      "estado": "Bacana cara",
+      "id": 19
+    },
+    {
+      "estado": "Estado fictício",
+      "id": 20
+    }
+  ],
+  "cidades": [
+    {
+      "id": 0,
+      "cidade": "Recife",
+      "estado": "Pernambuco"
+    },
+    {
+      "estado": "Rio de Janeiro",
+      "cidade": "Copacabana",
+      "id": 1
+    }
+  ],
+  "horarios": [
+    {
+      "data": "11/06/2021",
+      "profissional": "Maria José",
+      "especialidade": "Proctologia",
+      "horarioInicial": "12",
+      "horarioFinal": "15",
+      "id": 13
+    },
+    {
+      "data": "11/17/2021",
+      "profissional": "Maria José",
+      "especialidade": "Proctologia",
+      "horarioInicial": "12",
+      "horarioFinal": "16",
+      "id": 14
+    },
+    {
+      "data": "11/18/2021",
+      "profissional": "Maria José",
+      "especialidade": "Proctologia",
+      "horarioInicial": "19",
+      "horarioFinal": "21",
+      "id": 15
+    },
+    {
+      "data": "11/04/2021",
+      "profissional": "Maria José",
+      "especialidade": "Proctologia",
+      "horarioInicial": "9",
+      "horarioFinal": "13",
+      "id": 18
+    },
+    {
+      "data": "11/22/2021",
+      "profissional": "Maria José",
+      "especialidade": "Proctologia",
+      "horarioInicial": "15:50",
+      "horarioFinal": "16:59",
+      "id": 20
+    }
+  ],
   "register": [],
   "users": [
     {

@@ -1,11 +1,13 @@
 import { Formik, Field, Form } from 'formik'
-import * as Yup from 'yup'
 import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header/index.js'
-
-
 import axios from 'axios'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import FreeModal from '../../utils/free-modal/index';
+import SelecionarConsulta from './selecionar-consulta/index';
+import Reserva from './reserva/index';
+
+
 
 
 
@@ -24,9 +26,9 @@ axios.create({
 function MarcarConsulta() {
 
 
-    const [ estado, setEstado ] = useState([])
-    const [cidade, setcidade] = useState([])
-    const [especialidade, setespecialidade] = useState([])
+    // const [ estado, setEstado ] = useState([])
+    // const [cidade, setcidade] = useState([])
+    // const [especialidade, setespecialidade] = useState([])
 
 
     // useEffect(async () => {
@@ -34,15 +36,31 @@ function MarcarConsulta() {
     //     setEstado(estados)
     // })
 
+    const [ modalState, setModalState ] = useState(true)
+    // const [ consultorio, setConsultorio] = useState('')
 
 
 
+    // function AbrirModal() {
+    //     setModalState(true)
+        
+    // }
 
+    function MarcaConsulta() {
+        alert('consulta marcada com sucesso')
+        setModalState(false)
+    }
+
+
+    // function SelecionarConsultorio(consultorio) {
+
+    //     setConsultorio(consultorio)
+    // }
 
     return (
-        <div class="marcar-consulta">
+        <div className="marcar-consulta">
             
-            <DescriptionHeader />
+            <DescriptionHeader path="/home">Marcar consulta</DescriptionHeader>
             
             <Formik
                 initialValues={{
@@ -52,7 +70,7 @@ function MarcarConsulta() {
                 }}
 
             >
-                {({ errors, touched, values, handleChange }) => (
+                {({  values, handleChange }) => (
                     <Form className="marcar-consulta__form">
                         <div className="form-group">
                             <label className="label-bigger">Selecione um estado estado</label>
@@ -92,13 +110,26 @@ function MarcarConsulta() {
                                 <option value="otorrino">Otorrinolaringologia</option>
                                 <option value="pediatria">Pediatria</option>
                             </Field>
-
-
                         </div>
                     </Form>
                 )}
-                
+                 
             </Formik>
+            <h2 className="unidades-disponiveis">Unidades disponíveis</h2>
+            <div className="lista-reservas">
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+                <Reserva />
+            </div>
+            <FreeModal opened={modalState}  >
+                <SelecionarConsulta  marcar={MarcaConsulta} />
+            </FreeModal>
         </div>  
     )
 }

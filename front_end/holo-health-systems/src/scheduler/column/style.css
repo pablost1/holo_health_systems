@@ -1,0 +1,98 @@
+.horario {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #ffffff;
+    color: black;
+    width: 130px;
+    min-width: 130px;
+    
+}
+
+.horario__items {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: .3rem 0 .5rem .3rem;
+    width: 100%;
+}
+
+
+.scheduler-column {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    
+}
+
+.scheduler-column__description {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 120px;
+    width: 150px;
+    min-width: 150px;
+    height: 50px;
+
+}
+
+.scheduler-column__schedules {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    overflow-x: auto;
+
+}
+
+
+.day-description {
+    margin: 0;
+}
+
+.add-button {
+    background-color: white;
+    color: var(--primary-color);
+    border-radius: 3px;
+    margin-left: auto;
+}
+
+.schedule-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    animation-name: modal-oppend;
+    animation-duration: .5s;
+}
+
+.closed {
+    display: none;
+}
+
+
+
+.time-picker > div {
+    padding: .3rem;
+    border-color: black;
+    border-radius: 10px;
+}
+
+
+
+@keyframes modal-oppend {
+    0% {
+      background-color: rgba(0, 0, 0, 0);;  
+      
+    }
+
+    100% {
+        background-color: rgba(0, 0, 0, 0.1);
+        
+    }
+}
