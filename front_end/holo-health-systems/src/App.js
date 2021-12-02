@@ -37,7 +37,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       }
 
 
-      return <Error404>Access denied! Do you think we are fools, idiot!!??</Error404>
+      return <Error404>Acesso negado!</Error404>
 
 
     }} />
@@ -81,12 +81,12 @@ function App() {
           {routes.map( (route, index) => (
             <PrivateRoute component={route.Component} privacy={route.privacy} path={route.path} type={userType}/>
           ))}
-          <Route path="*" render={ props => <Error404>Error 404! This page doesn't exist, idiot!</Error404>}/>
+          <Route path="*" render={ props => <Error404>Erro 404! Página não encontrada!</Error404>}/>
         </Switch>
       </div>
       <Modal/>
     </Router>
-      
+  
   
   );
 }
