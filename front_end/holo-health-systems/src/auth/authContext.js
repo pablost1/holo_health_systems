@@ -16,9 +16,9 @@ const http = axios.create({
 
 
 function AuthorizationContext({children}) {
-    const [isLoggedin, setisLoggedin] = useState(true)
+    const [isLoggedin, setisLoggedin] = useState(false)
     const [modalState, setmodalState] = useState({ modalMode: ''})
-    const [ userType, setUserType ] = useState('mestre')
+    const [ userType, setUserType ] = useState('Gerente')
 
     useEffect( () => {
 
@@ -72,13 +72,6 @@ function AuthorizationContext({children}) {
             const message = error.response.data.mensagem
             handleError(message)
         }
-
-        
-        
-
-
-
-
 
     }
 

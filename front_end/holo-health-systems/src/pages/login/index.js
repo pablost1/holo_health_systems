@@ -14,20 +14,20 @@ function LoginPage() {
 
     
 
-    useEffect(() => {
-        if(isLoggedin) {
-            // switch (userType) {
-            //     case 'paciente':
-            //         history.push('/home')
-            //     case 'gerente':
-            //         console.log('é gerente krl')
-            //         history.push('/home-manager')
-            //     case 'mestre':
-            //         history.push('/master-home')
-            // }
+    // useEffect(() => {
+    //     if(isLoggedin) {
+    //         // switch (userType) {
+    //         //     case 'paciente':
+    //         //         history.push('/home')
+    //         //     case 'gerente':
+    //         //         console.log('é gerente krl')
+    //         //         history.push('/home-manager')
+    //         //     case 'mestre':
+    //         //         history.push('/master-home')
+    //         // }
 
-        }
-    })
+    //     }
+    // })
     
 
     

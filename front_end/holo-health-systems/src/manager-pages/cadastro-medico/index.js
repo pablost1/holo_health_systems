@@ -3,6 +3,7 @@ import DescriptionHeader from '../../sharable-components/description-header/inde
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Button from '../../sharable-components/button/index';
+import InputMask from 'react-input-mask';
 
 
 const validation = Yup.object().shape({
@@ -56,12 +57,30 @@ export default function CadastroMedico() {
                             </div>
                             <div className="form-group">
                                 <label>Sobrenome</label>
-                                <Field name="sobrenome"/>
+                                <Field 
+                                    name="sobrenome"
+                                    render={({field}) => (
+                                        <InputMask
+                                             mask="99999999-9/aa"     
+                                        />
+                                    )}
+                                />
                                 { errors.sobrenome && touched.sobrenome ? <p>{errors.sobrenome}</p> : ''}
                             </div>
                             <div className="form-group">
                                 <label>CPF</label>
-                                <Field name="cpf"/>
+                                <Field 
+                                    name="cpf"
+                                    render={({field}) => (
+                                        <InputMask
+                                             mask="999.999.999-99"
+
+                                            
+                                        />
+                                    
+                                    )}
+                                    
+                                />
                                 { errors.cpf && touched.cpf ? <p>{errors.cpf}</p> : ''}
                             </div>
                             <div className="form-group">

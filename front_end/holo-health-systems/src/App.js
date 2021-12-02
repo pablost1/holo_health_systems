@@ -9,6 +9,10 @@ import { useContext } from 'react';
 import AcessoNegado from './utils/acesso-negado/index';
 import moment from 'moment'
 import Error404 from './utils/404';
+import LoginPage from './pages/login';
+import LoginForm from './sharable-components/login-form/index';
+
+
 
 
 
@@ -16,6 +20,8 @@ import Error404 from './utils/404';
 
 moment.locale('pt-br')    
 // import { AuthContext } from './auth/authContext' {  useContext };
+
+
 
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -63,21 +69,22 @@ function App() {
     <Router>
       <div className="App">
         <Switch>
-          <Route exact path={["/", "/login"]}>
-            {
-              isLoggedin && userType === 'gerente' && <Redirect to="home-manager" /> 
-            }
-            {
-              isLoggedin && userType === 'paciente' && <Redirect to="home" /> 
+          <Route exact path={["/", "/login"]} render={(props) => {
+            if(isLoggedin && userType === 'gerente') {
+              return <Redirect to="home-manager" /> 
             }
             
-            {
-              isLoggedin && userType === 'mestre' && <Redirect to="master-home" />
+            if(isLoggedin && userType === 'paciente') {
+              return <Redirect to="home" /> 
             }
-            {
-              !isLoggedin && <Redirect to="/login" />
+
+            if(isLoggedin && userType === 'mestre') {
+              return <Redirect to="master-home" />
             }
-          </Route>
+
+            return <LoginPage />
+          }}/>
+            
           {routes.map( (route, index) => (
             <PrivateRoute component={route.Component} privacy={route.privacy} path={route.path} type={userType}/>
           ))}

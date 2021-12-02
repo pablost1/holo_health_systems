@@ -7,6 +7,7 @@ import { AuthContext } from '../../auth/authContext'
 import { Formik, Field, Form } from 'formik'
 import axios from 'axios';
 import  * as Yup  from 'yup';
+import InputMask from 'react-input-mask';
 
 
 
@@ -20,17 +21,11 @@ let http = axios.create({
 
 
 let schema = Yup.object().shape({
-    email: Yup.string()
+    cpf: Yup.string()
         .email().required('Um e-mail é necessário'),
     senha: Yup.string()
         .required('Uma senha é necessária')
 })
-
-
-
-
-
-
 
 function LoginForm() {
 
@@ -41,7 +36,7 @@ function LoginForm() {
     return (
         <Formik
             initialValues={{
-                email: '',
+                cpf: '',
                 senha: ''
             }}
 
@@ -55,8 +50,16 @@ function LoginForm() {
 
                 <Form className="form">
                     <div className="form-group">
-                        <label>Usuário</label>
-                        <Field name="email" className="input"/>
+                        <label>CPF</label>
+                        <Field 
+                            name="cpf"
+                            render={({field}) => (
+                                <InputMask
+                                    
+                                    mask="999.999.999-99"
+                                />
+                            )}
+                        />
                         { errors.email && touched.email ? <p>{errors.email}</p> : '' }
                     </div>
                     <div className="form-group">

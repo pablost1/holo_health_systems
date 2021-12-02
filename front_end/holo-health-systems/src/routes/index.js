@@ -37,88 +37,88 @@ export const routes = [
     {
         path: '/home',
         Component: Home,
-        privacy: 'paciente'
+        privacy: 'Paciente'
     },
     {
         path: '/marcar-consulta',
         Component: MarcarConsulta,
-        privacy: 'paciente'
+        privacy: 'Paciente'
     },
     {
         path: '/consultas-anteriores',
         Component: ConsultasAnteriores,
-        privacy: 'paciente'
+        privacy: 'Paciente'
     },
     {
         path: '/minhas-consultas',
         Component: MinhasConsultas,
-        privacy: 'paciente'
+        privacy: 'Paciente'
     },
     {
         path: '/consultorios',
         Component: Consultorios,
-        privacy: 'mestre'
+        privacy: 'Mestre'
     },
     {
         path: '/novo-consultorio',
         Component: NovoConsultorio,
-        privacy: 'mestre'
+        privacy: 'Mestre'
     },
     {
         path: '/consultorio',
         Component: ConsultorioPage,
-        privacy: 'mestre'
+        privacy: 'Mestre'
         
     },
     {
         path: '/adicionar-informacoes',
         Component: AdicionarInformacoes,
-        privacy: 'mestre'
+        privacy: 'Mestre'
     },
     {
         path: '/informacoes',
         Component: Informacoes,
-        privacy: 'mestre'
+        privacy: 'Mestre'
     },
     {
         path: '/cadastro-medico',
         Component: CadastroMedico,
-        privacy: 'gerente'
+        privacy: 'Gerente'
     },
     {
         path: '/home-manager',
         Component: HomeManager,
-        privacy: 'gerente'
+        privacy: 'Gerente'
     },
     {
         path: '/scheduler',
         Component: Scheduler,
-        privacy: 'gerente'
+        privacy: 'Gerente'
     },
     {
         path: '/master-home',
         Component: MasterHome,
-        privacy: 'mestre'
+        privacy: 'Mestre'
     },
     {
         path: '/medico-home',
         Component: MedicoHome,
-        privacy: 'medico'
+        privacy: 'Medico'
     },
     {
         path: '/meus-horarios',
         Component: MeusHorarios,
-        privacy: 'medico'
+        privacy: 'Medico'
     },
     {
         path: '/em-andamento',
         Component: EmAndamento,
-        privacy: 'medico'
+        privacy: 'Medico'
     },
     {
         path: '/salas',
         Component: SalasConsultorio,
-        privacy: 'mestre'
+        privacy: 'Mestre'
     }
 
 
