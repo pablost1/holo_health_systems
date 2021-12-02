@@ -17,8 +17,7 @@ import InputMask from 'react-input-mask';
 
 
 let schema = Yup.object().shape({
-    cpf: Yup.string()
-        .email().required('Um e-mail é necessário'),
+    cpf: Yup.string().required('Uma CPF é necessário'),
     senha: Yup.string()
         .required('Uma senha é necessária')
 })
@@ -26,8 +25,8 @@ let schema = Yup.object().shape({
 function LoginForm() {
 
     
-    const { handleLogin  } = useContext(AuthContext)
-
+    const {handleLogin} = useContext(AuthContext)
+    
     
     return (
         <Formik
@@ -39,7 +38,9 @@ function LoginForm() {
             validationSchema={schema}
 
             onSubmit={(value) => {
-               handleLogin(value)
+                
+                handleLogin(value)
+                
             }}
         >
             {({values, touched, errors }) => (
@@ -49,12 +50,6 @@ function LoginForm() {
                         <label>CPF</label>
                         <Field 
                             name="cpf"
-                            render={({field}) => (
-                                <InputMask
-                                    
-                                    mask="999.999.999-99"
-                                />
-                            )}
                         />
                         { errors.email && touched.email ? <p>{errors.email}</p> : '' }
                     </div>
@@ -64,7 +59,7 @@ function LoginForm() {
                         { errors.senha && touched.senha ? <p>{errors.senha} </p> : '' }
                     </div>
                     <div className="form-login">
-                        <Button size="medium">Login</Button>
+                        <button type="submit">Login</button>
                         <span style={{fontSize: '.8rem', marginLeft: '15px'}}>
                             Esqueci minha senha
                         </span>

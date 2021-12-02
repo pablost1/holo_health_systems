@@ -18,7 +18,7 @@ const http = axios.create({
 function AuthorizationContext({children}) {
     const [isLoggedin, setisLoggedin] = useState(false)
     const [modalState, setmodalState] = useState({ modalMode: ''})
-    const [ userType, setUserType ] = useState('Gerente')
+    const [ userType, setUserType ] = useState('')
 
     useEffect( () => {
 
@@ -64,10 +64,13 @@ function AuthorizationContext({children}) {
 
 
         try {
+            
             const { data } = await http.post('/usuario/login', user)
-            console.log(data)
-            //localStorage.setItem('token', JSON.stringify(data))
-            //setisLoggedin(true)
+            
+            localStorage.setItem('token', JSON.stringify(data.token))
+            setisLoggedin(true)
+            setUserType(data.tipo)
+            
             
         } catch(error) {
             const message = error.response.data.mensagem
@@ -79,6 +82,7 @@ function AuthorizationContext({children}) {
     function handleLogout() {
         localStorage.removeItem('token')
         setisLoggedin(false)
+        setUserType("")
 
     }
 

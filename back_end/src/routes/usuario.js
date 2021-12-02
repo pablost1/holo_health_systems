@@ -200,6 +200,7 @@ router.post("/cadastro/medico",cadastro_medico,(req,res,next)=>{
  * }
  */
 router.post('/login',(req,res,next)=>{
+    console.log(req.body)
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         const sql_query = req.body.cpf ? "SELECT * FROM usuario WHERE cpf = ?" : "SELECT * FROM usuario WHERE email = ?"

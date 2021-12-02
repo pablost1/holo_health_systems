@@ -68,15 +68,15 @@ function App() {
       <div className="App">
         <Switch>
           <Route exact path={["/", "/login"]} render={(props) => {
-            if(isLoggedin && userType === 'gerente') {
+            if(isLoggedin && userType === 'Gerente') {
               return <Redirect to="home-manager" /> 
             }
             
-            if(isLoggedin && userType === 'paciente') {
+            if(isLoggedin && userType === 'Paciente') {
               return <Redirect to="home" /> 
             }
 
-            if(isLoggedin && userType === 'mestre') {
+            if(isLoggedin && userType === 'Mestre') {
               return <Redirect to="master-home" />
             }
 
