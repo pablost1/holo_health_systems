@@ -15,7 +15,6 @@ const cadastro_gerente = require('../middleware/cadastro_gerente');
  *      "email"            : String,   // E-mail de cadastro do novo usuario
  *      "nome"             : String,   // Nome principal do usuario
  *      "sobrenome"        : String,   // Ultimo nome do usuario
- *      "tipo"             : String,   // Tipo de usuario cadastrado: Paciente = P, Médico = M, Gerente = G
  * }
  */
 router.post('/cadastro',(req,res,next)=>{
