@@ -14,6 +14,26 @@ Os usuários podem ser: Médico, o que Verifica seus horários marcados e dispon
 
 Basicamente, desejamos ligar as pontas interessadas em uma consulta médica da melhor maneira possível.
 
+### Ferramentas utilizadas
+
+## Comunicação
+* Telegram
+* Discord
+
+## Organização
+* Trello
+* Github
+
+## Front-end
+* ReactJS
+
+## Back-End
+* NodeJS
+* MySQL
+* Docker
+
+## Testes
+* Postman
 -------------------------------
 ## História dos Usuários
 
