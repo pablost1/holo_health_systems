@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 
 const AuthContext = createContext()
 const http = axios.create({
-    baseURL: 'http://localhost:3001'
+    baseURL: 'http://localhost:3000'
 })
 
 
@@ -65,8 +65,9 @@ function AuthorizationContext({children}) {
 
         try {
             const { data } = await http.post('/usuario/login', user)
-            localStorage.setItem('token', JSON.stringify(data))
-            setisLoggedin(true)
+            console.log(data)
+            //localStorage.setItem('token', JSON.stringify(data))
+            //setisLoggedin(true)
             
         } catch(error) {
             const message = error.response.data.mensagem
