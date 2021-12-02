@@ -65,7 +65,7 @@ router.post('/',mestre,(req,res,next)=>{
                         if(error){return res.status(500).send({error:error})}
                         if(result.length!=0){return res.status(409).send({mensagem:"Endereço já cadastrado"})}
                         conn.query(
-                            'INSERT INTO endereço (id_cidade, bairro, rua, numero) VALUES (?,?,?,?,?)',
+                            'INSERT INTO endereço (id_cidade, bairro, rua, numero) VALUES (?,?,?,?)',
                             [
                                 req.body.id_cidade,
                                 req.body.bairro,
@@ -74,6 +74,7 @@ router.post('/',mestre,(req,res,next)=>{
                             ],
                             (error,result,field)=>{
                                 if(error){return res.status(500).send({error:error})}
+                                enderecoID = result.insertId
                                 conn.query(
                                     'SELECT * FROM consultorio WHERE id_endereco = ?',
                                     [result.insertId],
@@ -84,7 +85,7 @@ router.post('/',mestre,(req,res,next)=>{
                                             'INSERT INTO consultorio (nome, id_endereco) VALUES (?,?)',
                                             [
                                                 req.body.nome,
-                                                result.insertId
+                                                enderecoID
                                             ],
                                             (error, result, field)=>{
                                                 if(error){return res.status(500).send({error:error})}
@@ -92,7 +93,8 @@ router.post('/',mestre,(req,res,next)=>{
                                                     mensagem:"Consultório cadastrado com sucesso!",
                                                     consultorioCriado:{
                                                         nome: req.body.nome,
-                                                        consultorio: result.id_consultorio
+                                                        consultorio: result.id_consultorio,
+                                                        endereço: result.id_endereco
                                                     }
                                                 }
                                                 return res.status(201).send(response)
