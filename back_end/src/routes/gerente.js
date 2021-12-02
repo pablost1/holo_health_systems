@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router()
 const pool = require('../mysql').pool
 const login_gerente = require('../middleware/login_gerente')
-
-router.get('/reservas',login_gerente,(req,res)=>{
+const login_usuario = require('../middleware/login_usuario')
+router.get('/reservas',login_usuario,(req,res)=>{
     pool.getConnection((err,conn)=>{
 
         if(err){return res.status(500).send({error:err})}
@@ -25,6 +25,7 @@ router.get('/reservas',login_gerente,(req,res)=>{
         })
     })
 })
+
 router.post('/nova_reserva',login_gerente,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}
