@@ -4,6 +4,7 @@ module.exports = (req,res,next)=>{
         const token = req.headers.authorization.split(' ')[1]
         const decode = jwt.verify(token,process.env.MESTRE_JWT_KEY)
         req.usuario = decode
+        console.log("stoaqui")
         next()
     } catch(error){
         return res.status(401).send({mensagem:"usuário não autenticado"})
