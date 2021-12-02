@@ -1,4 +1,4 @@
-# holo_health_systems
+# Holo Health Systems
 
 ### Membros do projeto
 
