@@ -29,7 +29,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
   return (
     <Route {...rest} render={ props => {
-      if(!isLoggedin) return <Redirect to="/login" />
+      // if(!isLoggedin) return <Redirect to="/login" />
 
       if(rest.privacy === rest.type) {
 

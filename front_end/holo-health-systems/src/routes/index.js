@@ -18,6 +18,7 @@ import MedicoHome from '../medico-pages/home/index';
 import MeusHorarios from '../medico-pages/meus-horarios';
 import EmAndamento from '../medico-pages/em-andamento/index';
 import SalasConsultorio from '../master-pages/salas-consultorio/index';
+import VincularConsultorio from '../medico-pages/vincular-consultorio/index';
 
 
 
@@ -115,6 +116,12 @@ export const routes = [
         Component: EmAndamento,
         privacy: 'Medico'
     },
+    {
+        path: '/vincular-consultorio',
+        Component: VincularConsultorio,
+        privacy: ''
+    }
+    ,
     {
         path: '/salas',
         Component: SalasConsultorio,

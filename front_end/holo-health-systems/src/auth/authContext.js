@@ -1,5 +1,5 @@
 import  React, { createContext, useState } from 'react';
-import  axios  from 'axios';
+import http from '../http'
 // import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -8,11 +8,6 @@ import { useEffect } from 'react';
 
 
 const AuthContext = createContext()
-const http = axios.create({
-    baseURL: 'http://localhost:3000'
-})
-
-
 
 
 function AuthorizationContext({children}) {
@@ -70,6 +65,7 @@ function AuthorizationContext({children}) {
             localStorage.setItem('token', JSON.stringify(data.token))
             setisLoggedin(true)
             setUserType(data.tipo)
+            http.defaults.headers.Authorization = `Bearer ${data.token}`
             
             
         } catch(error) {
@@ -83,6 +79,7 @@ function AuthorizationContext({children}) {
         localStorage.removeItem('token')
         setisLoggedin(false)
         setUserType("")
+        http.defaults.headers.Authorization = undefined
 
     }
 
