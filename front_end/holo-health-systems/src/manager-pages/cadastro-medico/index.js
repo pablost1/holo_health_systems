@@ -4,7 +4,9 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Button from '../../sharable-components/button/index';
 import InputMask from 'react-input-mask';
-
+import http from '../../http/index'
+import { useContext } from 'react';
+import { AuthContext } from '../../auth/authContext';
 
 const validation = Yup.object().shape({
     nome: Yup.string()
@@ -15,8 +17,6 @@ const validation = Yup.object().shape({
         .required('Um CPF é necessário'),
     crm: Yup.string()
         .required('Um CRM é necessário'),
-    tipo: Yup.string()
-        .required('Um tipo de profissional é necessário'),
     senha: Yup.string()
         .required('Uma senha é necessária'),
 })
@@ -24,7 +24,7 @@ const validation = Yup.object().shape({
  
 
 export default function CadastroMedico() {
-
+    const {handleError} = useContext(AuthContext)
     return (
         <div className="cadastro-medico-container">
             <DescriptionHeader path="/home">Cadastrar médico</DescriptionHeader>
@@ -35,13 +35,19 @@ export default function CadastroMedico() {
                         sobrenome: '',
                         cpf: '',
                         crm: '',
-                        tipo: '',
                         senha: ''
                     }}
 
 
                     onSubmit={(value) => {
                         console.log(value)
+                        http.post('/usuario/cadastro/medico',value)
+                            .then((res)=>{console.log(res)})
+                            .catch((error)=>{
+                                console.log(http.defaults.headers.Authorization) 
+                                const message = error.response.data.mensagem
+                                console.log(message)
+                            })
                     }}
 
                     validationSchema={validation}
@@ -59,11 +65,7 @@ export default function CadastroMedico() {
                                 <label>Sobrenome</label>
                                 <Field 
                                     name="sobrenome"
-                                    render={({field}) => (
-                                        <InputMask
-                                             mask="99999999-9/aa"     
-                                        />
-                                    )}
+                                    
                                 />
                                 { errors.sobrenome && touched.sobrenome ? <p>{errors.sobrenome}</p> : ''}
                             </div>
@@ -71,14 +73,7 @@ export default function CadastroMedico() {
                                 <label>CPF</label>
                                 <Field 
                                     name="cpf"
-                                    render={({field}) => (
-                                        <InputMask
-                                             mask="999.999.999-99"
-
-                                            
-                                        />
                                     
-                                    )}
                                     
                                 />
                                 { errors.cpf && touched.cpf ? <p>{errors.cpf}</p> : ''}
@@ -87,15 +82,6 @@ export default function CadastroMedico() {
                                 <label>CRM</label>
                                 <Field name="crm"/>
                                 { errors.crm && touched.cpf ? <p>{errors.crm}</p> : ''}
-                            </div>
-                            <div className="form-group">
-                                <label>Tipo</label>
-                                <Field as="select" className="input" name="tipo">
-                                    <option default value=""></option> 
-                                    <option value="M">Médico</option>
-                                    
-                                </Field>
-                                { errors.tipo && touched.tipo ? <p>{errors.tipo}</p> : ''}
                             </div>
                             <div className="form-group">
                                 <label>Senha</label>

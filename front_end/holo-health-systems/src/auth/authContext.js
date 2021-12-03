@@ -17,10 +17,12 @@ function AuthorizationContext({children}) {
 
     useEffect( () => {
 
-        const token = localStorage.getItem('token')
-
-        if(token) {
+        const token = JSON.parse(localStorage.getItem('token'))
+        const tipo = JSON.parse(localStorage.getItem('tipo'))
+        http.defaults.headers.Authorization = `Bearer ${token}`
+        if(token && tipo) {
             setisLoggedin(true)
+            setUserType(tipo)
         }
     }, [])
 
@@ -63,6 +65,7 @@ function AuthorizationContext({children}) {
             const { data } = await http.post('/usuario/login', user)
             
             localStorage.setItem('token', JSON.stringify(data.token))
+            localStorage.setItem("tipo",JSON.stringify(data.tipo))
             setisLoggedin(true)
             setUserType(data.tipo)
             http.defaults.headers.Authorization = `Bearer ${data.token}`

@@ -132,26 +132,26 @@ router.post("/cadastro/gerente",cadastro_gerente,(req,res,next)=>{
 })
 router.post("/cadastro/medico",cadastro_medico,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
-        if(error){return res.status(500).send({error:error})}
+        if(error){return res.status(500).send({mensagem:error})}
         conn.query(
             'SELECT * FROM usuario WHERE cpf = ?',
             [req.body.cpf],
             (error,results,fields)=>{
-                if(error){return res.status(500).send({error:error})}
+                if(error){return res.status(500).send({mensagem:error})}
                 if(results.length>0){return res.status(409).send({mensagem: "cpf já cadastrado"})}
                 conn.query(
                     'SELECT * FROM usuario WHERE email = ?',
                     [req.body.email],
                     (error,result,field)=>{
-                        if(error){return res.status(500).send({error:error})}
+                        if(error){return res.status(500).send({mensagem:error})}
                         if(result.length>0){return res.status(409).send({mensagem: "email já cadastrado"})}
                         conn.query("SELECT * FROM medico WHERE crm=?",[req.body.crm],(error,results,fields)=>{
-                            if(error){return res.status(500).send({error:error})}
+                            if(error){return res.status(500).send({mensagem:error})}
                             if(results.length>0){return res.status(409).send({mensagem: "CRM já cadastrado"})}
                             const saltRounds = 5
                         bcrypt.genSalt(saltRounds, function(err, salt){
                             bcrypt.hash(req.body.senha, salt, (errorBcrypt,hash)=>{     
-                            if(errorBcrypt){return res.status(500).send({error:errorBcrypt.message})}
+                            if(errorBcrypt){return res.status(500).send({mensagem:errorBcrypt.message})}
                             
                             conn.query(
                                 'INSERT INTO usuario (cpf,nome,sobrenome,dt_nascimento,email,senha) VALUES (?,?,?,?,?,?)',
@@ -164,10 +164,10 @@ router.post("/cadastro/medico",cadastro_medico,(req,res,next)=>{
                                     hash
                                 ],
                                 (error,result,field)=>{
-                                    if(error){return res.status(500).send({error:error})}
+                                    if(error){return res.status(500).send({mensagem:error})}
                                     conn.query('INSERT INTO medico (crm,especialidade,cpf_medico,geral) VALUES (?,?,?,?)',[req.body.crm,req.body.especialidade,req.body.cpf,req.body.geral],(error,results,fields)=>{
                                         conn.release()
-                                        if(error){return res.status(500).send({error:error})}
+                                        if(error){return res.status(500).send({mensagem:error})}
                                         const response = {
                                             mensagem: "Medico cadastrado com sucesso",
                                             usuarioCriado: {

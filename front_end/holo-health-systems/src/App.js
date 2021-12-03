@@ -9,7 +9,7 @@ import { useContext } from 'react';
 import moment from 'moment'
 import Error404 from './utils/404';
 import LoginPage from './pages/login';
-
+import { useEffect } from "react"
 
 
 
@@ -29,7 +29,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
   return (
     <Route {...rest} render={ props => {
-      // if(!isLoggedin) return <Redirect to="/login" />
+      if(!isLoggedin) return <Redirect to="/login" />
 
       if(rest.privacy === rest.type) {
 
