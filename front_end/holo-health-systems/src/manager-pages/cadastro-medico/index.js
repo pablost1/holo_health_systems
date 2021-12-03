@@ -17,6 +17,9 @@ const validation = Yup.object().shape({
         .required('Um CPF é necessário'),
     crm: Yup.string()
         .required('Um CRM é necessário'),
+    email: Yup.string()
+        .email("Este e-mail é inválido")
+        .required("Um e-mail é necessário"),
     senha: Yup.string()
         .required('Uma senha é necessária'),
 })
@@ -35,6 +38,10 @@ export default function CadastroMedico() {
                         sobrenome: '',
                         cpf: '',
                         crm: '',
+                        email:'',
+                        dt_nascimento:'2000-11-10',
+                        especialidade:'otorrino',
+                        geral: true,
                         senha: ''
                     }}
 
@@ -42,11 +49,15 @@ export default function CadastroMedico() {
                     onSubmit={(value) => {
                         console.log(value)
                         http.post('/usuario/cadastro/medico',value)
-                            .then((res)=>{console.log(res)})
+                            .then((res)=>{
+                                const message = res.data.mensagem
+                                handleError(message)
+
+                            })
                             .catch((error)=>{
                                 console.log(http.defaults.headers.Authorization) 
                                 const message = error.response.data.mensagem
-                                console.log(message)
+                                handleError(message)
                             })
                     }}
 
@@ -82,6 +93,11 @@ export default function CadastroMedico() {
                                 <label>CRM</label>
                                 <Field name="crm"/>
                                 { errors.crm && touched.cpf ? <p>{errors.crm}</p> : ''}
+                            </div>
+                            <div className="form-group">
+                                <label>e-mail</label>
+                                <Field name="email"/>
+                                { errors.email && touched.email ? <p>{errors.email}</p> : ''}
                             </div>
                             <div className="form-group">
                                 <label>Senha</label>

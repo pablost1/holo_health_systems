@@ -133,6 +133,15 @@ router.post("/cadastro/gerente",cadastro_gerente,(req,res,next)=>{
 router.post("/cadastro/medico",cadastro_medico,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({mensagem:error})}
+        if(!req.body.cpf){return res.status(406).send({mensagem: "É necessário o CPF"})}
+        if(!req.body.nome){return res.status(406).send({mensagem: "É necessário o nome"})}
+        if(!req.body.sobrenome){return res.status(406).send({mensagem: "É necessário o sobrenome"})}
+        if(!req.body.email){return res.status(406).send({mensagem: "É necessário o e-mail"})}
+        if(!req.body.crm){return res.status(406).send({mensagem: "É necessário o CRM"})}
+        if(!req.body.dt_nascimento){return res.status(406).send({mensagem: "É necessário a data de nascimento"})}
+        if(!req.body.especialidade){return res.status(406).send({mensagem: "É necessário a especialidade"})}
+        if(!req.body.geral){return res.status(406).send({mensagem: "É médico é ou não clinico geral"})}
+        
         conn.query(
             'SELECT * FROM usuario WHERE cpf = ?',
             [req.body.cpf],
