@@ -6,17 +6,14 @@ import { Formik, Form, Field } from 'formik'
 import Button from '../../sharable-components/button/index';
 import axios from 'axios'
 import { useEffect, useState } from 'react';
+import http from '../../http/index';
 
 
-
-const http = axios.create({
-    baseURL: 'http://localhost:3001'
-})
 
 
 
 const EstadoValidation = Yup.object().shape({
-    estado: Yup.string()
+    nome: Yup.string()
         .required('Um estado é necessário')
 })
 
@@ -38,9 +35,9 @@ export default function AdicionarInformacoes() {
 
     async function CarregarEstados() {
         try {
-            const { data } =  await http.get('/estados')
+            const { data } =  await http.get('/estado')
             setestados(data)
-            
+            console.log(data)
         }
 
         catch(err) {
@@ -64,13 +61,13 @@ export default function AdicionarInformacoes() {
                 <Formik
                     validationSchema={EstadoValidation}
                     initialValues={{
-                        estado: ''
+                        nome: ''
                     }}
 
                     onSubmit={(value, { resetForm}) => {
-                        http.post('/estados', value)
+                        http.post('/estado', value)
                             .then( res => {
-                                CarregarEstados()
+//                                CarregarEstados()
                                 alert('Estado cadastrado com sucesso')
                                 resetForm()
                             })
@@ -84,8 +81,8 @@ export default function AdicionarInformacoes() {
                         <Form className="info-form">
                             <div className="form-group">
                                 <label>Nome do estado</label>
-                                <Field  name="estado" />
-                                { errors.estado && touched.estado ? <p>{errors.estado}</p> : '' }
+                                <Field  name="nome" />
+                                { errors.nome && touched.nome ? <p>{errors.nome}</p> : '' }
                             </div>
                             <Button style={{ alignSelf: 'baseline'}} size="small">Cadastrar</Button>
                         </Form>
@@ -120,7 +117,7 @@ export default function AdicionarInformacoes() {
                                 <Field as="select" name="estado" className="input">
                                     {
                                         estados.map( (estado, index) => (
-                                            <option key={index} value={estado.estado}>{estado.estado}</option>
+                                            <option key={estado.id_estado} value={estado.id_estado}>""</option>
                                         ))
                                     }
                                 </Field >
