@@ -3,6 +3,7 @@ const router = express.Router()
 const pool = require('../mysql').pool
 const login_gerente = require('../middleware/login_gerente')
 const login_usuario = require('../middleware/login_usuario')
+
 router.get('/reservas',login_usuario,(req,res)=>{
     pool.getConnection((err,conn)=>{
 
@@ -22,6 +23,28 @@ router.get('/reservas',login_usuario,(req,res)=>{
                 })
             }
             return res.status(200).send(response)
+        })
+    })
+})
+router.post('/horarios_reserva',login_usuario,(req,res)=>{
+    if(req.body.id_reserva){return res.status(406).send({mensagem:"É necessário a reserva"})}
+    pool.getConnection((err,conn)=>{
+        if(err){return res.status(500).send({error:err})}
+        conn.query("SELECT * FROM reserva WHERE id_reserva=?",[req.body.id_reserva],(err,results)=>{
+            if(err){return res.status(500).send({error:err})}
+            const horaInicio = results[0].hor_ini.split(":").map(x =>{return parseInt(x)})
+            const horaFim = results[0].hor_fin.split(":").map(x =>{return parseInt(x)})
+            const horarios = []
+            for(;horaInicio[0]<=horaFim[0];horaInicio[0]++){
+                            
+                for(;horaInicio[1]<(horaInicio[0]==horaFim[0] ? horaFim[1] : 59);horaInicio[1]+=10){
+                    let horaFormatada = horaInicio[0].toString()+":"+horaInicio[1].toString()+":00"
+                    horarios.push(horaFormatada)
+                    
+                }
+                horaInicio[1]=0
+                }
+            console.log(horarios)
         })
     })
 })

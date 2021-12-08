@@ -27,6 +27,27 @@ router.get('/',usuario,(req,res,next)=>{
     })
 })
 
+router.post('/especifica',usuario,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(req.body.id_estado){res.status(406).send({mensagem:"Estado necessário"})}
+        if(error){return res.status(500).send({error:error})}
+        conn.query('SELECT * FROM cidade WHERE id_estado=? ',[req.body.id_estado],(error,results,field)=>{
+            if(error){return res.status(500).send({error:error})}
+            const response = {
+                cidades: results.map(cidade =>{
+                    return {
+                        id_cidade: cidade.id_cidade,
+                        id_estado: cidade.id_estado,
+                        nome: cidade.nome
+                    }
+                })
+            }
+            return res.status(200).send(response)
+        })
+    })
+})
+
+
 /**
  * Cadastra uma cidade
  * 
