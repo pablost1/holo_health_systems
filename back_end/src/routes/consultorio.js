@@ -45,6 +45,14 @@ router.get('/',usuario,(req,res,next)=>{
  * }
  */
 router.post('/',mestre,(req,res,next)=>{
+
+    if(!req.body.nome){return res.status(406).send("Insira o nome do consultório")}
+    if(!req.body.id_cidade || req.body.id_cidade){return res.status(406).send("Insira um número identificador da cidade válido")}
+    if(!req.body.bairro){return res.status(406).send("Insira o nome do bairro")}
+    if(!req.body.rua){return res.status(406).send("Insira o nome da rua")}
+    if(!req.body.numero){return res.status(406).send("Insira o numero do estabelecimento")}
+    if(!req.body.n_sala || req.body.n_sala <= 0){return res.status(406).send("Insira um número de salas válido")}
+
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query(
@@ -144,19 +152,32 @@ router.post('/',mestre,(req,res,next)=>{
  *  Formato da requisição
  * {
  *      "nome"                  : String,   // Nome do consultório.
- *      "id_consultório"        : Integer   // Numero identificador do consultório. 
+ *      "id_consultorio"        : Integer   // Numero identificador do consultório. 
  * }
  */
 router.patch('/',mestre,(req,res,next)=>{
+
+    if(!req.body.nome){return res.status(406).send("Insira o nome do consultorio")}
+    if(!req.body.id_consultorio){return res.status(406).send("Insira o número identificador do consultório")}
+
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
-        conn.query('SELECT * FROM consultorio WHERE id_consultorio = ?', [req.body.id_consultorio],(error,results,fields)=>{  
+        conn.query(
+            'SELECT * FROM consultorio WHERE id_consultorio = ?', 
+            [req.body.id_consultorio],
+            (error,results,fields)=>{  
             if(error){return res.status(500).send({error:error})}
             if(results.length==0){return res.status(404).send({mensagem:"consultorio não encontrado"})}
-            conn.query('SELECT * FROM consultorio WHERE nome = ?',[req.body.nome],(error,result,field)=>{
+            conn.query(
+                'SELECT * FROM consultorio WHERE nome = ?',
+                [req.body.nome],
+                (error,result,field)=>{
                 if(error){return res.status(500).send({error:error})}
-                if(result.length>0){return res.status(409).send({mensagem:"consultorio já cadastrado"})}
-                conn.query('UPDATE consultorio SET nome = ? WHERE id_consultorio = ?',[req.body.nome,req.body.id_consultorio],(error,resul,fiel)=>{
+                if(result.length>0){return res.status(409).send({mensagem:"Um consultório já foi cadastrado com esse nome"})}
+                conn.query(
+                    'UPDATE consultorio SET nome = ? WHERE id_consultorio = ?',
+                    [req.body.nome,req.body.id_consultorio],
+                    (error,resul,field)=>{
                     conn.release()
                     if(error){return res.status(500).send({error:error})}
                     const response = {
@@ -183,14 +204,33 @@ router.patch('/',mestre,(req,res,next)=>{
  * }
  */
 router.delete('/',mestre,(req,res,next)=>{
+
+    if(!req.body.id_consultorio){return res.status(406).send("Insira o número identificador do consultorio")}
+
     pool.getConnection((error,conn)=>{
+
         if(error){return res.status(500).send({error:error})}
         conn.query(
-            'DELETE FROM consultorio WHERE id_consultorio = ?',
+            'SELECT * FROM consultorio WHERE id_consultorio = ?',
             [req.body.id_consultorio],
             (error,result,field)=>{
                 if(error){return res.status(500).send({error:error})}
-                return res.status(202).send({mensagem:"removido com sucesso"})
+                if(result.length==0){return res.status(409).send("Não existe nenhum consultório com este número identificador")}
+
+                conn.query(
+                    'DELETE FROM sala WHERE id_consultorio = ?',
+                    [req.body.id_consultorio],
+                    (error,result,field)=>{
+                        if(error){return res.status(500).send({error:error})}
+                        conn.query(
+                            'DELETE FROM consultorio WHERE id_consultorio = ?',
+                            [req.body.id_consultorio],
+                            (error,result,field)=>{
+                                if(error){return res.status(500).send({error:error})}
+                                return res.status(202).send({mensagem:"removido com sucesso"})
+                            }
+                        )
+                    })
             }
         )
     })

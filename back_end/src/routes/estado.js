@@ -38,6 +38,9 @@ router.get("/",usuario,(req,res,next)=>{
  * }
  */
 router.post('/',mestre,(req,res,next)=>{
+
+    if(!req.body.nome){return res.status(406).send("Insira o nome do estado")}
+
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query(
@@ -74,6 +77,10 @@ router.post('/',mestre,(req,res,next)=>{
  * }
  */
 router.patch('/',mestre,(req,res,next)=>{
+
+    if(!req.body.id_estado){return res.status(406).send("Insira o numero identificador do estado")}
+    if(!req.body.nome){return res.status(406).send("Insira o novo nome do estado")}
+
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query('SELECT * FROM estado WHERE id_estado = ?',[req.body.id_estado],(error,results,fields)=>{
@@ -108,6 +115,9 @@ router.patch('/',mestre,(req,res,next)=>{
  * }
  */
 router.delete('/',mestre,(req,res,next)=>{
+
+    if(!req.body.id_estado){return res.status(406).send("Insira o número identificador do estado a ser removido")}
+
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query(

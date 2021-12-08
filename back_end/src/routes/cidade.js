@@ -58,6 +58,10 @@ router.post('/especifica',usuario,(req,res,next)=>{
  * }
  */
 router.post('/',mestre,(req,res,next)=>{
+
+    if(!req.body.nome){return res.status(406).send("Insira o nome da cidade")}
+    if(!req.body.id_estado){return res.status(406).send("Insira o número identificador do estado")}
+
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query(
@@ -100,12 +104,17 @@ router.post('/',mestre,(req,res,next)=>{
  * 
  *  Formato da requisição
  * {
- *      "nome"             : String,   // Nome do estado.
+ *      "nome"             : String,   // Nome da cidade.
  *      "id_estado"        : Integer   // Numero identificador do estado. 
  *      "id_cidade"        : Integer   // Numero identificador da cidade. 
  * }
  */
 router.patch('/',mestre,(req,res,next)=>{
+
+    if(!req.body.nome){return res.status(406).send("Insira o nome da cidade")}
+    if(!req.body.id_estado){return res.status(406).send("Insira o número identificador do estado")}
+    if(!req.body.id_cidade){return res.status(406).send("Insira o número identificador da cidade")}
+
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query('SELECT * FROM cidade WHERE id_cidade = ?', [req.body.id_cidade],(error,results,fields)=>{
