@@ -38,10 +38,10 @@ router.get('/',usuario,(req,res,next)=>{
  * {
  *      "nome"             : String,   // Nome do consultório.
  *      "id_cidade"        : Integer,  // Numero identificador da cidade.
- *      "bairro"           : String,   // Nome do bairro
- *      "rua"              : String    // Nome da rua
- *      "numero"           : String,   // Numero identificador do estabelecimento
- *       
+ *      "bairro"           : String,   // Nome do bairro.
+ *      "rua"              : String,   // Nome da rua.
+ *      "numero"           : String,   // Numero identificador do estabelecimento.
+ *      "n_sala"           : Integer   // Número de salas que o consultório possui.
  * }
  */
 router.post('/',mestre,(req,res,next)=>{
@@ -87,17 +87,44 @@ router.post('/',mestre,(req,res,next)=>{
                                                 req.body.nome,
                                                 enderecoID
                                             ],
-                                            (error, result, field)=>{
+                                            async (error, result, field)=>{
                                                 if(error){return res.status(500).send({error:error})}
-                                                const response = {
-                                                    mensagem:"Consultório cadastrado com sucesso!",
-                                                    consultorioCriado:{
-                                                        nome: req.body.nome,
-                                                        consultorio: result.id_consultorio,
-                                                        endereço: result.id_endereco
-                                                    }
-                                                }
-                                                return res.status(201).send(response)
+                                                console.log('pre-for') // DEBUG
+                                                id_consultorio_bruh = result.insertId
+                                                console.log(id_consultorio_bruh)
+                                                try{
+                                                    for(i = 0; i < req.body.n_sala; i++) {
+                                                    console.log('inside-for') // DEBUG
+                                                    
+                                                    
+                                                    conn.query(
+                                                        'INSERT INTO sala (id_consultorio) VALUES (?)',
+                                                        [id_consultorio_bruh],
+                                                        (error, result, field)=>{
+                                                            console.log(result.insertId) // DEBUG
+                                                            if(error){return res.status(500).send({error:error})}
+                                                            console.log('pre-if') // DEBUG
+                                                            if(i == req.body.n_sala) {
+                                                                console.log('\n') // DEBUG
+                                                                console.log(i, req.body.n_sala) // DEBUG
+                                                                console.log('inside-if') // DEBUG
+
+                                                                
+                                                            }
+                                                        }
+                                                    )
+                                                    
+                                                }} finally {
+                                                    const response = {                                                                    
+                                                                mensagem:"Consultório cadastrado com sucesso!",
+                                                                consultorioCriado:{
+                                                                    nome: req.body.nome,
+                                                                    consultorio: id_consultorio_bruh,
+                                                                    endereço: enderecoID
+                                                                }
+                                                            }
+                                                            console.log('pre-response') // DEBUG
+                                                            return res.status(201).send(response)}
                                             }
                                         )
                                     }
