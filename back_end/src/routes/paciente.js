@@ -6,6 +6,7 @@ const login_paciente = require('../middleware/login_paciente')
 router.post("/marcar_consulta",login_paciente,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}
+        if(!req.body.hor_marc){return res.status(406).send({mensagem:"É necessário fornecer o horário desejado."})}
         conn.query("SELECT * FROM reserva WHERE id_reserva=?",[req.body.id_reserva],(err,results)=>{
             if(err){return res.status(500).send({error:err})}
             if(results.length==0){return res.status(404).send({mensagem: "Reserva não encontrada"})}
@@ -25,6 +26,7 @@ router.post("/marcar_consulta",login_paciente,(req,res)=>{
         })
     })
 })
+
 router.get("/minhas_consultas",login_paciente,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}

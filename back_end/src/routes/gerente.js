@@ -29,6 +29,11 @@ router.get('/reservas',login_usuario,(req,res)=>{
 router.post('/nova_reserva',login_gerente,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}
+        if(!req.body.data){return res.status(406).send({mensagem: "É necessário a data."})}
+        if(!req.body.hor_ini){return res.status(406).send({mensagem: "É necessário a hora inicial."})}
+        if(!req.body.hor_fin){return res.status(406).send({mensagem: "É necessário a hora final."})}
+        if(!req.body.id_sala){return res.status(406).send({mensagem: "É necessário a sala."})}
+        if(!req.body.id_medico){return res.status(406).send({mensagem: "É necessário o médico."})}
         conn.query("SELECT * FROM sala WHERE id_sala=?",[req.body.id_sala],(err,results)=>{
             if(err){return res.status(500).send({error:err})}
             if(results.length==0){return res.status(404).send({mensagem:"sala não encontrada"})}

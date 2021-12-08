@@ -20,6 +20,11 @@ const cadastro_gerente = require('../middleware/cadastro_gerente');
 router.post('/cadastro',(req,res,next)=>{
     pool.getConnection((error,conn)=>{  
         if(error){return res.status(500).send({error:error})}
+        if(!req.body.cpf){return res.status(406).send({mensagem: "É necessário o CPF"})}
+        if(!req.body.nome){return res.status(406).send({mensagem: "É necessário o nome"})}
+        if(!req.body.sobrenome){return res.status(406).send({mensagem: "É necessário o sobrenome"})}
+        if(!req.body.email){return res.status(406).send({mensagem: "É necessário o e-mail"})}
+        if(!req.body.dt_nascimento){return res.status(406).send({mensagem: "É necessário a data de nascimento"})}
         conn.query(
             'SELECT * FROM usuario WHERE cpf = ?',
             [req.body.cpf],
@@ -70,8 +75,15 @@ router.post('/cadastro',(req,res,next)=>{
     })
 })
 router.post("/cadastro/gerente",cadastro_gerente,(req,res,next)=>{
+    
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
+        if(!req.body.cpf){return res.status(406).send({mensagem: "É necessário o CPF"})}
+        if(!req.body.nome){return res.status(406).send({mensagem: "É necessário o nome"})}
+        if(!req.body.sobrenome){return res.status(406).send({mensagem: "É necessário o sobrenome"})}
+        if(!req.body.email){return res.status(406).send({mensagem: "É necessário o e-mail"})}
+        if(!req.body.dt_nascimento){return res.status(406).send({mensagem: "É necessário a data de nascimento"})}
+        if(!req.body.id_consultorio){return res.status(406).send({mensagem: "É necessário o consultório"})}
         conn.query(
             'SELECT * FROM usuario WHERE cpf = ?',
             [req.body.cpf],

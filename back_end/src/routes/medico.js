@@ -7,6 +7,7 @@ const moment = require('moment')
 router.post("/novo_consultorio",login_medico,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error: err})}
+        if(!req.body.id_consultorio){return res.status(406).send({mensagem: "É necessário o consultório."})}
         conn.query("SELECT * FROM consultorio WHERE id_consultorio=?",[req.body.id_consultorio],(err,results)=>{
             if(err){return res.status(500).send({error: err})}
             if(results.length==0){return res.status(404).send({mensagem: "Consultório não encontrado"})}
