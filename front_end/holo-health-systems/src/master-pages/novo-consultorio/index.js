@@ -1,31 +1,28 @@
 import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header/index';
-
-
 import  * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik'
 import Button from '../../sharable-components/button/index';
-
+import http from '../../http/index';
+import { useState, useEffect } from 'react';
 
 
 
 
 
 const validation = Yup.object().shape({
-    NomeConsultorio: Yup.string()
+    nome: Yup.string()
         .required('Um nome é necessário'),
-    Estado: Yup.string()
-        .required('Um Estado é necessário'),
-    Cidade: Yup.string()
+    id_cidade: Yup.string()
         .required('Uma cidade é necessária'),
-    Bairro: Yup.string()
+    bairro: Yup.string()
         .required('Um bairro é necessário'),
-    Rua: Yup.string()
+    rua: Yup.string()
         .required('Uma rua é necessária'),
-    Numero: Yup.string()
-        .required('Um Número é necessário'),
-    NumeroSalas: Yup.string()
-        .required('O número de salas é necessáiro')
+    numero: Yup.string()
+        .required('Um número é necessário'),
+    n_sala: Yup.string()
+        .required('Um Número de salas é necessário'),
     
 })
 
@@ -34,64 +31,110 @@ const validation = Yup.object().shape({
 
 export default function  NovoConsultorio() {
 
+    const [ cidades, setcidades ] = useState([])
+    const [ estado, setestado ] = useState([])
+    const [ estadoSelecionado, setestadoSelecionado] = useState('')
+
+    async function CarregarEstados() {
+
+        try {
+            const { data } = await http.get('/estado')
+            setestado(data.estados)
+        }
+
+        catch(err) {
+            alert(err.response.data.mensagem)
+        }
+    }
+
+
+
+    useEffect( () => {
+
+        (async function CarregarCidades(){
+            try {
+                const response = await http.get('/cidade')
+                setcidades(response.data.cidades)
+                
+            }
+    
+            catch(err){
+                console.log(err.response)
+            }
+        })()
+
+    },[])
+
+    
+
+
     return (
         <div className="novo-consultorio-container">
-            <DescriptionHeader>Novo consultório</DescriptionHeader>
+            <DescriptionHeader path="/master-home">Novo consultório</DescriptionHeader>
             <Formik
                 initialValues={{
-                    NomeConsultorio: '',
-                    Estado: '',
-                    Cidade: '',
-                    Bairro: '',
-                    Rua: '',
-                    Numero: '',
-                    NumeroSalas: ''
+                    nome: '',
+                    id_cidade: '',
+                    bairro: '',
+                    rua: '',
+                    numero: '',
+                    n_sala: '',
+                    
                 }}
 
                 validationSchema={validation}
 
                 onSubmit={(value) => {
-                    alert(value.Estado)
+                    console.log(value)
                 }}
             >
                 {({errors, touched, values}) => (
                     <Form className="consultorio-form">
                         <div className="form-group">
-                            <label>Nome do consultório</label>
-                            <Field name="NomeConsultorio" className="input"/>
-                            { errors.NomeConsultorio && touched.NomeConsultorio ? <p>{ errors.NomeConsultorio }</p> : ''}
+                            <label>Nome</label>
+                            <Field name="nome" className="input"/>
+                            { errors.nome && touched.nome ? <p>{ errors.nome}</p> : ''}
                         </div>
                         <div className="form-group">
                             <label>Estado</label>
-                            <Field name="Estado" className="input"/>
-                            { errors.Estado && touched.Estado ? <p>{ errors.Estado }</p> : ''}
+                            <Field as="select" name="id_cidade" className="input">
+                                {
+                                    
+                                }
+                            </Field>
+                            { errors.id_cidade && touched.id_cidade ? <p>{ errors.id_cidade }</p> : ''}
                         </div>
                         <div className="form-group">
                             <label>Cidade</label>
-                            <Field name="Cidade"className="input"/>
-                            { errors.Cidade && touched.Cidade ? <p>{ errors.Cidade }</p> : ''}
+                            <Field as="select" name="id_cidade" className="input">
+                                {
+                                    console.log(cidades)
+                                }
+                            </Field>
+                            { errors.id_cidade && touched.id_cidade ? <p>{ errors.id_cidade }</p> : ''}
                         </div>
                         <div className="form-group">
                             <label>Bairro</label>
-                            <Field name="Bairro"className="input"/>
-                            { errors.Bairro && touched.Bairro ? <p>{ errors.Bairro }</p> : ''}
+                            <Field name="bairro"className="input"/>
+                            { errors.bairro && touched.bairro ? <p>{ errors.bairro }</p> : ''}
                         </div>
                         <div className="form-group">
                             <label>Rua</label>
-                            <Field name="Rua"className="input"/>
-                            { errors.Rua && touched.Bairro ? <p>{ errors.Bairro }</p> : ''}
+                            <Field name="rua"className="input"/>
+                            { errors.rua && touched.rua ? <p>{ errors.rua }</p> : ''}
                         </div>
                         <div className="form-group">
                             <label>Número</label>
-                            <Field name="Numero" className="input"/>
-                            { errors.Numero && touched.Numero ? <p>{ errors.Numero }</p> : ''}
+                            <Field name="numero"className="input"/>
+                            { errors.numero && touched.numero ? <p>{ errors.numero }</p> : ''}
+                        </div>
+                        <div className="form-group">
+                            <label>Número de salas</label>
+                            <Field name="n_sala" className="input"/>
+                            { errors.n_sala && touched.n_sala ? <p>{ errors.n_sala }</p> : ''}
                         </div>
 
-                        <div className="form-group">
-                            <label>Número de Salas</label>
-                            <Field name="NumeroSalas"className="input"/>
-                            { errors.NumeroSalas && touched.NumeroSalas ? <p>{ errors.NumeroSalas }</p> : ''}
-                        </div>
+                        
                         
                         <Button
                             size="medium"

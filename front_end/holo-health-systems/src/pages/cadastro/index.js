@@ -25,24 +25,28 @@ export default function Cadastro() {
     
     
     const validation = Yup.object().shape({
-        nome: Yup.string()
-            .min(2, 'Nome muito curto')
-            .max(30, 'Nome muito longo')
-            .required('O nome é necessário'),
-        sobrenome: Yup.string()
-            .min(2, 'Sobrenome muito curto')
-            .max(30, 'Sobrenome muito longo')
-            .required('Um sobrenome é necessário'),
+        cpf: Yup.string()
+            .required('O cpf é necessário'),
+        senha: Yup.string()
+            .required('Uma senha é necessária')
+            .min(8, 'Senha muito curta')
+            .max(16, 'Senha muito longa'),
         email: Yup.string()
             .email('E-mail inválido').required('Um e-mail é necessário'),
-        cpf: Yup.number()
-            .required('Um CPF é necessário'),
-        senha: Yup.string()
-            .required('Uma senha é necessária'),
-        tipo: Yup.string()
-            .required('Selecione um tipo de usuário')
+        nome: Yup.string()
+            .required('Um nome é necessário'),
+        sobrenome: Yup.string()
+            .required('Um sobrenome é necessário'),
+        
         
     })
+
+//     "cpf"              : String,  // Numero do CPF do novo usuário
+//  *      "senha"            : String,   // Senha do usuario
+//  *      "email"            : String,   // E-mail de cadastro do novo usuario
+//  *      "nome"             : String,   // Nome principal do usuario
+//  *      "sobrenome"        : String,   // Ultimo nome do usuario
+
 
 
     return (
@@ -51,12 +55,12 @@ export default function Cadastro() {
             
             <Formik
                 initialValues={{
+                    cpf: '',
+                    senha: '',
+                    email: '',
                     nome: '',
                     sobrenome: '',
-                    email: '',
-                    cpf: 0,
-                    tipo: '',
-                    senha: ''
+                    
                 }}
 
                 validationSchema={validation}
@@ -90,15 +94,6 @@ export default function Cadastro() {
                             <label>CPF</label>
                             <Field className="input" name="cpf" />
                             {errors.cpf && touched.cpf ? <ValidationField error={errors.cpf} /> : ''}
-                        </div>
-                        <div className="form-group">
-                            <label>Tipo</label>
-                            <Field defaultValue={'M'} as="select" className="input" name="tipo">
-                                
-                                <option value="M">Médico</option>
-                                <option value="P">Paciente</option>
-                            </Field>
-                            {errors.tipo && touched.tipo ? <ValidationField error={errors.tipo} /> : ''}
                         </div>
                         <div className="form-group">
                             <label>Senha</label>
