@@ -14,14 +14,14 @@ const usuario = require('../middleware/login_usuario')
 router.get('/',usuario,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
-        conn.query('SELECT * FROM consultorio',(error,results,field)=>{
+        conn.query('SELECT * FROM medic_consult',(error,results,field)=>{
             if(error){return res.status(500).send({error:error})}
             const response = {
-                consultorios: results.map(consultorio =>{
+                medic_consults: results.map(medic_consult =>{
                     return {
-                        id_consultorio: consultorio.id_consultorio,
-                        id_cidade: consultorio.id_cidade,
-                        nome: consultorio.nome
+                        id_medic_consult: medic_consult.id_medic_consult,
+                        id_cidade: medic_consult.id_cidade,
+                        nome: medic_consult.nome
 
                     }
                 })
@@ -32,6 +32,53 @@ router.get('/',usuario,(req,res,next)=>{
 })
 
 /**
+ * Consulta todas as medic_consults existentes
+ * 
+ */
+ router.get('/medic_consult',usuario,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        conn.query('SELECT * FROM medic_consult',
+        (error,results,field)=>{
+            if(error){return res.status(500).send({error:error})}
+            const response = {
+                medic_consults: results.map(medic_consult =>{
+                    return {
+                        id_medic_consult: medic_consult.id_medic_consult,
+                        id_consultorio: medic_consult.id_consultorio
+
+                    }
+                })
+            }
+            return res.status(200).send(response)
+        })
+    })
+})
+
+/**
+ * Retorna uma lista com números indentificadores de médicos e seus consultórios
+ * 
+ */
+ router.get('/medico',usuario,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        conn.query('SELECT * FROM medico_consultorio',
+        (error,results,field)=>{
+            if(error){return res.status(500).send({error:error})}
+            const response = {
+                medico_consultorio: results.map(medic_consult =>{
+                    return {
+                        id_medico: medic_consult.id_medico,
+                        id_consultorio: medic_consult.id_consultorio
+
+                    }
+                })
+            }
+            return res.status(200).send(response)
+        })
+    })
+})
+/**
  *  Cadastra um consultório.
  * 
  *  Formato da requisição
@@ -41,7 +88,7 @@ router.get('/',usuario,(req,res,next)=>{
  *      "bairro"           : String,   // Nome do bairro.
  *      "rua"              : String,   // Nome da rua.
  *      "numero"           : String,   // Numero identificador do estabelecimento.
- *      "n_sala"           : Integer   // Número de salas que o consultório possui.
+ *      "n_medic_consult"           : Integer   // Número de medic_consults que o consultório possui.
  * }
  */
 router.post('/',mestre,(req,res,next)=>{
@@ -51,7 +98,7 @@ router.post('/',mestre,(req,res,next)=>{
     if(!req.body.bairro){return res.status(406).send("Insira o nome do bairro")}
     if(!req.body.rua){return res.status(406).send("Insira o nome da rua")}
     if(!req.body.numero){return res.status(406).send("Insira o numero do estabelecimento")}
-    if(!req.body.n_sala || req.body.n_sala <= 0){return res.status(406).send("Insira um número de salas válido")}
+    if(!req.body.n_medic_consult || req.body.n_medic_consult <= 0){return res.status(406).send("Insira um número de medic_consults válido")}
 
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -84,30 +131,30 @@ router.post('/',mestre,(req,res,next)=>{
                                 if(error){return res.status(500).send({error:error})}
                                 enderecoID = result.insertId
                                 conn.query(
-                                    'SELECT * FROM consultorio WHERE id_endereco = ?',
+                                    'SELECT * FROM medic_consult WHERE id_endereco = ?',
                                     [result.insertId],
                                     (error,result,field)=>{
                                         if(error){return res.status(500).send({error:error})}
                                         if(result.length!=0){return res.status(409).send({mensagem:"Um consultório já cadastrado neste endereço"})}
                                         conn.query(
-                                            'INSERT INTO consultorio (nome, id_endereco) VALUES (?,?)',
+                                            'INSERT INTO medic_consult (nome, id_endereco) VALUES (?,?)',
                                             [
                                                 req.body.nome,
                                                 enderecoID
                                             ],
                                             (error, result, field)=>{
                                                 if(error){return res.status(500).send({error:error})}
-                                                id_consultorio_bruh = result.insertId
-                                                console.log(id_consultorio_bruh)
-                                                for(i = 0; i < req.body.n_sala; i++) {
+                                                id_medic_consult_bruh = result.insertId
+                                                console.log(id_medic_consult_bruh)
+                                                for(i = 0; i < req.body.n_medic_consult; i++) {
                                                     
                                                     
                                                     conn.query(
-                                                        'INSERT INTO sala (id_consultorio) VALUES (?)',
-                                                        [id_consultorio_bruh],
+                                                        'INSERT INTO medic_consult (id_medic_consult) VALUES (?)',
+                                                        [id_medic_consult_bruh],
                                                         (error, result, field)=>{
                                                             if(error){return res.status(500).send({error:error})}
-                                                            if(i == req.body.n_sala) {
+                                                            if(i == req.body.n_medic_consult) {
 
                                                                 
                                                             }
@@ -118,9 +165,9 @@ router.post('/',mestre,(req,res,next)=>{
                                                 }
                                                 const response = {                                                                    
                                                     mensagem:"Consultório cadastrado com sucesso!",
-                                                    consultorioCriado:{
+                                                    medic_consultCriado:{
                                                         nome: req.body.nome,
-                                                        consultorio: id_consultorio_bruh,
+                                                        medic_consult: id_medic_consult_bruh,
                                                         endereço: enderecoID
                                                     }
                                                 }
@@ -144,38 +191,38 @@ router.post('/',mestre,(req,res,next)=>{
  *  Formato da requisição
  * {
  *      "nome"                  : String,   // Nome do consultório.
- *      "id_consultorio"        : Integer   // Numero identificador do consultório. 
+ *      "id_medic_consult"        : Integer   // Numero identificador do consultório. 
  * }
  */
 router.patch('/',mestre,(req,res,next)=>{
 
-    if(!req.body.nome){return res.status(406).send("Insira o nome do consultorio")}
-    if(!req.body.id_consultorio){return res.status(406).send("Insira o número identificador do consultório")}
+    if(!req.body.nome){return res.status(406).send("Insira o nome do medic_consult")}
+    if(!req.body.id_medic_consult){return res.status(406).send("Insira o número identificador do consultório")}
 
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query(
-            'SELECT * FROM consultorio WHERE id_consultorio = ?', 
-            [req.body.id_consultorio],
+            'SELECT * FROM medic_consult WHERE id_medic_consult = ?', 
+            [req.body.id_medic_consult],
             (error,results,fields)=>{  
             if(error){return res.status(500).send({error:error})}
-            if(results.length==0){return res.status(404).send({mensagem:"consultorio não encontrado"})}
+            if(results.length==0){return res.status(404).send({mensagem:"medic_consult não encontrado"})}
             conn.query(
-                'SELECT * FROM consultorio WHERE nome = ?',
+                'SELECT * FROM medic_consult WHERE nome = ?',
                 [req.body.nome],
                 (error,result,field)=>{
                 if(error){return res.status(500).send({error:error})}
                 if(result.length>0){return res.status(409).send({mensagem:"Um consultório já foi cadastrado com esse nome"})}
                 conn.query(
-                    'UPDATE consultorio SET nome = ? WHERE id_consultorio = ?',
-                    [req.body.nome,req.body.id_consultorio],
+                    'UPDATE medic_consult SET nome = ? WHERE id_medic_consult = ?',
+                    [req.body.nome,req.body.id_medic_consult],
                     (error,resul,field)=>{
                     conn.release()
                     if(error){return res.status(500).send({error:error})}
                     const response = {
-                        mensagem:"consultorio alterado com sucesso",
+                        mensagem:"medic_consult alterado com sucesso",
                         estadoGerado: {
-                            id_consultorio: req.body.id_consultorio,
+                            id_medic_consult: req.body.id_medic_consult,
                             nome: req.body.nome
                         }
                     
@@ -192,31 +239,31 @@ router.patch('/',mestre,(req,res,next)=>{
  * 
  *  Formato da requisição
  * {
- *      "id_consultorio"        : Integer   // Numero identificador do consultorio. 
+ *      "id_medic_consult"        : Integer   // Numero identificador do medic_consult. 
  * }
  */
 router.delete('/',mestre,(req,res,next)=>{
 
-    if(!req.body.id_consultorio){return res.status(406).send("Insira o número identificador do consultorio")}
+    if(!req.body.id_medic_consult){return res.status(406).send("Insira o número identificador do medic_consult")}
 
     pool.getConnection((error,conn)=>{
 
         if(error){return res.status(500).send({error:error})}
         conn.query(
-            'SELECT * FROM consultorio WHERE id_consultorio = ?',
-            [req.body.id_consultorio],
+            'SELECT * FROM medic_consult WHERE id_medic_consult = ?',
+            [req.body.id_medic_consult],
             (error,result,field)=>{
                 if(error){return res.status(500).send({error:error})}
                 if(result.length==0){return res.status(409).send("Não existe nenhum consultório com este número identificador")}
 
                 conn.query(
-                    'DELETE FROM sala WHERE id_consultorio = ?',
-                    [req.body.id_consultorio],
+                    'DELETE FROM medic_consult WHERE id_medic_consult = ?',
+                    [req.body.id_medic_consult],
                     (error,result,field)=>{
                         if(error){return res.status(500).send({error:error})}
                         conn.query(
-                            'DELETE FROM consultorio WHERE id_consultorio = ?',
-                            [req.body.id_consultorio],
+                            'DELETE FROM medic_consult WHERE id_medic_consult = ?',
+                            [req.body.id_medic_consult],
                             (error,result,field)=>{
                                 if(error){return res.status(500).send({error:error})}
                                 return res.status(202).send({mensagem:"removido com sucesso"})
