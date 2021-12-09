@@ -29,7 +29,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
   return (
     <Route {...rest} render={ props => {
-      if(!isLoggedin) return <Redirect to="/login" />
+      console.log('private route')
+
+      if(!isLoggedin && rest.privacy !== '') return <Redirect to="/login" />
 
       if(rest.privacy === rest.type) {
 
@@ -68,7 +70,12 @@ function App() {
       <div className="App">
         <Switch>
           <Route exact path={["/", "/login"]} render={(props) => {
+            
+            
+
             if(isLoggedin && userType === 'Gerente') {
+
+              
               return <Redirect to="home-manager" /> 
             }
             
@@ -76,7 +83,7 @@ function App() {
               return <Redirect to="home" /> 
             }
 
-            if(isLoggedin && userType === 'Mestre') {
+            if(isLoggedin && userType === 'Mestre' ) {
               return <Redirect to="master-home" />
             }
 

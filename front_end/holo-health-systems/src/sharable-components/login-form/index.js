@@ -55,15 +55,13 @@ function LoginForm() {
                     </div>
                     <div className="form-group">
                         <label>Senha</label>
-                        <Field name="senha" className="input" type="password"/>
+                        <Field name="senha" type="password"/>
                         { errors.senha && touched.senha ? <p>{errors.senha} </p> : '' }
                     </div>
                     <div className="form-login">
-                        <button type="submit">Login</button>
-                        <span style={{fontSize: '.8rem', marginLeft: '15px'}}>
-                            Esqueci minha senha
-                        </span>
-                        <Lock style={{fontSize: '1.1rem'}}/>
+                        <Button size="medium">Login</Button>
+                       
+                        
                         
                         
                     </div>

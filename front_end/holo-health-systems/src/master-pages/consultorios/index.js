@@ -37,7 +37,7 @@ export default function Consultorios() {
 
     return(
         <div className="consultorios-container">
-            <DescriptionHeader>Consultórios</DescriptionHeader>
+            <DescriptionHeader path="/master-home">Consultórios</DescriptionHeader>
             <div className="consultorios">
                 <Consultorio />
                 <Consultorio />

@@ -29,7 +29,7 @@ export default function ConsultorioPage() {
 
     return (
         <div className="consultorio-page-container">
-            <DescriptionHeader> Consultório</DescriptionHeader>
+            <DescriptionHeader path="/master-home"> Consultório</DescriptionHeader>
             <div className="consultorio-page">
                 
                 <Subtitle>Nome do consultório</Subtitle>

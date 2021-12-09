@@ -27,24 +27,30 @@ router.get('/reservas',login_usuario,(req,res)=>{
     })
 })
 router.post('/horarios_reserva',login_usuario,(req,res)=>{
-    if(req.body.id_reserva){return res.status(406).send({mensagem:"É necessário a reserva"})}
+    if(!req.body.id_reserva){return res.status(406).send({mensagem:"É necessário a reserva"})}
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}
         conn.query("SELECT * FROM reserva WHERE id_reserva=?",[req.body.id_reserva],(err,results)=>{
             if(err){return res.status(500).send({error:err})}
+            if(results.length==0){return res.status(404).send({mensagem:"reserva não encontrada"})}
             const horaInicio = results[0].hor_ini.split(":").map(x =>{return parseInt(x)})
             const horaFim = results[0].hor_fin.split(":").map(x =>{return parseInt(x)})
-            const horarios = []
+            horarios = []
             for(;horaInicio[0]<=horaFim[0];horaInicio[0]++){
-                            
                 for(;horaInicio[1]<(horaInicio[0]==horaFim[0] ? horaFim[1] : 59);horaInicio[1]+=10){
-                    let horaFormatada = horaInicio[0].toString()+":"+horaInicio[1].toString()+":00"
-                    horarios.push(horaFormatada)
                     
+                    let horaFormatada = (horaInicio[0].toString().length==1? ('0'+horaInicio[0].toString()) : horaInicio[0].toString())+":"+(horaInicio[1].toString().length==1? ('0'+horaInicio[1].toString()) : horaInicio[1].toString())+":00"
+                    horarios.push(horaFormatada)
                 }
                 horaInicio[1]=0
                 }
-            console.log(horarios)
+            
+            conn.query("SELECT * FROM consulta WHERE id_reserva=?",[req.body.id_reserva],(err,results)=>{
+                if(err){return res.status(500).send({error:err})}
+                horariosMarcados = results.map(consulta => consulta.hor_marc)
+                horarios = horarios.map(horario => (horariosMarcados.includes(horario)? [horario,1]: [horario,0]))
+                return res.status(200).send({Horarios: horarios})
+            })
         })
     })
 })
