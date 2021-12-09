@@ -26,6 +26,32 @@ router.get('/reservas',login_usuario,(req,res)=>{
         })
     })
 })
+
+router.post('/sala-reservas',login_usuario,(req,res)=>{
+    pool.getConnection((err,conn)=>{
+        if(err){return res.status(500).send({error:err})}
+
+        conn.query("SELECT *  FROM reserva WHERE id_sala = ?",
+        [req.body.id_sala],
+        (err,results)=>{
+            if(err){return res.status(500).send({error:err})}
+            const response = {
+                reservas: results.map(reserva =>{
+                    return {
+                        id_reserva: reserva.id_reserva,
+                        data: reserva.data,
+                        hor_ini: reserva.hor_ini,
+                        hor_fin: reserva.hor_fin,
+                        id_sala: reserva.id_sala,
+                        id_medico: reserva.id_medico
+                    }
+                })
+            }
+            return res.status(200).send(response)
+        })
+    })
+})
+
 router.post('/horarios_reserva',login_usuario,(req,res)=>{
     if(!req.body.id_reserva){return res.status(406).send({mensagem:"É necessário a reserva"})}
     pool.getConnection((err,conn)=>{

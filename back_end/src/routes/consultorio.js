@@ -35,7 +35,7 @@ router.get('/',usuario,(req,res,next)=>{
  * Retorna uma lista com números indentificadores de médicos e seus consultórios
  * 
  */
- router.get('/medico',usuario,(req,res,next)=>{
+ router.get('/usuario',usuario,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query('SELECT * FROM medico_consultorio',
