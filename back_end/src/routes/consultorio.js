@@ -136,9 +136,9 @@ router.post('/',mestre,(req,res,next)=>{
                                                 }
                                                 const response = {                                                                    
                                                     mensagem:"Consultório cadastrado com sucesso!",
-                                                    medic_consultCriado:{
+                                                    consultorio_criado:{
                                                         nome: req.body.nome,
-                                                        medic_consult: consultorioID,
+                                                        consultorio: consultorioID,
                                                         endereço: enderecoID
                                                     }
                                                 }
