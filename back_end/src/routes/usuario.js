@@ -152,7 +152,7 @@ router.post("/cadastro/medico",cadastro_medico,(req,res,next)=>{
         if(!req.body.crm){return res.status(406).send({mensagem: "É necessário o CRM"})}
         if(!req.body.dt_nascimento){return res.status(406).send({mensagem: "É necessário a data de nascimento"})}
         if(!req.body.especialidade){return res.status(406).send({mensagem: "É necessário a especialidade"})}
-        if(!req.body.geral){return res.status(406).send({mensagem: "É médico é ou não clinico geral"})}
+        if(req.body.geral==null){return res.status(406).send({mensagem: "O médico é ou não clinico geral"})}
         
         conn.query(
             'SELECT * FROM usuario WHERE cpf = ?',
