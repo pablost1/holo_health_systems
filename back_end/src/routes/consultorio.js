@@ -47,7 +47,7 @@ router.get('/',usuario,(req,res,next)=>{
 router.post('/',mestre,(req,res,next)=>{
 
     if(!req.body.nome){return res.status(406).send("Insira o nome do consultório")}
-    if(!req.body.id_cidade || req.body.id_cidade){return res.status(406).send("Insira um número identificador da cidade válido")}
+    if(!req.body.id_cidade){return res.status(406).send("Insira um número identificador da cidade")}
     if(!req.body.bairro){return res.status(406).send("Insira o nome do bairro")}
     if(!req.body.rua){return res.status(406).send("Insira o nome da rua")}
     if(!req.body.numero){return res.status(406).send("Insira o numero do estabelecimento")}
@@ -97,24 +97,17 @@ router.post('/',mestre,(req,res,next)=>{
                                             ],
                                             (error, result, field)=>{
                                                 if(error){return res.status(500).send({error:error})}
-                                                console.log('pre-for') // DEBUG
                                                 id_consultorio_bruh = result.insertId
                                                 console.log(id_consultorio_bruh)
                                                 for(i = 0; i < req.body.n_sala; i++) {
-                                                    console.log('inside-for') // DEBUG
                                                     
                                                     
                                                     conn.query(
                                                         'INSERT INTO sala (id_consultorio) VALUES (?)',
                                                         [id_consultorio_bruh],
                                                         (error, result, field)=>{
-                                                            console.log(result.insertId) // DEBUG
                                                             if(error){return res.status(500).send({error:error})}
-                                                            console.log('pre-if') // DEBUG
                                                             if(i == req.body.n_sala) {
-                                                                console.log('\n') // DEBUG
-                                                                console.log(i, req.body.n_sala) // DEBUG
-                                                                console.log('inside-if') // DEBUG
 
                                                                 
                                                             }
@@ -131,7 +124,6 @@ router.post('/',mestre,(req,res,next)=>{
                                                         endereço: enderecoID
                                                     }
                                                 }
-                                                console.log('pre-response') // DEBUG
                                                 return res.status(201).send(response)
                                             }
                                         )
