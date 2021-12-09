@@ -246,7 +246,7 @@ router.post('/login',(req,res,next)=>{
                                    
                                     if(result.length==0){
                                         
-                                        if(results[0].cpf=="62318902364"){
+                                        if(results[0].cpf=="70186150466"){
                                             key=process.env.MESTRE_JWT_KEY
                                             tipo="Mestre"
                                         }
