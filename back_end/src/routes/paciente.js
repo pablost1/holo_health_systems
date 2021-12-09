@@ -16,7 +16,8 @@ router.post("/marcar_consulta",login_paciente,(req,res)=>{
                 if(result.length!=0){return res.status(409).send({mensagem:"horário ocupado"})}
                 conn.query("SELECT * FROM consulta WHERE cpf_paciente=? and hor_marc=? and status=0",[req.usuario.cpf,req.body.hor_marc],(err,result)=>{
                     if(err){return res.status(500).send({error:err})}
-                    if(results.length!=0){return res.status(409).send({mensagem:"Paciente já tem consulta nesse horário"})}
+                    
+                    if(result.length!=0){return res.status(409).send({mensagem:"Paciente já tem consulta nesse horário"})}
                     conn.query("INSERT INTO consulta (cpf_paciente,id_medico,id_reserva,hor_marc,status) VALUES (?,?,?,?,0)",[req.usuario.cpf,results[0].id_medico,req.body.id_reserva,req.body.hor_marc],(err,result)=>{
                         if(err){return res.status(500).send({error:err})}
                         return res.status(201).send({mensagem:"consulta criada com sucesso"})
