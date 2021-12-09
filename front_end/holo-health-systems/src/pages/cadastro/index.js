@@ -3,6 +3,10 @@ import Button from '../../sharable-components/button/index';
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios';
+import moment from 'moment'
+import InputMask  from 'react-input-mask';
+
+
 
 let http = axios.create({
     baseURL: 'http://localhost:3001',
@@ -21,6 +25,8 @@ function ValidationField({error}) {
 }
 
 export default function Cadastro() {
+
+    
     
     
     
@@ -37,6 +43,9 @@ export default function Cadastro() {
             .required('Um nome é necessário'),
         sobrenome: Yup.string()
             .required('Um sobrenome é necessário'),
+        dt_nascimento: Yup.string()
+            .required('É necessário uma data de nascimento')
+            .test('teste-data', 'Data de nascimento inválida', (value) => moment(value, 'DD/MM/YYYY').isValid())
         
         
     })
@@ -60,6 +69,7 @@ export default function Cadastro() {
                     email: '',
                     nome: '',
                     sobrenome: '',
+                    dt_nascimento: ''
                     
                 }}
 
@@ -69,10 +79,12 @@ export default function Cadastro() {
                     
                     http.post('/usuario/cadastro', value)
                         .then(res => console.log(res))
+                        .catch( err => err.response.data.mensagem)
                 }}
                 
             >
-                {({errors, touched}) => (
+                
+                {({errors, touched, handleChange, values}) => (
                     <Form className="cadastro-container__form">
                         <div className="form-group">
                             <label>Nome</label>
@@ -80,10 +92,27 @@ export default function Cadastro() {
                             
                             {errors.nome && touched.nome ? <ValidationField error={errors.nome} /> : ''}
                         </div>
+                        <button onClick={() => console.log(values)}>see</button>
                         <div className="form-group">
                             <label>Sobrenome</label>
                             <Field className="input" name="sobrenome" />
                             {errors.sobrenome && touched.sobrenome ? <ValidationField error={errors.sobrenome} /> : ''}
+                        </div>
+                        <div className="form-group">
+                            <label>Data de nascimento</label>
+                            <Field  
+                                className="input" 
+                                name="dt_nascimento"
+                                render={({field}) => (
+                                    <InputMask 
+                                        {...field}
+                                        onChange={handleChange}
+                                        mask="99/99/9999"
+
+                                    />
+                                )}
+                            />
+                            {errors.dt_nascimento && touched.dt_nascimento ? <ValidationField error={errors.dt_nascimento} /> : ''}
                         </div>
                         <div className="form-group">
                             <label>E-mail</label>
@@ -92,7 +121,16 @@ export default function Cadastro() {
                         </div>
                         <div className="form-group">
                             <label>CPF</label>
-                            <Field className="input" name="cpf" />
+                            <Field 
+                                className="input"
+                                name="cpf" 
+                                render={({field}) => (
+                                    <InputMask 
+                                        mask="999.999.999-99"
+                                        onChange={handleChange}
+                                    />
+                                )}
+                            />
                             {errors.cpf && touched.cpf ? <ValidationField error={errors.cpf} /> : ''}
                         </div>
                         <div className="form-group">

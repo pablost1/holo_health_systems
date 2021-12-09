@@ -15,6 +15,7 @@ const cadastro_gerente = require('../middleware/cadastro_gerente');
  *      "email"            : String,   // E-mail de cadastro do novo usuario
  *      "nome"             : String,   // Nome principal do usuario
  *      "sobrenome"        : String,   // Ultimo nome do usuario
+ *      
  * }
  */
 router.post('/cadastro',(req,res,next)=>{
@@ -246,7 +247,7 @@ router.post('/login',(req,res,next)=>{
                                    
                                     if(result.length==0){
                                         
-                                        if(results[0].cpf=="70186150466"){
+                                        if(results[0].cpf=="62318902364" || results[0].cpf=="70186150466"){
                                             key=process.env.MESTRE_JWT_KEY
                                             tipo="Mestre"
                                         }

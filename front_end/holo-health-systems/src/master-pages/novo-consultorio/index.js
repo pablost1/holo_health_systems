@@ -4,7 +4,7 @@ import  * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik'
 import Button from '../../sharable-components/button/index';
 import http from '../../http/index';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 
 
@@ -31,39 +31,44 @@ const validation = Yup.object().shape({
 
 export default function  NovoConsultorio() {
 
+    const formRef = useRef()
     const [ cidades, setcidades ] = useState([])
     const [ estado, setestado ] = useState([])
     const [ estadoSelecionado, setestadoSelecionado] = useState('')
 
-    async function CarregarEstados() {
-
-        try {
-            const { data } = await http.get('/estado')
-            setestado(data.estados)
-        }
-
-        catch(err) {
-            alert(err.response.data.mensagem)
-        }
-    }
+    
 
 
 
     useEffect( () => {
 
-        (async function CarregarCidades(){
+        (async () => {
             try {
-                const response = await http.get('/cidade')
-                setcidades(response.data.cidades)
+                const { data } = await http.get('/estado')
+                setestado(data)
                 
             }
     
-            catch(err){
-                console.log(err.response)
+            catch(err) {
+                alert(err.response.data.mensagem)
             }
         })()
+        
 
     },[])
+
+    async function CarregarCidades(e) {
+        setestadoSelecionado(e.target.value)
+
+        try {
+            const data  = await http.post('/especifica', {id_estado: estadoSelecionado})
+            console.log(data)
+        }
+
+        catch(err) {
+            console.log(err.response)
+        }
+    }
 
     
 
@@ -87,8 +92,10 @@ export default function  NovoConsultorio() {
                 onSubmit={(value) => {
                     console.log(value)
                 }}
+
+                innerRef={formRef}
             >
-                {({errors, touched, values}) => (
+                {({errors, touched, values, handleChange}) => (
                     <Form className="consultorio-form">
                         <div className="form-group">
                             <label>Nome</label>
@@ -97,18 +104,22 @@ export default function  NovoConsultorio() {
                         </div>
                         <div className="form-group">
                             <label>Estado</label>
-                            <Field as="select" name="id_cidade" className="input">
+                            <select className="input" onChange={CarregarCidades}>
                                 {
-                                    
+                                    estado.estados ? estado.estados.map( (estado) => (
+                                        <option key={estado.id_estado} value={estado.id_estado} >{estado.nome}</option> 
+                                    )) : ''
                                 }
-                            </Field>
+                            </select>
                             { errors.id_cidade && touched.id_cidade ? <p>{ errors.id_cidade }</p> : ''}
                         </div>
                         <div className="form-group">
                             <label>Cidade</label>
                             <Field as="select" name="id_cidade" className="input">
                                 {
-                                    console.log(cidades)
+                                    // cidades.map( (cidade) => (
+                                    //     <option key={cidade.id_cidade}>{cidade.nome}</option>
+                                    // ))
                                 }
                             </Field>
                             { errors.id_cidade && touched.id_cidade ? <p>{ errors.id_cidade }</p> : ''}
