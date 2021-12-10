@@ -225,7 +225,7 @@ router.post('/',mestre,(req,res,next)=>{
             (error,result,field)=>{
                 if(error){return res.status(500).send({error:error})}
                 if(result.length==0){return res.status(409).send("Não existe nenhum consultório com este número identificador")}
-
+                enderecoID = result.id_endereco
                 conn.query(
                     'DELETE FROM sala WHERE id_consultorio = ?',
                     [req.body.id_consultorio],
@@ -236,7 +236,14 @@ router.post('/',mestre,(req,res,next)=>{
                             [req.body.id_consultorio],
                             (error,result,field)=>{
                                 if(error){return res.status(500).send({error:error})}
-                                return res.status(202).send({mensagem:"removido com sucesso"})
+                                conn.query(
+                                    'DELETE FROM endereço WHERE id_endereco = ?',
+                                    [enderecoID],
+                                    (error,result,field)=>{
+                                        if(error){return res.status(500).send({error:error})}
+                                        return res.status(202).send({mensagem:"removido com sucesso"})
+                                    }
+                                )
                             }
                         )
                     })
