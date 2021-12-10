@@ -8,7 +8,7 @@ const mestre  = require('../middleware/login_mestre')
 const usuario = require('../middleware/login_usuario')
 
 /** Consultar todos os telefones */
-router.get('/', usuario,(req, res, next)=> {
+router.get('/', gerente,(req, res, next)=> {
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         console.log('3')
@@ -41,7 +41,7 @@ router.get('/', usuario,(req, res, next)=> {
  * }
  * 
 */
-router.post('/', usuario,(req,res,next) => {
+router.post('/', gerente,(req,res,next) => {
 
     if(!req.body.id_consultorio){return res.status(406).send("Insira o número identificador do consultório")}
     if(!req.body.telefone){return res.status(406).send("Insira o número do telefone do consultório")}
@@ -87,7 +87,7 @@ router.post('/', usuario,(req,res,next) => {
  * 
  * 
  */
-router.delete('/',usuario,(req,res,next)=>{
+router.delete('/',gerente,(req,res,next)=>{
     if(!req.body.id_consultorio){return res.status(406).send("Insira o número identificador do consultório")}
     pool.getConnection((error, conn)=>{
         if(error){return res.status(500).send({error:error})}
