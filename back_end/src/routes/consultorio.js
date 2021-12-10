@@ -227,7 +227,7 @@ router.post('/',mestre,(req,res,next)=>{
                 if(result.length==0){return res.status(409).send("Não existe nenhum consultório com este número identificador")}
 
                 conn.query(
-                    'DELETE FROM consultorio WHERE id_consultorio = ?',
+                    'DELETE FROM sala WHERE id_consultorio = ?',
                     [req.body.id_consultorio],
                     (error,result,field)=>{
                         if(error){return res.status(500).send({error:error})}
