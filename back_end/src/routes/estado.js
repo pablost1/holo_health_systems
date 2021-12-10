@@ -11,7 +11,9 @@ const usuario = require('../middleware/login_usuario')
 router.get("/",usuario,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
-        conn.query('SELECT * FROM estado;',(error,results,fields)=>{
+        conn.query(
+            'SELECT * FROM estado;',
+            (error,results,fields)=>{
             conn.release()
             if(error){return res.status(500).send({error:error})}
             const response = {
