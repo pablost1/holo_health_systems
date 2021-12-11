@@ -6,38 +6,14 @@ const gerente = require('../middleware/login_gerente')
 
 const mestre  = require('../middleware/login_mestre')
 
-/** Consultar todos as salas cadastradas*/
-router.get("/",gerente,(req,res,next)=>{
-    pool.getConnection((error,conn)=>{
-        if(error){return res.status(500).send({error:error})}
-        conn.query('SELECT * FROM Sala;',(error,results,fields)=>{
-            conn.release()
-            if(error){return res.status(500).send({error:error})}
-            const response = {
-                salas: results.map(sala =>{
-                    return {
-                        id_sala: sala.id_sala,
-                        id_consultorio: sala.id_consultorio,
-                        disponivel: sala.disponivel
-                    }
-                })
-            }
-            
-            return res.status(200).send(response)
-        })
-    })
-})
-
 /** Consultar todos as salas cadastradas em um consultório específico
- * {
- *      id_consultorio : Integer // Numero identificador do consultório 
- * }
+ * 
 */
-router.post("/consultorio", gerente,(req,res,next)=>{
+router.get("/consultorio", gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query('SELECT * FROM Sala WHERE id_consultorio = ?;',
-        [req.body.id_consultorio],
+        [req.usuario.id_consultorio],
         (error,results,fields)=>{
             conn.release()
             if(error){return res.status(500).send({error:error})}
@@ -62,8 +38,10 @@ router.post("/consultorio", gerente,(req,res,next)=>{
  * 
  * {
  *      "id_consultorio"             : Integer   // Numero identificador do consultorio o qual a sala está situada.
- * }
- */
+ * } 
+ * 
+ * OBS: Não vai ser utilizado por enquanto
+ */ 
  router.post('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
@@ -98,6 +76,8 @@ router.post("/consultorio", gerente,(req,res,next)=>{
  * {
  *      "id_sala"             : Integer,  // Numero identificador do Estado.
  * }
+ * 
+ * OBS: Não vai ser utilizado por enquanto
  */
 router.patch('/',gerente,(req,res,next)=>{
     if(!(req.body.disponivel in[0,1])){return res.status(500).send({messagem: "Formato inválido para parâmetro 'disponível', use 0(ocupada) ou 1(disponivel)"})}
@@ -131,6 +111,8 @@ router.patch('/',gerente,(req,res,next)=>{
  * {
  *      "id_sala"        : Integer,  // Numero identificador da Sala.
  * }
+ * 
+ * OBS: Não vai ser utilizado por enquanto
  */
 router.delete('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
