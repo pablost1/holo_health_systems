@@ -4,6 +4,8 @@ const pool = require("../mysql").pool;
 
 const gerente = require('../middleware/login_gerente')
 
+const mestre  = require('../middleware/login_mestre')
+
 /** Consultar todos as salas cadastradas*/
 router.get("/",gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
@@ -21,6 +23,33 @@ router.get("/",gerente,(req,res,next)=>{
                 })
             }
             
+            return res.status(200).send(response)
+        })
+    })
+})
+
+/** Consultar todos as salas cadastradas em um consultório específico
+ * {
+ *      id_consultorio : Integer // Numero identificador do consultório 
+ * }
+*/
+router.post("/consultorio", gerente,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        conn.query('SELECT * FROM Sala WHERE id_consultorio = ?;',
+        [req.body.id_consultorio],
+        (error,results,fields)=>{
+            conn.release()
+            if(error){return res.status(500).send({error:error})}
+            const response = {
+                salas: results.map(sala =>{
+                    return {
+                        id_sala: sala.id_sala,
+                        id_consultorio: sala.id_consultorio,
+                        disponivel: sala.disponivel
+                    }
+                })
+            }
             return res.status(200).send(response)
         })
     })
@@ -68,7 +97,6 @@ router.get("/",gerente,(req,res,next)=>{
  * 
  * {
  *      "id_sala"             : Integer,  // Numero identificador do Estado.
- *      "disponivel"          : Integer,  // 0 = sala ocupada ; 1 = sala disponível
  * }
  */
 router.patch('/',gerente,(req,res,next)=>{

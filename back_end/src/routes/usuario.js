@@ -15,6 +15,7 @@ const cadastro_gerente = require('../middleware/cadastro_gerente');
  *      "email"            : String,   // E-mail de cadastro do novo usuario
  *      "nome"             : String,   // Nome principal do usuario
  *      "sobrenome"        : String,   // Ultimo nome do usuario
+ *      
  * }
  */
 router.post('/cadastro',(req,res,next)=>{
@@ -223,6 +224,7 @@ router.post("/cadastro/medico",cadastro_medico,(req,res,next)=>{
 router.post('/login',(req,res,next)=>{
     
     pool.getConnection((error,conn)=>{
+
         if(error){return res.status(500).send({error:error})}
         const sql_query = req.body.cpf ? "SELECT * FROM usuario WHERE cpf = ?" : "SELECT * FROM usuario WHERE email = ?"
         conn.query(
@@ -246,7 +248,7 @@ router.post('/login',(req,res,next)=>{
                                    
                                     if(result.length==0){
                                         
-                                        if(results[0].cpf=="62318902364"){
+                                        if(results[0].cpf=="62318902364" || results[0].cpf=="70186150466"){
                                             key=process.env.MESTRE_JWT_KEY
                                             tipo="Mestre"
                                         }
@@ -257,7 +259,6 @@ router.post('/login',(req,res,next)=>{
                                         
                                         const token =  jwt.sign(
                                             {
-                                                
                                                 cpf: results[0].cpf,
                                                 email: results[0].email
                                             },

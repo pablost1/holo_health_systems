@@ -14,6 +14,8 @@ const routerSala = require('./routes/sala')
 const routerMedico = require('./routes/medico');
 const routerGerente = require("./routes/gerente");
 const routerPaciente = require("./routes/paciente")
+const routerTelefone = require("./routes/telefone")
+
 //tratamento inicio
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:true}))
@@ -48,6 +50,7 @@ app.use('/sala',routerSala)
 app.use('/medico',routerMedico)
 app.use('/gerente',routerGerente)
 app.use('/paciente',routerPaciente)
+app.use('/telefone',routerTelefone)
 
 //tratamento fim
 app.use((req,res,next)=>{

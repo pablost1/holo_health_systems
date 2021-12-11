@@ -2,6 +2,11 @@
 import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header'
 import Button from '../../sharable-components/button/index';
+import http from '../../http/index';
+import { useState, useEffect } from 'react';
+
+
+
 
 
 
@@ -26,8 +31,8 @@ function Informacao(props) {
     if(props.type === 'cidade') {
         return (
             <div className="informacao-cidade">
-                <h3 className="nome">Cidade</h3>
-                <span>Estado</span>
+                <h3 className="nome">{props.cidade}</h3>
+                <span>{props.estado}</span>
                 <Button
                     size="small"  
                     status="danger"
@@ -43,18 +48,58 @@ function Informacao(props) {
 
 export default function Informacoes() {
 
+    
+    const [ cidade, setcidade ] = useState([])
+
+
+    
+
+    async function CarregarCidades() {
+
+
+        try {
+            const { data } = await http.get('/cidade')
+            setcidade(data.cidades)
+        }
+    
+        catch(err) {
+            alert(err.response.data.mensagem)
+        }
+     
+    }
+
+    function DefinirCidades() {
+
+
+
+    }
+
+    
+
+    
+
+    useEffect(() => {
+        CarregarCidades()
+
+        
+    }, [])
+
+
+    console.log(cidade)
 
     return (
         <div className="informacoes-container">
-            <DescriptionHeader>Informações</DescriptionHeader>
+            <DescriptionHeader path="/master-home">Informações</DescriptionHeader>
             <div className="informacoes">
                 <h2>Estados</h2>
                 <div className="lista-informacoes">
-                    <Informacao type="estado"/>
-                    <Informacao type="estado"/>
-                    <Informacao type="estado"/>
-                    <Informacao type="estado"/>
-                    <Informacao type="estado"/>
+                    {
+                        cidade ? cidade.map( cidade => (
+                            <Informacao cidade={cidade.nome} estado={cidade}type="cidade"/>
+                        ) ) : ''
+                    }
+                    
+                    
                 </div>
                 <h2>Cidades</h2>
                 <div className="lista-informacoes">

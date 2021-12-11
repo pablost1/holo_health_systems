@@ -19,9 +19,9 @@ const EstadoValidation = Yup.object().shape({
 
 
 const CidadeValidation = Yup.object().shape({
-    estado: Yup.string()
+    id_estado: Yup.string()
         .required('Selecione um estado'),
-    cidade: Yup.string()
+    nome: Yup.string()
         .required('Uma cidade é necessária')
     
 })
@@ -37,7 +37,7 @@ export default function AdicionarInformacoes() {
         try {
             const { data } =  await http.get('/estado')
             setestados(data)
-            console.log(data)
+            
         }
 
         catch(err) {
@@ -48,11 +48,13 @@ export default function AdicionarInformacoes() {
 
     useEffect( () => {
         CarregarEstados()
+        
+        
     }, [])
 
     return (
         <div className="adicionar-informacoes-container">
-            <DescriptionHeader>Adicionar informações</DescriptionHeader>
+            <DescriptionHeader path="/master-home">Adicionar informações</DescriptionHeader>
 
 
             
@@ -95,16 +97,22 @@ export default function AdicionarInformacoes() {
                     validationSchema={CidadeValidation}
 
                     initialValues={{
-                        estado: '',
-                        cidade: ''
+                        id_estado: '',
+                        nome: ''
                     }}
                     onSubmit={(value, { resetForm}) => {
-                        http.post('/cidades', value)
+                        console.log(value)
+                        http.post('/cidade', value)
                             .then( res => {
                                 alert("Cidade cadastrada com sucesso")
                                 resetForm()
                             })
-                        alert(`Estado: ${value.estado} e Cidade: ${value.cidade}`)
+                            .catch( err => {
+                                
+                                alert(err.response.data.mensagem)
+
+                                
+                            })
                         
                         
                     }}
@@ -114,18 +122,19 @@ export default function AdicionarInformacoes() {
                         <Form className="info-form">
                             <div className="form-group">
                                 <label>Estado da cidade</label>
-                                <Field as="select" name="estado" className="input">
+                                <Field as="select" name="id_estado" className="input">
+                                    <option value="" selected>Selecione um estado</option>
                                     {
-                                        estados.map( (estado, index) => (
-                                            <option key={estado.id_estado} value={estado.id_estado}>""</option>
-                                        ))
+                                        estados.estados ? estados.estados.map( estado => (
+                                            <option key={estado.id_estado} value={estado.id_estado}>{estado.nome}</option>
+                                        )) : ''
                                     }
                                 </Field >
                                 { errors.estado && touched.estado ? <p>{errors.estado}</p> : '' }
                             </div>
                             <div className="form-group">
                                 <label>Nome da cidade</label>
-                                <Field name="cidade" />
+                                <Field name="nome" />
                                 { errors.cidade && touched.cidade ? <p>{errors.cidade}</p> : '' }
                             </div>
                             <Button style={{ alignSelf: 'baseline'}} size="small">Cadastrar</Button>

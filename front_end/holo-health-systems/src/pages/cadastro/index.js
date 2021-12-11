@@ -3,6 +3,10 @@ import Button from '../../sharable-components/button/index';
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios';
+import moment from 'moment'
+import InputMask  from 'react-input-mask';
+
+
 
 let http = axios.create({
     baseURL: 'http://localhost:3001',
@@ -21,28 +25,37 @@ function ValidationField({error}) {
 }
 
 export default function Cadastro() {
+
+    
     
     
     
     const validation = Yup.object().shape({
-        nome: Yup.string()
-            .min(2, 'Nome muito curto')
-            .max(30, 'Nome muito longo')
-            .required('O nome é necessário'),
-        sobrenome: Yup.string()
-            .min(2, 'Sobrenome muito curto')
-            .max(30, 'Sobrenome muito longo')
-            .required('Um sobrenome é necessário'),
+        cpf: Yup.string()
+            .required('O cpf é necessário'),
+        senha: Yup.string()
+            .required('Uma senha é necessária')
+            .min(8, 'Senha muito curta')
+            .max(16, 'Senha muito longa'),
         email: Yup.string()
             .email('E-mail inválido').required('Um e-mail é necessário'),
-        cpf: Yup.number()
-            .required('Um CPF é necessário'),
-        senha: Yup.string()
-            .required('Uma senha é necessária'),
-        tipo: Yup.string()
-            .required('Selecione um tipo de usuário')
+        nome: Yup.string()
+            .required('Um nome é necessário'),
+        sobrenome: Yup.string()
+            .required('Um sobrenome é necessário'),
+        dt_nascimento: Yup.string()
+            .required('É necessário uma data de nascimento')
+            .test('teste-data', 'Data de nascimento inválida', (value) => moment(value, 'DD/MM/YYYY').isValid())
+        
         
     })
+
+//     "cpf"              : String,  // Numero do CPF do novo usuário
+//  *      "senha"            : String,   // Senha do usuario
+//  *      "email"            : String,   // E-mail de cadastro do novo usuario
+//  *      "nome"             : String,   // Nome principal do usuario
+//  *      "sobrenome"        : String,   // Ultimo nome do usuario
+
 
 
     return (
@@ -51,12 +64,13 @@ export default function Cadastro() {
             
             <Formik
                 initialValues={{
+                    cpf: '',
+                    senha: '',
+                    email: '',
                     nome: '',
                     sobrenome: '',
-                    email: '',
-                    cpf: 0,
-                    tipo: '',
-                    senha: ''
+                    dt_nascimento: ''
+                    
                 }}
 
                 validationSchema={validation}
@@ -65,10 +79,12 @@ export default function Cadastro() {
                     
                     http.post('/usuario/cadastro', value)
                         .then(res => console.log(res))
+                        .catch( err => err.response.data.mensagem)
                 }}
                 
             >
-                {({errors, touched}) => (
+                
+                {({errors, touched, handleChange, values}) => (
                     <Form className="cadastro-container__form">
                         <div className="form-group">
                             <label>Nome</label>
@@ -76,10 +92,27 @@ export default function Cadastro() {
                             
                             {errors.nome && touched.nome ? <ValidationField error={errors.nome} /> : ''}
                         </div>
+                        <button onClick={() => console.log(values)}>see</button>
                         <div className="form-group">
                             <label>Sobrenome</label>
                             <Field className="input" name="sobrenome" />
                             {errors.sobrenome && touched.sobrenome ? <ValidationField error={errors.sobrenome} /> : ''}
+                        </div>
+                        <div className="form-group">
+                            <label>Data de nascimento</label>
+                            <Field  
+                                className="input" 
+                                name="dt_nascimento"
+                                render={({field}) => (
+                                    <InputMask 
+                                        {...field}
+                                        onChange={handleChange}
+                                        mask="99/99/9999"
+
+                                    />
+                                )}
+                            />
+                            {errors.dt_nascimento && touched.dt_nascimento ? <ValidationField error={errors.dt_nascimento} /> : ''}
                         </div>
                         <div className="form-group">
                             <label>E-mail</label>
@@ -88,17 +121,17 @@ export default function Cadastro() {
                         </div>
                         <div className="form-group">
                             <label>CPF</label>
-                            <Field className="input" name="cpf" />
+                            <Field 
+                                className="input"
+                                name="cpf" 
+                                render={({field}) => (
+                                    <InputMask 
+                                        mask="999.999.999-99"
+                                        onChange={handleChange}
+                                    />
+                                )}
+                            />
                             {errors.cpf && touched.cpf ? <ValidationField error={errors.cpf} /> : ''}
-                        </div>
-                        <div className="form-group">
-                            <label>Tipo</label>
-                            <Field defaultValue={'M'} as="select" className="input" name="tipo">
-                                
-                                <option value="M">Médico</option>
-                                <option value="P">Paciente</option>
-                            </Field>
-                            {errors.tipo && touched.tipo ? <ValidationField error={errors.tipo} /> : ''}
                         </div>
                         <div className="form-group">
                             <label>Senha</label>

@@ -9,7 +9,7 @@ export default function SalasConsultorio() {
 
     return (
         <div className="salas-consultorio">
-            <DescriptionHeader>Salas</DescriptionHeader>
+            <DescriptionHeader path="/consultorio">Salas</DescriptionHeader>
             <div className="lista-salas">
                 <Sala />
                 <Sala />

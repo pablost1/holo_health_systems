@@ -29,7 +29,9 @@ router.get('/',usuario,(req,res,next)=>{
 
 router.post('/especifica',usuario,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
-        if(req.body.id_estado){res.status(406).send({mensagem:"Estado necessário"})}
+
+        if(!req.body.id_estado){res.status(406).send({mensagem:"Estado necessário"})}
+
         if(error){return res.status(500).send({error:error})}
         conn.query('SELECT * FROM cidade WHERE id_estado=? ',[req.body.id_estado],(error,results,field)=>{
             if(error){return res.status(500).send({error:error})}
@@ -152,6 +154,7 @@ router.patch('/',mestre,(req,res,next)=>{
  */
 router.delete('/',gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
+        if(!req.body.id_cidade){return res.status(406).send("Insira o número identificador da cidade")}
         if(error){return res.status(500).send({error:error})}
         conn.query(
             'DELETE FROM cidade WHERE id_cidade = ?',
