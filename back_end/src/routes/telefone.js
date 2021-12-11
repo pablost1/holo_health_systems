@@ -41,7 +41,7 @@ router.get('/', gerente,(req, res, next)=> {
  * }
  * 
 */
-router.post('/', gerente,(req,res,next) => {
+router.post('/', mestre,(req,res,next) => {
 
     if(!req.body.id_consultorio){return res.status(406).send("Insira o número identificador do consultório")}
     if(!req.body.telefone){return res.status(406).send("Insira o número do telefone do consultório")}
@@ -51,11 +51,11 @@ router.post('/', gerente,(req,res,next) => {
 
     pool.getConnection((error, conn)=>{
         conn.query(
-            'SELECT * FROM telefone WHERE id_consultorio = ?',
-            [req.body.id_consultorio],
+            'SELECT * FROM telefone WHERE telefone = ?',
+            [req.body.telefone],
         (error,results,fields) => {
             if(error){return res.status(500).send({error:error})}
-            if(results.length>0){return res.status(409).send("Este consultório já possui um telefone associado.")}
+            if(results.length>0){return res.status(409).send("Este telefone já foi associado a um consultório.")}
             conn.query(
                 'INSERT INTO telefone (id_consultorio, telefone) VALUES (?,?)',
                 [
@@ -67,6 +67,7 @@ router.post('/', gerente,(req,res,next) => {
                         const response = {
                             mensagem: "Telefone cadastrado com sucesso!",
                             telefone_cadastrado: {
+                                id_telefone : results.insertId,
                                 id_consultorio : req.body.id_consultorio,
                                 telefone : req.body.telefone
                             }

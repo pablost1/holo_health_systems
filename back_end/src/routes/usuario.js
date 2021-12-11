@@ -259,7 +259,6 @@ router.post('/login',(req,res,next)=>{
                                         
                                         const token =  jwt.sign(
                                             {
-                                                
                                                 cpf: results[0].cpf,
                                                 email: results[0].email
                                             },
