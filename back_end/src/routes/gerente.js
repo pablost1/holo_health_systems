@@ -8,7 +8,7 @@ router.post('/reservas_especificas',login_usuario,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(!req.body.id_sala){return res.status(406).send({mensagem:"É necessário a sala"})}
         if(err){return res.status(500).send({error:err})}
-        conn.query("SELECT *  FROM reserva WHERE sala.id_sala = ? ",[req.usuario.id_sala],(err,results)=>{
+        conn.query("SELECT *  FROM reserva WHERE id_sala = ? ",[req.usuario.id_sala],(err,results)=>{
             if(err){return res.status(500).send({error:err})}
             const response = {
                 reservas: results.map(reserva =>{
