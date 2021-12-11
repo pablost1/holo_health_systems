@@ -4,11 +4,11 @@ const pool = require('../mysql').pool
 const login_gerente = require('../middleware/login_gerente')
 const login_usuario = require('../middleware/login_usuario')
 
-router.get('/reservas',login_usuario,(req,res)=>{
+router.post('/reservas_especificas',login_usuario,(req,res)=>{
     pool.getConnection((err,conn)=>{
-
+        if(!req.body.id_sala){return res.status(406).send({mensagem:"É necessário a sala"})}
         if(err){return res.status(500).send({error:err})}
-        conn.query("SELECT *  FROM reserva INNER JOIN sala ON reserva.id_sala = sala.id_sala where id_consultorio=?",[req.usuario.id_consultorio],(err,results)=>{
+        conn.query("SELECT *  FROM reserva WHERE id_sala = ? ",[req.usuario.id_sala],(err,results)=>{
             if(err){return res.status(500).send({error:err})}
             const response = {
                 reservas: results.map(reserva =>{
