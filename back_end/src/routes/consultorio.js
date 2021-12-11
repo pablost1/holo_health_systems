@@ -131,8 +131,6 @@ router.post('/',mestre,(req,res,next)=>{
                                                             // }
                                                         }
                                                     )
-                                                    
-                                                    
                                                 }
                                                 const response = {                                                                    
                                                     mensagem:"Consultório cadastrado com sucesso!",

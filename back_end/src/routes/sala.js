@@ -33,7 +33,7 @@ router.get("/",gerente,(req,res,next)=>{
  *      id_consultorio : Integer // Numero identificador do consultório 
  * }
 */
-router.post("/consultorio", mestre,(req,res,next)=>{
+router.post("/consultorio", gerente,(req,res,next)=>{
     pool.getConnection((error,conn)=>{
         if(error){return res.status(500).send({error:error})}
         conn.query('SELECT * FROM Sala WHERE id_consultorio = ?;',
