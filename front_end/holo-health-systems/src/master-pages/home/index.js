@@ -29,6 +29,11 @@ export default function MasterHome() {
         history.push('/adicionar-informacoes')
     }
 
+    function IrParaCadastrarGerente() {
+
+        history.push('/cadastro-gerente')
+    }
+
     return (
         <div className="master-home-container">
             <HomeHeader />
@@ -37,8 +42,8 @@ export default function MasterHome() {
                 <div className="lista-afazeres">
                     <ScheduleButton onClick={IrParaVerConsultorios} >Ver consultórios</ScheduleButton>
                     <ScheduleButton onClick={IrParaCriarConsultorios}>Criar consultórios</ScheduleButton>
-                    <ScheduleButton onClick={IrParaVerInformacoes}>Ver informações</ScheduleButton>
                     <ScheduleButton onClick={IrParaCriarInformacoes}>Criar informações</ScheduleButton>
+                    <ScheduleButton onClick={IrParaCadastrarGerente}>Cadastrar gerente</ScheduleButton>
                 </div>
             </MainContainer>
 

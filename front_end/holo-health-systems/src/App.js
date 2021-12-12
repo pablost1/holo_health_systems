@@ -87,6 +87,10 @@ function App() {
               return <Redirect to="master-home" />
             }
 
+            if(isLoggedin && userType === 'Medico' ) {
+              return <Redirect to="medico-home" />
+            }
+
             return <LoginPage />
           }}/>
             

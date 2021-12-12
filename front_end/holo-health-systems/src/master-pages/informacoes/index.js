@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 
 
 
+
 function Informacao(props) {
 
     if(props.type === 'estado') {
@@ -68,11 +69,7 @@ export default function Informacoes() {
      
     }
 
-    function DefinirCidades() {
-
-
-
-    }
+    
 
     
 
@@ -109,7 +106,7 @@ export default function Informacoes() {
                     <Informacao type="cidade"/>
                     <Informacao type="cidade"/>
                     <Informacao type="cidade"/>
-                    <Informacao type="cidade"/>s
+                    <Informacao type="cidade"/>
                 </div>
             </div>
         </div>

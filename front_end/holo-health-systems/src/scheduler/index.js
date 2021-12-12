@@ -7,6 +7,7 @@ import axios from 'axios'
 import Column from './column/index';
 // import { AuthContext } from '../auth/authContext'
 import {  useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 // useContext
 
 
@@ -52,6 +53,9 @@ let days = [
 
 
 function Scheduler() {
+
+    const location = useLocation()
+    console.log(location)
     moment.locale('pt-br')
     const [schedules, setschedules] = useState([])
     // const authContext = useContext(AuthContext)
@@ -59,9 +63,9 @@ function Scheduler() {
     const [showInitialDate, setShowInitialDate] = useState('')
 
     async function fetchData() {
-        const { data }  = await axios.get('http://localhost:3001/horarios')
+        // const { data }  = await axios.get('http://localhost:3001/horarios')
 
-        setschedules(data)
+        // setschedules(data)
         setShowInitialDate(initialDate.format('LL'))
 
 

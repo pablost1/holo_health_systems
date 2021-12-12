@@ -19,6 +19,7 @@ import MeusHorarios from '../medico-pages/meus-horarios';
 import EmAndamento from '../medico-pages/em-andamento/index';
 import SalasConsultorio from '../master-pages/salas-consultorio/index';
 import VincularConsultorio from '../medico-pages/vincular-consultorio/index';
+import CadastroGerente from '../master-pages/cadastro-gerente/index';
 
 
 
@@ -119,12 +120,17 @@ export const routes = [
     {
         path: '/vincular-consultorio',
         Component: VincularConsultorio,
-        privacy: ''
+        privacy: 'Medico'
     }
     ,
     {
         path: '/salas',
         Component: SalasConsultorio,
+        privacy: 'Gerente'
+    },
+    {
+        path: '/cadastro-gerente',
+        Component: CadastroGerente,
         privacy: 'Mestre'
     }
 

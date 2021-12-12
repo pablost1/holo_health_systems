@@ -29,6 +29,22 @@ router.get('/',usuario,(req,res,next)=>{
         })
     })
 })
+router.get('/meu_consultorio',gerente,(req,res,next)=>{
+    pool.getConnection((error,conn)=>{
+        if(error){return res.status(500).send({error:error})}
+        conn.query('SELECT * FROM consultorio WHERE id_consultorio=?',[req.usuario.id_consultorio],(error,results,field)=>{
+            if(error){return res.status(500).send({error:error})}
+            const response = {
+                consultorio: results.map(consultorio =>{
+                    return {
+                        nome: consultorio.nome
+                    }
+                })[0]
+            }
+            return res.status(200).send(response)
+        })
+    })
+})
 
 /**
  * Retorna uma lista com números indentificadores de médicos e seus consultórios
