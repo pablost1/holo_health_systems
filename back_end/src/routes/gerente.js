@@ -52,6 +52,8 @@ router.post('/sala-reservas',login_usuario,(req,res)=>{
     })
 })
 
+
+
 router.post('/horarios_reserva',login_usuario,(req,res)=>{
     if(!req.body.id_reserva){return res.status(406).send({mensagem:"É necessário a reserva"})}
     pool.getConnection((err,conn)=>{
