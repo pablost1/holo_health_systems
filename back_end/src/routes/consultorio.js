@@ -37,8 +37,6 @@ router.get('/meu_consultorio',gerente,(req,res,next)=>{
             const response = {
                 consultorio: results.map(consultorio =>{
                     return {
-                        id_consultorio: consultorio.id_consultorio,
-                        id_cidade: consultorio.id_cidade,
                         nome: consultorio.nome
                     }
                 })[0]
