@@ -5,6 +5,8 @@ const login_medico = require('../middleware/login_medico');
 const moment = require('moment')
 
 router.post("/novo_consultorio",login_medico,(req,res)=>{
+    console.log(req.body)
+
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error: err})}
         if(!req.body.id_consultorio){return res.status(406).send({mensagem: "É necessário o consultório."})}
