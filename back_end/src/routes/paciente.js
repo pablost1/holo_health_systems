@@ -3,6 +3,15 @@ const router = express.Router()
 const pool = require('../mysql').pool
 const login_paciente = require('../middleware/login_paciente')
 
+/*router.post("/reservas_disponiveis",login_paciente,(req,res)=>{
+    pool.getConnection((err,conn)=>{
+        if(err){return res.status(500).send({error:err})}
+        if(!req.body.id_cidade){return res.status(406).send("É necessário a cidade!")}
+        if(!req.body.id_especialidade){return res.status(406).send("É necessário a especialdiade!")}
+        
+    })
+})
+*/
 router.post("/marcar_consulta",login_paciente,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}

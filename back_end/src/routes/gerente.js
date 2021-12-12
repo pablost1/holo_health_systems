@@ -26,7 +26,28 @@ router.post('/reservas_especificas',login_usuario,(req,res)=>{
         })
     })
 })
-
+router.get("/medicos_consultorio",login_gerente,(req,res)=>{
+    pool.getConnection((err,conn)=>{
+        if(err){return res.status(500).send({error:err})}
+        conn.query("SELECT medico.crm, medico_consultorio.id_consultorio, especialidade.id_especialidade, usuario.nome as nome_medico, usuario.sobrenome, especialidade.nome as especialidade FROM medico_consultorio INNER JOIN medico ON medico_consultorio.id_medico = medico.crm  INNER JOIN usuario ON medico.cpf_medico = usuario.cpf INNER JOIN especialidade ON medico.especialidade=especialidade.id_especialidade WHERE medico_consultorio.id_consultorio=?",[req.usuario.id_consultorio],(err,results)=>{
+            if(err){return res.status(500).send({error:err})}
+            const response = {
+                medicos: results.map(medico => {
+                return {
+                    crm: medico.crm,
+                    nome: medico.nome_medico,
+                    sobrenome: medico.sobrenome,
+                    especialidade: medico.nome,
+                    id_especialidade: medico.id_especialidade,
+                    id_consultorio: medico.id_consultorio
+                    
+                }
+            })
+        }
+            return res.status(200).send(response)
+        })
+    })
+})
 
 
 router.post('/horarios_reserva',login_usuario,(req,res)=>{
