@@ -19,6 +19,10 @@ export default function MedicoHome() {
         history.push('/meus-horarios')
     }
 
+    function IrParaVinculos() {
+        history.push('/vincular-consultorio')
+    }
+
     return (
         <div className="home-container">
             <HomeHeader />
@@ -26,6 +30,7 @@ export default function MedicoHome() {
             <Subtitle>O que deseja fazer?</Subtitle>
                 <div className="lista-afazeres">
                     <ScheduleButton onClick={IrParaHorarios} >Meus horários</ScheduleButton>
+                    <ScheduleButton onClick={IrParaVinculos} >Meus vínculos</ScheduleButton>
                     
                 </div>
                 <Subtitle>Em andamento</Subtitle>

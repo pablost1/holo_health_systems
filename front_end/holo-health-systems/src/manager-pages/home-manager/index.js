@@ -6,12 +6,15 @@ import Subtitle from '../../sharable-components/subtitle';
 import { useHistory } from 'react-router';
 
 export default function HomeManager() {
-    const hystory = useHistory();
+    const history = useHistory();
     function redirecionarParaCadastro(){
-        hystory.push("/cadastro-medico")
+        history.push("/cadastro-medico")
 
     }
     
+    function redirecionarParaSalas() {
+        history.push('/salas')
+    }
     return (
         <div className="manager-home-container">
             <HomeHeader />
@@ -19,7 +22,7 @@ export default function HomeManager() {
                 <Subtitle>O que deseja fazer?</Subtitle>
                 <div className="lista-afazeres">
                     <ScheduleButton onClick={redirecionarParaCadastro}>Cadastrar Médico</ScheduleButton>
-                    <ScheduleButton>Definir horário</ScheduleButton>
+                    <ScheduleButton onClick={redirecionarParaSalas}>Definir horário</ScheduleButton>
                 </div>
             </MainContainer>
         </div>

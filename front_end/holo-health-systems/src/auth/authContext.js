@@ -62,13 +62,17 @@ function AuthorizationContext({children}) {
 
         try {
             
+            const dados = await http.post('/usuario/login', user)
             const { data } = await http.post('/usuario/login', user)
+            console.log(dados)
             
             localStorage.setItem('token', JSON.stringify(data.token))
             localStorage.setItem("tipo",JSON.stringify(data.tipo))
             setisLoggedin(true)
             setUserType(data.tipo)
             http.defaults.headers.Authorization = `Bearer ${data.token}`
+
+
             
             
         } catch(error) {

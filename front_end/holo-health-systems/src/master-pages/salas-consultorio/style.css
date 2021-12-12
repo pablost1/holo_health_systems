@@ -1,10 +1,12 @@
 .lista-salas {
     display: flex;
     flex-direction: column;
+    gap: 20px;
     padding-top: 5rem;
     width: 95%;
     margin: 0 auto;
     overflow-y: auto;
+    height: 500px;
 
 }
 

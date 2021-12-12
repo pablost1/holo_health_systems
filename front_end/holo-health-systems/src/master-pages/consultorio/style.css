@@ -18,10 +18,11 @@
 }
 
 
-.lista-salas {
+.lista-salas-add {
     display: flex;
     flex-direction: column;
     gap: 10px;
     height: 400px;
     overflow-y: scroll;
+    
 }
