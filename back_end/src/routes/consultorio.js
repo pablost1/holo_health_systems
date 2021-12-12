@@ -20,7 +20,7 @@ router.get('/',usuario,(req,res,next)=>{
                 consultorio: results.map(consultorio =>{
                     return {
                         id_consultorio: consultorio.id_consultorio,
-                        id_cidade: consultorio.id_cidade,
+                        id_endereco: consultorio.id_endereco,
                         nome: consultorio.nome
                     }
                 })
