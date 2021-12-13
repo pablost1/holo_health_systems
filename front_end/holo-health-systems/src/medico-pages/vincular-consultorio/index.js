@@ -33,8 +33,8 @@ export default function VincularConsultorio() {
     async function VincularAoConsultorio(vinculo) {
         console.log(vinculo)
         try {
-            const { data } = await http.post('/medico/novo_consultorio', {data: vinculo})
-            
+            const { data } = await http.post('/medico/novo_consultorio', vinculo)
+            console.log(data)
         }
 
         catch(err) {

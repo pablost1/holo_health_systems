@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+
 import DescriptionHeader from '../../sharable-components/description-header/index';
 import MainContainer from '../../sharable-components/main-container/index';
 
@@ -9,6 +10,8 @@ import InputMask from 'react-input-mask';
 import moment from 'moment'
 import { cpf } from 'cpf-cnpj-validator'
 import http from '../../http/index';
+import { AuthContext } from '../../auth/authContext';
+
 
 console.log(cpf.strip('701.861.504-66'))
 
@@ -34,6 +37,7 @@ const validationSchema = Yup.object().shape({
 export default function CadastroGerente() {
 
     const [ consultorios, setConsultorios ] = useState([])
+    const { handleError } = useContext(AuthContext)
 
     async function CarregarConsultorios() {
         try {
@@ -43,7 +47,7 @@ export default function CadastroGerente() {
         }
 
         catch(err) {
-            console.log(err)
+            handleError(err.response.data.mensagem)
         }
         
     }
@@ -52,12 +56,12 @@ export default function CadastroGerente() {
         try {
             const gerente = {...value, id_consultorio: parseInt(value.id_consultorio), cpf: cpf.strip(value.cpf), dt_nascimento: moment(value.dt_nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD'),}
             const { data } = await http.post('/usuario/cadastro/gerente', gerente)
-            console.log(data)
+            handleError(data.mensagem)
             
         }
 
         catch(err) {
-            console.log(err)
+            handleError(err.response.data.mensagem)
         }
     }
     
