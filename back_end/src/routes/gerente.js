@@ -6,9 +6,15 @@ const login_usuario = require('../middleware/login_usuario')
 
 router.post('/reservas_especificas',login_usuario,(req,res)=>{
     pool.getConnection((err,conn)=>{
+
         if(!req.body.id_sala){return res.status(406).send({mensagem:"É necessário a sala"})}
+        console.log(req.body.id_sala)
         if(err){return res.status(500).send({error:err})}
-        conn.query("SELECT *  FROM reserva WHERE id_sala = ? ",[req.usuario.id_sala],(err,results)=>{
+        conn.query("SELECT * FROM reserva WHERE id_sala = ?",
+        [req.body.id_sala],
+        (err,results,fields)=>{
+            console.log(req.body.id_sala)
+            console.log(results)
             if(err){return res.status(500).send({error:err})}
             const response = {
                 reservas: results.map(reserva =>{

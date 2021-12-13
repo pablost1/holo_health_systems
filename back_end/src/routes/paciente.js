@@ -3,15 +3,74 @@ const router = express.Router()
 const pool = require('../mysql').pool
 const login_paciente = require('../middleware/login_paciente')
 
-/*router.post("/reservas_disponiveis",login_paciente,(req,res)=>{
+router.post("/reservas_disponiveis",login_paciente,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}
         if(!req.body.id_cidade){return res.status(406).send("É necessário a cidade!")}
         if(!req.body.id_especialidade){return res.status(406).send("É necessário a especialdiade!")}
-        
+        conn.query("SELECT * FROM cidade WHERE id_cidade=?",[req.body.id_cidade],(err,results)=>{
+            if(err){return res.status(500).send({error:err})}
+            if(results.length==0){res.status(404).send({mensagem:"cidade não encontrada"})}
+            conn.query("SELECT * FROM especialidade WHERE id_especialidade=?",[req.body.id_especialidade],(err,results)=>{
+                if(err){return res.status(500).send({error:err})}
+                if(results.length==0){res.status(404).send({mensagem:"Especialidade não encontrada"})}
+                conn.query(`
+                SELECT 
+                    reserva.id_reserva, reserva.data,reserva.hor_ini, reserva.hor_fin, reserva.id_sala, reserva.id_medico, usuario.nome as nome_medico, usuario.sobrenome,consultorio.nome as nome_consultorio 
+                FROM 
+                    reserva 
+                INNER JOIN 
+                    medico 
+                ON 
+                    reserva.id_medico = medico.crm 
+                INNER JOIN 
+                    usuario 
+                ON 
+                    medico.cpf_medico = usuario.cpf 
+                INNER JOIN  
+                    sala 
+                ON 
+                    reserva.id_sala = sala.id_sala 
+                INNER JOIN 
+                    consultorio 
+                ON 
+                    sala.id_consultorio = consultorio.id_consultorio 
+                INNER JOIN 
+                    endereço 
+                ON 
+                    consultorio.id_endereco = endereço.id_endereco 
+                WHERE 
+                medico.especialidade=? 
+                AND 
+                endereço.id_cidade=?
+                `,
+                [req.body.id_especialidade,req.body.id_cidade],
+                (err,results)=>{
+                    if(err){return res.status(500).send({error:err})}
+                    const response = {
+                        Reservas: results.map(reserva => {
+                            return {
+                                id_reserva: reserva.id_reserva,
+                                data: reserva.data,
+                                hor_ini: reserva.hor_ini,
+                                hor_fin: reserva.hor_fin,
+                                id_sala: reserva.id_sala,
+                                id_medico: reserva.id_medico,
+                                nome_medico: reserva.nome_medico,
+                                sobrenome_medico: reserva.sobrenome,
+                                nome_consultorio: reserva.nome_consultorio
+                            }
+                        })
+                    }
+                    return res.status(200).send(response)
+                }
+                )
+                
+            })
+        })
     })
 })
-*/
+
 router.post("/marcar_consulta",login_paciente,(req,res)=>{
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}
