@@ -8,28 +8,17 @@
     right: 0;
     bottom: 0;
     z-index: 10;
-    background-color: rgba(0, 0, 0, 0.1);
-    animation-name: modal-oppend;
-    animation-duration: 0.5s;
+    background-color: rgba(0, 0, 0, 0.521);
+
 
 }
 
 
-@keyframes modal-oppend {
-    0% {
-      background-color: rgba(0, 0, 0, 0.0);  
-      
-    }
-
-    100% {
-        background-color: rgba(0, 0, 0, 1);
-        
-    }
-}
 
 
 .modal-message-child {
     background-color: #ffffff;
+    
 
 
     
@@ -43,10 +32,23 @@
     border-radius: 10px;
     min-width: 300px;
     padding: 1rem;
+    animation-name: pop-animation;
+    animation-duration: .3s;
     
 }
 
 .modal-actions {
     display: flex;
     gap: 10px;
+}
+
+
+@keyframes pop-animation {
+    from {
+        transform: scale(0.1);
+    }
+
+    to {
+        transform: scale(1);
+    }
 }

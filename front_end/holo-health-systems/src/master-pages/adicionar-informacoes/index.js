@@ -5,8 +5,10 @@ import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
 import Button from '../../sharable-components/button/index';
 import axios from 'axios'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import http from '../../http/index';
+import { AuthContext } from '../../auth/authContext';
+
 
 
 
@@ -29,8 +31,7 @@ const CidadeValidation = Yup.object().shape({
 
 
 export default function AdicionarInformacoes() {
-
-
+    const { handleError } = useContext(AuthContext)
     const [estados, setestados] = useState([])
 
     async function CarregarEstados() {
@@ -70,10 +71,10 @@ export default function AdicionarInformacoes() {
                         http.post('/estado', value)
                             .then( res => {
 //                                CarregarEstados()
-                                alert('Estado cadastrado com sucesso')
+                                handleError('Estado cadastrado com sucesso')
                                 resetForm()
                             })
-                            .catch( error => alert(error.error))
+                            .catch( error => handleError(error.response.data.mensagem))
                         
                         
                     }}
@@ -104,12 +105,12 @@ export default function AdicionarInformacoes() {
                         console.log(value)
                         http.post('/cidade', value)
                             .then( res => {
-                                alert("Cidade cadastrada com sucesso")
+                                handleError("Cidade cadastrada com sucesso")
                                 resetForm()
                             })
                             .catch( err => {
                                 
-                                alert(err.response.data.mensagem)
+                                handleError(err.response.data.mensagem)
 
                                 
                             })

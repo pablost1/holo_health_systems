@@ -63,13 +63,7 @@ function ScheduleForm(props) {
     return ( 
         <div className={`schedule-form`} >
             
-            <div style={{
-                padding: '2rem',
-                backgroundColor: '#ffffff',
-                color: 'black',
-                borderRadius: '5px',
-                minWidth: '300px'
-            }}>
+            <div className="scheduler-form-inner-container">
                 <Button size="small" hasEvent={true} readonly={true} onClick={props.close}>fechar</Button>
                 <Formik
                     initialValues={{

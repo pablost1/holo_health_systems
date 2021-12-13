@@ -8,6 +8,7 @@ import Column from './column/index';
 // import { AuthContext } from '../auth/authContext'
 import {  useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import http from '../http/index';
 // useContext
 
 
@@ -55,7 +56,8 @@ let days = [
 function Scheduler() {
 
     const location = useLocation()
-    console.log(location)
+    console.log(location.state)
+    
     moment.locale('pt-br')
     const [schedules, setschedules] = useState([])
     // const authContext = useContext(AuthContext)
@@ -63,17 +65,46 @@ function Scheduler() {
     const [showInitialDate, setShowInitialDate] = useState('')
 
     async function fetchData() {
-        // const { data }  = await axios.get('http://localhost:3001/horarios')
 
+        try { 
+            const { data }  = await http.post('/gerente/reservas_especificas', {id_sala: location.state})
+            console.log(data)
+            setShowInitialDate(initialDate.format('LL'))
+        }
+
+        catch(err) {
+            console.log(err)
+        }
         // setschedules(data)
-        setShowInitialDate(initialDate.format('LL'))
-
-
         
     }
 
-    useEffect( () => {
+    // async function addSchedule(schedule) {
 
+    //     const reserva = {
+    //         data: '2021-10-21',
+    //         hor_ini: '10:00:00',
+    //         hor_fin: '12:00:00',
+    //         id_sala: location.state,
+    //         id_medico: 
+    //     }
+
+    //     try {
+    //         const { data } = http.post('/gerente/reserva', schedule)
+    //         console.log(data)
+    //     }
+
+    //     catch(err) {
+    //         console.log(err)
+    //     }
+        
+
+    // }
+
+    
+
+    useEffect( () => {
+        
         fetchData()
    
     }, [showInitialDate, initialDate])
