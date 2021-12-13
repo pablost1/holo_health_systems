@@ -67,8 +67,7 @@ router.post("/medicos_consultorio_especialidade",login_gerente,(req,res)=>{
                     nome: medico.nome_medico,
                     sobrenome: medico.sobrenome,
                     especialidade: medico.nome,
-                    id_especialidade: medico.id_especialidade,
-                    id_consultorio: medico.id_consultorio
+
                     
                 }
             })
