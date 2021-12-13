@@ -36,11 +36,11 @@ export default function CadastroMedico() {
         
         try {
             const { data } = await http.post('/usuario/cadastro/medico',value)
-            console.log(data)
+            handleError(data.mensagem)
         }
 
         catch(err) {
-            const message = err.data.mensagem
+            const message = err.response.data.mensagem
             handleError(message)
         }
     }

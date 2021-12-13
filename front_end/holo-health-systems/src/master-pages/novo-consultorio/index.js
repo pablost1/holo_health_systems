@@ -4,7 +4,9 @@ import  * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik'
 import Button from '../../sharable-components/button/index';
 import http from '../../http/index';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
+import { AuthContext } from '../../auth/authContext';
+
 
 
 
@@ -13,6 +15,7 @@ import { useState, useEffect, useRef } from 'react';
 const validation = Yup.object().shape({
     nome: Yup.string()
         .required('Um nome é necessário'),
+    estado: Yup.string().required('Selecione um estado'),
     id_cidade: Yup.string()
         .required('Uma cidade é necessária'),
     bairro: Yup.string()
@@ -34,7 +37,10 @@ export default function  NovoConsultorio() {
     const formRef = useRef()
     const [ cidades, setcidades ] = useState([])
     const [ estado, setestado ] = useState([])
-    const [ estadoSelecionado, setestadoSelecionado] = useState('')
+    const [ estadoSelecionado, setestadoSelecionado] = useState('1')
+    const { handleError } = useContext(AuthContext)
+    
+    
 
     
 
@@ -50,7 +56,7 @@ export default function  NovoConsultorio() {
             }
     
             catch(err) {
-                alert(err.response.data.mensagem)
+                console.log(err)
             }
         })()
         
@@ -61,15 +67,39 @@ export default function  NovoConsultorio() {
         setestadoSelecionado(e.target.value)
 
         try {
-            const data  = await http.post('/especifica', {id_estado: estadoSelecionado})
-            console.log(data)
+            const payload = {id_estado: parseInt(e.target.value)}
+            const {  data }  = await http.post('/cidade/especifica', payload)
+            setcidades(data.cidades)
         }
 
         catch(err) {
-            console.log(err.response)
+            console.log(err)
         }
     }
 
+    async function CadastrarConsultorio(consultorio) {
+
+        const consultorioModificado = {...consultorio, id_cidade: parseInt(consultorio.id_cidade), n_sala: parseInt(consultorio.n_sala)}
+        
+        try {
+            const { data } = await http.post('/consultorio', consultorio)
+            handleError(data.mensagem)
+        }
+
+        catch(err) {
+            handleError(err.response.data.mensagem)
+        }
+    }
+
+    function Mudanca() {
+
+        console.log(formRef.current.values)
+    }
+
+    function TemEstados(e, handleChange) {
+        CarregarCidades(e)
+        handleChange(e)
+    }
     
 
 
@@ -79,6 +109,7 @@ export default function  NovoConsultorio() {
             <Formik
                 initialValues={{
                     nome: '',
+                    estado: '',
                     id_cidade: '',
                     bairro: '',
                     rua: '',
@@ -90,13 +121,16 @@ export default function  NovoConsultorio() {
                 validationSchema={validation}
 
                 onSubmit={(value) => {
-                    console.log(value)
-                }}
+                    CadastrarConsultorio(value)
+                }} 
 
                 innerRef={formRef}
             >
-                {({errors, touched, values, handleChange}) => (
+                {({errors, touched, values, handleChange, isSubmitting}) => (
+
+                    
                     <Form className="consultorio-form">
+                        <button onClick={() => console.log(values)}>Check</button>
                         <div className="form-group">
                             <label>Nome</label>
                             <Field name="nome" className="input"/>
@@ -104,26 +138,38 @@ export default function  NovoConsultorio() {
                         </div>
                         <div className="form-group">
                             <label>Estado</label>
-                            <select className="input" onChange={CarregarCidades}>
+                            <Field as="select" className="input" name="estado" onChange={(e) => TemEstados(e, handleChange)}>
+                                <option value={'1'} selected>Selecione um estado</option>
                                 {
                                     estado.estados ? estado.estados.map( (estado) => (
                                         <option key={estado.id_estado} value={estado.id_estado} >{estado.nome}</option> 
                                     )) : ''
                                 }
-                            </select>
-                            { errors.id_cidade && touched.id_cidade ? <p>{ errors.id_cidade }</p> : ''}
-                        </div>
-                        <div className="form-group">
-                            <label>Cidade</label>
-                            <Field as="select" name="id_cidade" className="input">
-                                {
-                                    // cidades.map( (cidade) => (
-                                    //     <option key={cidade.id_cidade}>{cidade.nome}</option>
-                                    // ))
-                                }
                             </Field>
-                            { errors.id_cidade && touched.id_cidade ? <p>{ errors.id_cidade }</p> : ''}
+                            { errors.estado && touched.estado ? <p>{ errors.estado }</p> : ''}
                         </div>
+
+                        {
+
+                            values.estado !== '1' ?
+                                (<div className="form-group">
+                                    <label>Cidade</label>
+                                    {
+                                        
+                                    }
+                                    <Field as="select" name="id_cidade" className="input">
+                                        <option value={1} selected>Selecione um estado</option>
+                                        {
+                                            cidades.map( (cidade) => (
+                                                <option key={cidade.id_cidade} value={cidade.id_cidade}>{cidade.nome}</option>
+                                            ))
+                                        }
+                                    </Field>
+                                    { errors.id_cidade && touched.id_cidade ? <p>{ errors.id_cidade }</p> : ''}
+                                </div>)
+                                :
+                                ''
+                        }   
                         <div className="form-group">
                             <label>Bairro</label>
                             <Field name="bairro"className="input"/>
