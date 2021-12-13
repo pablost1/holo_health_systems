@@ -48,6 +48,29 @@ router.get("/medicos_consultorio",login_gerente,(req,res)=>{
         })
     })
 })
+router.post("/medicos_consultorio_especialidade",login_gerente,(req,res)=>{
+    if(!req.body.id_especialidade){return res.status(406).send({mensagem:"É necessário a especialidade"})}
+    pool.getConnection((err,conn)=>{
+        if(err){return res.status(500).send({error:err})}
+        conn.query("SELECT medico.crm, medico_consultorio.id_consultorio, especialidade.id_especialidade, usuario.nome as nome_medico, usuario.sobrenome, especialidade.nome as especialidade FROM medico_consultorio INNER JOIN medico ON medico_consultorio.id_medico = medico.crm  INNER JOIN usuario ON medico.cpf_medico = usuario.cpf INNER JOIN especialidade ON medico.especialidade=especialidade.id_especialidade WHERE medico_consultorio.id_consultorio=? AND medico.especialidade=?",[req.usuario.id_consultorio,req.body.id_especialidade],(err,results)=>{
+            if(err){return res.status(500).send({error:err})}
+            const response = {
+                medicos: results.map(medico => {
+                return {
+                    crm: medico.crm,
+                    nome: medico.nome_medico,
+                    sobrenome: medico.sobrenome,
+                    especialidade: medico.nome,
+                    id_especialidade: medico.id_especialidade,
+                    id_consultorio: medico.id_consultorio
+                    
+                }
+            })
+        }
+            return res.status(200).send(response)
+        })
+    })
+})
 router.post('/especialidades_medico',login_gerente,(req,res)=>{
     if(!req.body.id_medico){return res.status(406).send({mensagem:"É necessário o médico"})}
     pool.getConnection((err,conn)=>{
