@@ -172,6 +172,7 @@ router.post('/nova_reserva',login_gerente,(req,res)=>{
 })
 
 router.delete("/deletar_reserva",login_gerente,(req,res)=>{
+    console.log(req.body)
     pool.getConnection((err,conn)=>{
         if(err){return res.status(500).send({error:err})}
         conn.query("SELECT *  FROM reserva INNER JOIN sala ON reserva.id_sala = sala.id_sala WHERE id_reserva=?",[req.body.id_reserva],(err,results)=>{
