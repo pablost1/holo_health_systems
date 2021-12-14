@@ -53,7 +53,7 @@ Olá! Sou Aline, uma mulher de 52 anos e sou gerente de um consultório, gostari
 ![Desenho sem título](https://user-images.githubusercontent.com/51882911/143334485-6ea1f492-4870-45a5-aeef-05934a2d262a.jpg)
 
 ## Quadro Kanban
-![trello](https://user-images.githubusercontent.com/51882911/144313267-8439ac2b-cd9a-4152-b8da-1a64eea4c275.png)
+![TRELLO2](https://user-images.githubusercontent.com/51882911/145914981-adb51c8d-8e1c-42bd-9aa6-f917a98e58f9.png)
 Link: https://trello.com/b/H5sbX1QL/holo-health-systems
 
 ## Business Model Canvas
