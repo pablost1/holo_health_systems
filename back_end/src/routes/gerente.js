@@ -10,7 +10,7 @@ router.post('/reservas_especificas', login_usuario, (req, res) => {
         if (!req.body.id_sala) { return res.status(406).send({ mensagem: "É necessário a sala" }) }
         console.log(req.body.id_sala)
         if (err) { return res.status(500).send({ error: err }) }
-        conn.query("SELECT * FROM reserva WHERE id_sala = ?",
+        conn.query("SELECT * FROM reserva INNER JOIN medico ON reserva.id_medico=medico.crm INNER JOIN usuario ON medico.cpf_medico = usuario.cpf WHERE id_sala = ?",
             [req.body.id_sala],
             (err, results, fields) => {
                 console.log(req.body.id_sala)
@@ -24,7 +24,10 @@ router.post('/reservas_especificas', login_usuario, (req, res) => {
                             hor_ini: reserva.hor_ini,
                             hor_fin: reserva.hor_fin,
                             id_sala: reserva.id_sala,
-                            id_medico: reserva.id_medico
+                            id_medico: reserva.id_medico,
+                            nome_medico: reserva.nome,
+                            sobrenome_medico: reserva.sobrenome,
+                            especialidade_medico: reserva.especialidade
                         }
                     })
                 }
