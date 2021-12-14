@@ -52,8 +52,7 @@ router.get("/medicos_consultorio",login_gerente,(req,res)=>{
         })
     })
 })
-<<<<<<< HEAD
-=======
+
 router.post("/medicos_consultorio_especialidade",login_gerente,(req,res)=>{
     if(!req.body.id_especialidade){return res.status(406).send({mensagem:"É necessário a especialidade"})}
     pool.getConnection((err,conn)=>{
@@ -102,7 +101,7 @@ router.post('/especialidades_medico',login_gerente,(req,res)=>{
         })
     })
 })
->>>>>>> 6e2f9d604eb0820e5a228cc9f8839e71908baeb1
+
 
 
 router.post('/horarios_reserva',login_usuario,(req,res)=>{
