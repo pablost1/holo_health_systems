@@ -60,7 +60,7 @@ Link: https://trello.com/b/H5sbX1QL/holo-health-systems
 ![Business Model](https://user-images.githubusercontent.com/51882911/143369188-0265af80-1990-4c54-8d7e-f412032f23ba.jpg)
 
 ## Modelo ER
-[ER HHS.pdf](https://github.com/pablost1/holo_health_systems/files/7707922/ER.HHS.pdf)]
+![ER HHS](https://user-images.githubusercontent.com/51882911/145915342-f86c59d2-05fc-442e-8994-84e05e49bd36.jpeg)
 
 -------------------------------
 ![image](https://user-images.githubusercontent.com/51882911/144313430-9f75002d-74d2-406e-a327-054d386fa7ef.png)
