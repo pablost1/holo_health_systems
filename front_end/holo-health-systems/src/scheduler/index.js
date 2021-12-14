@@ -56,60 +56,42 @@ let days = [
 function Scheduler() {
 
     const location = useLocation()
-    console.log(location.state)
     
-    moment.locale('pt-br')
+    moment.locale('pt-br') 
     const [schedules, setschedules] = useState([])
     // const authContext = useContext(AuthContext)
     const [initialDate, setinitialDate] = useState(moment())
     const [showInitialDate, setShowInitialDate] = useState('')
+    const [registerCounter, setRegisterCounter ] = useState(1)
+
+    
 
     async function fetchData() {
-
+        setShowInitialDate(initialDate.format('LL'))
         try { 
             const { data }  = await http.post('/gerente/reservas_especificas', {id_sala: location.state})
-            console.log(data)
-            setShowInitialDate(initialDate.format('LL'))
+            setschedules(data.reservas)
         }
 
         catch(err) {
             console.log(err)
         }
-        // setschedules(data)
-        
+
     }
 
-    // async function addSchedule(schedule) {
 
-    //     const reserva = {
-    //         data: '2021-10-21',
-    //         hor_ini: '10:00:00',
-    //         hor_fin: '12:00:00',
-    //         id_sala: location.state,
-    //         id_medico: 
-    //     }
+    async function addSchedule(schedule) {
+        try {
+            const { data } = http.post('/gerente/reserva', schedule)
+            console.log(data)
+        }
 
-    //     try {
-    //         const { data } = http.post('/gerente/reserva', schedule)
-    //         console.log(data)
-    //     }
-
-    //     catch(err) {
-    //         console.log(err)
-    //     }
+        catch(err) {
+            console.log(err)
+        }
         
 
-    // }
-
-    
-
-    useEffect( () => {
-        
-        fetchData()
-   
-    }, [showInitialDate, initialDate])
-
-
+    }
 
     function deleteSchedule(id) {
         axios.delete(`http://localhost:3001/horarios/${id}`)
@@ -134,6 +116,8 @@ function Scheduler() {
         setShowInitialDate(initialDate.format('LL'))
     }
 
+    
+
     function getMonday() {
         let newDate = initialDate.format()
         let newMoment  = moment(newDate)
@@ -150,12 +134,10 @@ function Scheduler() {
     }
 
 
-
-
-
-
-
-
+    useEffect( () => {
+        fetchData()
+   
+    }, [showInitialDate, initialDate, registerCounter])
 
     return (
         <div>
@@ -181,6 +163,10 @@ function Scheduler() {
                                 currentDate={initialDate}
                                 findMonday={getMonday}
                                 addSchedule={addSchedule}
+                                idSala={location.state}
+                                fetch={fetchData}
+                                setRegisterCounter={setRegisterCounter}
+                                registerCounter={registerCounter}
                             />
                         ))   
                     }

@@ -2,33 +2,60 @@ import './style.css'
 import moment from 'moment'
 import * as Yup from 'yup'
 import { Add, Delete } from '@material-ui/icons';
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Formik, Form, Field } from 'formik';
 import Button from '../../sharable-components/button/index';
 import axios from 'axios'
 import TimePicker from 'react-time-picker'
+import http from '../../http/index';
+import { useLocation } from 'react-router-dom';
+import { AuthContext } from '../../auth/authContext';
 
 
 
 
 
+function Horario(props) { 
 
+    const { handleError } = useContext(AuthContext)
 
-function Horario(props) {
+    
+    const { setRegisterCounter, registerCounter, schedule } = props
+
+    async function ApagarReserva() {
+        console.log(props.schedule.id_reserva)
+        try {
+            const { data } = await http.delete('/gerente/deletar_reserva', { data: { id_reserva:  props.schedule.id_reserva}})
+            setRegisterCounter(registerCounter+1)
+            handleError(data.mensagem)
+
+        }
+
+        catch(err) {
+            handleError(err.response.data.mensagem)
+        }
+    }
+
+    const horaInicial = moment(schedule.hor_ini, 'HH:mm:ss').format('HH:mm')
+    const horaFinal = moment(schedule.hor_fin, 'HH:mm:ss').format('HH:mm')
+
     return (
         <div className="horario">
             <div className="horario__items">
                 <span className="medico">{props.schedule.profissional}</span>
                 <span className="especialidade-horario">{props.schedule.especialidade}</span>
-                <span className="especialidade-horario">{props.schedule.horarioInicial} - {props.schedule.horarioFinal}</span>
+                <span className="especialidade-horario">{horaInicial} - {horaFinal}</span>
                 <Delete
                     style={{
                         
                         alignSelf: 'flex-end',
                         marginRight: '10px',
-                        color: 'red'
+                        color: 'red',
+                        cursor: 'pointer'
                     }}
-                    onClick={() => props.deleteSchedule(props.schedule.id)}
+
+                    onClick={() => ApagarReserva()}
+                    
                 />
                 
             </div>
@@ -40,14 +67,16 @@ function Horario(props) {
 
 
 const validation = Yup.object().shape({
-    profissional: Yup.string(),
-        // .required('Um profissional é necessário'),
-    especialidade: Yup.string(),
-        // .required('Uma especialidade é necessária'),
-    horarioInicial: Yup.string()
+    id_medico: Yup.string()
+        .required('Selecione um profissional'),
+    data: Yup.string()
+        .required('Uma especialidade é necessária'),
+    hor_ini: Yup.string()
         .required('O horário inicial é necessário'),
-    horarioFinal: Yup.string()
-        .required('O horário final é necessário')
+    hor_fin: Yup.string()
+        .required('O horário final é necessário'),
+    especialidade: Yup.string()
+        .required('É necessário uma especialidade')
     
 })
 
@@ -56,8 +85,67 @@ const validation = Yup.object().shape({
 
 function ScheduleForm(props) {
 
+    const { registerCounter, setRegisterCounter } = props
+    
+    const { handleError } = useContext(AuthContext)
+    const location = useLocation()
+    
+
     const [ initialTime, setInitialTime] = useState('00:00')
     const [ finalTime, setFinalTime] = useState('00:00')
+    const [ medicos, setMedicos] = useState([])
+    const [ especialidades, setEspecialidades] = useState([])
+
+
+    async function CarregarEspecialidades() {
+        try {
+            const { data } = await http.get('/especialidade')
+            setEspecialidades(data.Especialidades)
+        }
+
+        catch(err) {
+            console.log(err)
+        }
+    }
+
+    async function CarregarMedicos(id) {
+
+        try {
+            const { data } = await http.post('/gerente/medicos_consultorio_especialidade', {id_especialidade: id})
+            setMedicos(data.medicos)
+            
+
+        }
+
+        catch(err) {
+            console.log(err)
+        }
+    }
+
+    async function CadastrarReserva(reserva) {
+
+        const novaReserva = {...reserva, data: moment(reserva.data, 'MM/DD/YYYY').format('YYYY-MM-DD')}
+        
+        try {
+            const { data } =  await http.post('/gerente/nova_reserva', novaReserva)
+            handleError(data.mensagem)
+            setRegisterCounter(registerCounter + 1)
+        }
+
+        catch(err) {
+            handleError(err.response.data.mensagem)
+        }
+    }
+
+    async function ApagarReserva() {
+
+
+    }
+
+
+    useEffect(() => {
+        CarregarEspecialidades()
+    }, [])
     
 
     return ( 
@@ -68,10 +156,11 @@ function ScheduleForm(props) {
                 <Formik
                     initialValues={{
                         data: props.thisDay,
-                        profissional: 'Maria José',
-                        especialidade: 'Proctologia',
-                        horarioInicial: initialTime,
-                        horarioFinal: finalTime
+                        hor_ini: initialTime,
+                        hor_fin: finalTime,
+                        id_sala: location.state,
+                        id_medico: '',
+                        especialidade: ''
                     }}
 
                     validationSchema={validation}
@@ -79,23 +168,17 @@ function ScheduleForm(props) {
                         
                         
 
-                        value.horarioInicial = initialTime
-                        value.horarioFinal = finalTime
+                        value.hor_ini = initialTime
+                        value.hor_fin = finalTime
                         
 
-                        
+                        CadastrarReserva(value)
 
-                        axios.post('http://localhost:3001/horarios', value)
-                            .then( res => {
-                                alert(res.statusText)
-                                props.close()
-                                props.loadData()
-                            })
                         
                         
                     }}
                 >
-                    {({errors, touched}) => (
+                    {({errors, touched, values, handleChange, setFieldValue}) => (
                         <Form style={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -124,45 +207,68 @@ function ScheduleForm(props) {
 
                             />
                             <div className="form-group">
-                                <label>Profissional</label>
-                                <Field
-                                    name="profissional"
-                                    as="select"
-                                    className="input" 
-                                >
-                                    <option value="otorrino">Otorrino</option>
-                                </Field>
-                                
-                                { errors.profissional && touched.profissional ? <p>{errors.profissional}</p> : ''  }
-                            </div>
-                            <div className="form-group">
                                 <label>Especialidade</label>
                                 <Field
                                     name="especialidade"
                                     as="select"
-                                    className="input" 
+                                    className="input"
+                                    onChange={ (e) => {
+                                        handleChange(e)
+
+
+                                        if(e.target.value !== '') {
+
+                                            const idEmInteiro = parseInt(e.target.value)
+                                            CarregarMedicos(idEmInteiro)
+                                        }
+
+                                        else {
+                                            setFieldValue('id_medico', '')
+                                        }
+
+                                        
+                                    }}
+                                    
+
                                 >
-                                    <option value="otorrino">Otorrino</option>
+                                    <option value="" selected>Selecione uma especialidade</option>
+                                    {
+                                        especialidades.length > 0 ? especialidades.map( (especialidade) => (
+                                            <option
+                                                key={especialidade.id_especialidade}
+                                                value={especialidade.id_especialidade}
+                                            >
+                                                {especialidade.nome}
+                                            </option>
+                                        )) : ''
+                                    }
                                 </Field>
                                 
                                 { errors.especialidade && touched.especialidade ? <p>{errors.especialidade}</p> : ''  }
                             </div>
-                            {/* <div className="form-group">
-                                <label>Horário inicial</label>
-                                <Field
-                                    name="horarioInicial"
-                                />
-                                { errors.horarioInicial && touched.horarioInicial ? <p>{errors.horarioInicial}</p> : ''  }
-                        
-                            </div> */}
-                            { errors.horarioFinal && touched.horarioFinal ? <p>{errors.horarioFinal}</p> : ''  }
-                            {/* <div className="form-group">
-                                <label>Horário final</label>
-                                <Field
-                                    name="horarioFinal"
-                                />
-                                
-                            </div> */}
+
+                            {
+                                values.especialidade ?  (<div className="form-group">
+                                    <label>Profissional</label>
+                                    <Field
+                                        name="id_medico"
+                                        as="select"
+                                        className="input" 
+                                    >
+                                        <option value="">Selecione um médico</option>
+                                        {
+                                            medicos.length > 0 ? medicos.map( (medico, index) => (
+                                                <option value={medico.crm} key={index} >{`${medico.nome} ${medico.sobrenome}`}</option>
+                                            )) : ''
+                                        }
+                                    </Field>
+                                    
+                                    { errors.profissional && touched.profissional ? <p>{errors.profissional}</p> : ''  }
+                                </div>) : ''
+                            }
+                            
+                            
+                            <button onClick={() => console.log(values)}>check</button>
                             <Button size="medium">Marcar horário</Button>
                         </Form>
                     )}
@@ -179,7 +285,8 @@ export default function Column(props) {
     // useEffect(() => {
     //     setmonday(props.findMonday())
     // }, [props.findMonday()])
-
+    // ''YYYY-MM-DDTHH:mm:ss.SSSZ''
+    // console.log(`A data é${moment('2021-12-06T03:00:00.000Z', 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('MM/DD/YYYY')}`)
     const [ isOpened, setisOpened]  =  useState(false)
     let monday
     let columnMoment
@@ -188,7 +295,11 @@ export default function Column(props) {
         
     monday = props.findMonday()
     columnMoment = moment(monday).add(props.day.id, 'days').format('L')
-    thisDaySchedules = props.dates.filter( (schedule) => schedule.data === columnMoment )
+    
+    thisDaySchedules = props.dates.filter( (schedule) => {
+        
+        return moment(schedule.data, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('MM/DD/YYYY') === columnMoment
+    })
     
 
     
@@ -199,6 +310,9 @@ export default function Column(props) {
     function closeRegister() {
         setisOpened(false)
     }
+
+    useEffect(() => {
+    }, [])
 
     return (
         <div className="scheduler-column">
@@ -216,6 +330,9 @@ export default function Column(props) {
                             key={schedule.id} 
                             deleteSchedule={props.deleteSchedule}
                             loadData={props.loadData}
+                            idSala={props.idSala}
+                            setRegisterCounter={props.setRegisterCounter}
+                            registerCounter={props.registerCounter}
                         />
                         
                     ))
@@ -232,6 +349,9 @@ export default function Column(props) {
                     isOpend={isOpened}
                     thisDay={columnMoment}
                     toSchedule={props.addSchedule}
+                    fetchData={props.fetch}
+                    setRegisterCounter={props.setRegisterCounter}
+                    registerCounter={props.registerCounter}
                     
                 />
             )
