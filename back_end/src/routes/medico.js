@@ -4,42 +4,42 @@ const pool = require("../mysql").pool;
 const login_medico = require('../middleware/login_medico');
 const moment = require('moment')
 
-router.post("/novo_consultorio",login_medico,(req,res)=>{
+router.post("/novo_consultorio", login_medico, (req, res) => {
     console.log(req.body)
 
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error: err})}
-        if(!req.body.id_consultorio){return res.status(406).send({mensagem: "É necessário o consultório."})}
-        conn.query("SELECT * FROM consultorio WHERE id_consultorio=?",[req.body.id_consultorio],(err,results)=>{
-            if(err){return res.status(500).send({error: err})}
-            if(results.length==0){return res.status(404).send({mensagem: "Consultório não encontrado"})}
-            conn.query("SELECT * FROM medico_consultorio WHERE id_medico=? AND id_consultorio=?",[req.usuario.crm,req.body.id_consultorio],(err,results)=>{
-                if(err){return res.status(500).send({error: err})}
-                if(results.length!=0){return res.status(409).send({mensagem: "medico já está cadastrado neste consultório"})}
-                conn.query("INSERT INTO medico_consultorio (id_medico,id_consultorio) VALUES (?,?)",[req.usuario.crm,req.body.id_consultorio],(err,results)=>{
-                    if(err){return res.status(500).send({error: err})}
-                    return res.status(201).send({mensagem:"médico registrado no consultório"})
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        if (!req.body.id_consultorio) { return res.status(406).send({ mensagem: "É necessário o consultório." }) }
+        conn.query("SELECT * FROM consultorio WHERE id_consultorio=?", [req.body.id_consultorio], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
+            if (results.length == 0) { return res.status(404).send({ mensagem: "Consultório não encontrado" }) }
+            conn.query("SELECT * FROM medico_consultorio WHERE id_medico=? AND id_consultorio=?", [req.usuario.crm, req.body.id_consultorio], (err, results) => {
+                if (err) { return res.status(500).send({ error: err }) }
+                if (results.length != 0) { return res.status(409).send({ mensagem: "medico já está cadastrado neste consultório" }) }
+                conn.query("INSERT INTO medico_consultorio (id_medico,id_consultorio) VALUES (?,?)", [req.usuario.crm, req.body.id_consultorio], (err, results) => {
+                    if (err) { return res.status(500).send({ error: err }) }
+                    return res.status(201).send({ mensagem: "médico registrado no consultório" })
                 })
             })
         })
     })
 })
-router.get("/minhas_reservas",login_medico,(req,res)=>{
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error: err})}
+router.get("/minhas_reservas", login_medico, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
         conn.query(
             "SELECT * FROM reserva INNER JOIN sala ON reserva.id_sala=sala.id_sala INNER JOIN consultorio ON sala.id_consultorio=consultorio.id_consultorio WHERE id_medico=? AND data>?",
-            [req.usuario.crm,moment().format()],
-            (err,results)=>{
-                if(err){return res.status(500).send({error: err})}
+            [req.usuario.crm, moment().format()],
+            (err, results) => {
+                if (err) { return res.status(500).send({ error: err }) }
                 const response = {
                     Reservas: results.map(
-                        reserva=>{
+                        reserva => {
                             return {
-                                id_reserva:reserva.id_reserva,
+                                id_reserva: reserva.id_reserva,
                                 data: reserva.data,
                                 hor_ini: reserva.hor_ini,
-                                hor_fin:reserva.hor_fin,
+                                hor_fin: reserva.hor_fin,
                                 id_sala: reserva.id_sala,
                                 id_medico: reserva.id_medico,
                                 id_consultorio: reserva.id_consultorio,
@@ -51,27 +51,27 @@ router.get("/minhas_reservas",login_medico,(req,res)=>{
                 }
                 return res.status(200).send(response)
             }
-            )
+        )
     })
 })
 
-router.get("/reserva_em_andamento",login_medico,(req,res)=>{
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error: err})}
+router.get("/reserva_em_andamento", login_medico, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
         conn.query(
             "SELECT * FROM reserva INNER JOIN sala ON reserva.id_sala=sala.id_sala INNER JOIN consultorio ON sala.id_consultorio=consultorio.id_consultorio WHERE id_medico=? AND data>? AND ? BETWEEN hor_ini AND hor_fin",
-            [req.usuario.crm,moment().format(),moment().format('LTS')],
-            (err,results)=>{
-                if(err){return res.status(500).send({error: err})}
-                if(results.length==0){return res.status(200).send({mensagem:"Não há reservas em andamento :D"})}
+            [req.usuario.crm, moment().format(), moment().format('LTS')],
+            (err, results) => {
+                if (err) { return res.status(500).send({ error: err }) }
+                if (results.length == 0) { return res.status(200).send({ mensagem: "Não há reservas em andamento :D" }) }
                 const response = {
                     Reservas: results.map(
-                        reserva=>{
+                        reserva => {
                             return {
-                                id_reserva:reserva.id_reserva,
+                                id_reserva: reserva.id_reserva,
                                 data: reserva.data,
                                 hor_ini: reserva.hor_ini,
-                                hor_fin:reserva.hor_fin,
+                                hor_fin: reserva.hor_fin,
                                 id_sala: reserva.id_sala,
                                 id_medico: reserva.id_medico,
                                 id_consultorio: reserva.id_consultorio,
@@ -83,15 +83,15 @@ router.get("/reserva_em_andamento",login_medico,(req,res)=>{
                 }
                 return res.status(200).send(response)
             }
-            )
+        )
     })
 })
 
-router.get("/minhas_consultas",login_medico,(req,res)=>{
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error:err})}
-        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE consulta.id_medico=? AND status=0",[req.usuario.crm],(err,results)=>{
-            if(err){return res.status(500).send({error: err})}
+router.get("/minhas_consultas", login_medico, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE consulta.id_medico=? AND status=0", [req.usuario.crm], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
             const response = {
                 Consultas: results.map(consulta => {
                     return {
@@ -110,11 +110,11 @@ router.get("/minhas_consultas",login_medico,(req,res)=>{
         })
     })
 })
-router.get("/proxima_consulta",login_medico,(req,res)=>{
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error:err})}
-        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE consulta.id_medico=? AND status=0 AND ORDER BY data ASC, hor_marc ASC",[req.usuario.crm],(err,results)=>{
-            if(err){return res.status(500).send({error: err})}
+router.get("/proxima_consulta", login_medico, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE consulta.id_medico=? AND status=0 AND ORDER BY data ASC, hor_marc ASC", [req.usuario.crm], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
             const response = {
                 Consultas: results.map(consulta => {
                     return {
@@ -133,16 +133,16 @@ router.get("/proxima_consulta",login_medico,(req,res)=>{
         })
     })
 })
-router.patch("/concluir_consulta",login_medico,(req,res)=>{
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error: err})}
-        
-        conn.query("SELECT * FROM consulta WHERE id_consulta=?",[req.body.id_consulta],(err,results)=>{
-            if(results.length==0){return res.status(404).send({mensagem:"consulta não encontrada"})}
-            if(results[0].id_medico!=req.usuario.crm){return res.status(401).send({mensagem:"A consulta não pertence a esse médico"})}
-            conn.query("UPDATE consulta SET status=1 WHERE id_consulta=? AND id_medico=?",[req.body.id_consulta,req.usuario.crm],(err,results)=>{
-                if(err){return res.status(500).send({error: err})}
-                return res.status(202).send({mensagem:"status de consulta alterado com sucesso"})
+router.patch("/concluir_consulta", login_medico, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+
+        conn.query("SELECT * FROM consulta WHERE id_consulta=?", [req.body.id_consulta], (err, results) => {
+            if (results.length == 0) { return res.status(404).send({ mensagem: "consulta não encontrada" }) }
+            if (results[0].id_medico != req.usuario.crm) { return res.status(401).send({ mensagem: "A consulta não pertence a esse médico" }) }
+            conn.query("UPDATE consulta SET status=1 WHERE id_consulta=? AND id_medico=?", [req.body.id_consulta, req.usuario.crm], (err, results) => {
+                if (err) { return res.status(500).send({ error: err }) }
+                return res.status(202).send({ mensagem: "status de consulta alterado com sucesso" })
             })
         })
     })

@@ -3,17 +3,17 @@ const router = express.Router()
 const pool = require('../mysql').pool
 const login_paciente = require('../middleware/login_paciente')
 
-router.post("/reservas_disponiveis",login_paciente,(req,res)=>{
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error:err})}
-        if(!req.body.id_cidade){return res.status(406).send("É necessário a cidade!")}
-        if(!req.body.id_especialidade){return res.status(406).send("É necessário a especialdiade!")}
-        conn.query("SELECT * FROM cidade WHERE id_cidade=?",[req.body.id_cidade],(err,results)=>{
-            if(err){return res.status(500).send({error:err})}
-            if(results.length==0){res.status(404).send({mensagem:"cidade não encontrada"})}
-            conn.query("SELECT * FROM especialidade WHERE id_especialidade=?",[req.body.id_especialidade],(err,results)=>{
-                if(err){return res.status(500).send({error:err})}
-                if(results.length==0){res.status(404).send({mensagem:"Especialidade não encontrada"})}
+router.post("/reservas_disponiveis", login_paciente, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        if (!req.body.id_cidade) { return res.status(406).send("É necessário a cidade!") }
+        if (!req.body.id_especialidade) { return res.status(406).send("É necessário a especialdiade!") }
+        conn.query("SELECT * FROM cidade WHERE id_cidade=?", [req.body.id_cidade], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
+            if (results.length == 0) { res.status(404).send({ mensagem: "cidade não encontrada" }) }
+            conn.query("SELECT * FROM especialidade WHERE id_especialidade=?", [req.body.id_especialidade], (err, results) => {
+                if (err) { return res.status(500).send({ error: err }) }
+                if (results.length == 0) { res.status(404).send({ mensagem: "Especialidade não encontrada" }) }
                 conn.query(`
                 SELECT 
                     reserva.id_reserva, reserva.data,reserva.hor_ini, reserva.hor_fin, reserva.id_sala, reserva.id_medico, usuario.nome as nome_medico, usuario.sobrenome,consultorio.nome as nome_consultorio 
@@ -44,51 +44,51 @@ router.post("/reservas_disponiveis",login_paciente,(req,res)=>{
                 AND 
                 endereço.id_cidade=?
                 `,
-                [req.body.id_especialidade,req.body.id_cidade],
-                (err,results)=>{
-                    if(err){return res.status(500).send({error:err})}
-                    const response = {
-                        Reservas: results.map(reserva => {
-                            return {
-                                id_reserva: reserva.id_reserva,
-                                data: reserva.data,
-                                hor_ini: reserva.hor_ini,
-                                hor_fin: reserva.hor_fin,
-                                id_sala: reserva.id_sala,
-                                id_medico: reserva.id_medico,
-                                nome_medico: reserva.nome_medico,
-                                sobrenome_medico: reserva.sobrenome,
-                                nome_consultorio: reserva.nome_consultorio
-                            }
-                        })
+                    [req.body.id_especialidade, req.body.id_cidade],
+                    (err, results) => {
+                        if (err) { return res.status(500).send({ error: err }) }
+                        const response = {
+                            Reservas: results.map(reserva => {
+                                return {
+                                    id_reserva: reserva.id_reserva,
+                                    data: reserva.data,
+                                    hor_ini: reserva.hor_ini,
+                                    hor_fin: reserva.hor_fin,
+                                    id_sala: reserva.id_sala,
+                                    id_medico: reserva.id_medico,
+                                    nome_medico: reserva.nome_medico,
+                                    sobrenome_medico: reserva.sobrenome,
+                                    nome_consultorio: reserva.nome_consultorio
+                                }
+                            })
+                        }
+                        return res.status(200).send(response)
                     }
-                    return res.status(200).send(response)
-                }
                 )
-                
+
             })
         })
     })
 })
 
-router.post("/marcar_consulta",login_paciente,(req,res)=>{
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error:err})}
-        if(!req.body.hor_marc){return res.status(406).send({mensagem:"É necessário fornecer o horário desejado."})}
-        conn.query("SELECT * FROM reserva WHERE id_reserva=?",[req.body.id_reserva],(err,results)=>{
-            if(err){return res.status(500).send({error:err})}
-            if(results.length==0){return res.status(404).send({mensagem: "Reserva não encontrada"})}
-            if(req.body.hor_marc>results[0].hor_fin || req.body.hor_marc<results[0].hor_ini){return res.status(409).send({mensagem: "horário invalido"})}
-            conn.query("SELECT * FROM consulta WHERE id_reserva=? and hor_marc=?",[req.body.id_reserva,req.body.hor_marc],(err,result)=>{
-                if(err){return res.status(500).send({error:err})}
-                if(result.length!=0){return res.status(409).send({mensagem:"horário ocupado"})}
-                conn.query("SELECT * FROM consulta WHERE cpf_paciente=? and hor_marc=? and status=0",[req.usuario.cpf,req.body.hor_marc],(err,result)=>{
-                    if(err){return res.status(500).send({error:err})}
-                    
-                    if(result.length!=0){return res.status(409).send({mensagem:"Paciente já tem consulta nesse horário"})}
-                    conn.query("INSERT INTO consulta (cpf_paciente,id_medico,id_reserva,hor_marc,status) VALUES (?,?,?,?,0)",[req.usuario.cpf,results[0].id_medico,req.body.id_reserva,req.body.hor_marc],(err,result)=>{
-                        if(err){return res.status(500).send({error:err})}
-                        return res.status(201).send({mensagem:"consulta criada com sucesso"})
+router.post("/marcar_consulta", login_paciente, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        if (!req.body.hor_marc) { return res.status(406).send({ mensagem: "É necessário fornecer o horário desejado." }) }
+        conn.query("SELECT * FROM reserva WHERE id_reserva=?", [req.body.id_reserva], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
+            if (results.length == 0) { return res.status(404).send({ mensagem: "Reserva não encontrada" }) }
+            if (req.body.hor_marc > results[0].hor_fin || req.body.hor_marc < results[0].hor_ini) { return res.status(409).send({ mensagem: "horário invalido" }) }
+            conn.query("SELECT * FROM consulta WHERE id_reserva=? and hor_marc=?", [req.body.id_reserva, req.body.hor_marc], (err, result) => {
+                if (err) { return res.status(500).send({ error: err }) }
+                if (result.length != 0) { return res.status(409).send({ mensagem: "horário ocupado" }) }
+                conn.query("SELECT * FROM consulta WHERE cpf_paciente=? and hor_marc=? and status=0", [req.usuario.cpf, req.body.hor_marc], (err, result) => {
+                    if (err) { return res.status(500).send({ error: err }) }
+
+                    if (result.length != 0) { return res.status(409).send({ mensagem: "Paciente já tem consulta nesse horário" }) }
+                    conn.query("INSERT INTO consulta (cpf_paciente,id_medico,id_reserva,hor_marc,status) VALUES (?,?,?,?,0)", [req.usuario.cpf, results[0].id_medico, req.body.id_reserva, req.body.hor_marc], (err, result) => {
+                        if (err) { return res.status(500).send({ error: err }) }
+                        return res.status(201).send({ mensagem: "consulta criada com sucesso" })
                     })
                 })
             })
@@ -96,11 +96,11 @@ router.post("/marcar_consulta",login_paciente,(req,res)=>{
     })
 })
 
-router.get("/minhas_consultas",login_paciente,(req,res)=>{
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error:err})}
-        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE cpf_paciente=? AND status=0",[req.usuario.cpf],(err,results)=>{
-            if(err){return res.status(500).send({error: err})}
+router.get("/minhas_consultas", login_paciente, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE cpf_paciente=? AND status=0", [req.usuario.cpf], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
             const response = {
                 Consultas: results.map(consulta => {
                     return {
@@ -120,11 +120,11 @@ router.get("/minhas_consultas",login_paciente,(req,res)=>{
     })
 })
 
-router.get("/proxima_consulta",login_paciente,(req,res)=>{
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error:err})}
-        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE cpf_paciente=? AND status=0 ORDER BY data ASC, hor_marc ASC",[req.usuario.cpf],(err,results)=>{
-            if(err){return res.status(500).send({error: err})}
+router.get("/proxima_consulta", login_paciente, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        conn.query("SELECT * FROM consulta INNER JOIN reserva ON consulta.id_reserva=reserva.id_reserva WHERE cpf_paciente=? AND status=0 ORDER BY data ASC, hor_marc ASC", [req.usuario.cpf], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
             const response = {
                 Consultas: results.map(consulta => {
                     return {
@@ -144,4 +144,4 @@ router.get("/proxima_consulta",login_paciente,(req,res)=>{
     })
 })
 
-module.exports=router
+module.exports = router
