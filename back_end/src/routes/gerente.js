@@ -31,6 +31,7 @@ router.post('/reservas_especificas', login_usuario, (req, res) => {
                         }
                     })
                 }
+
                 return res.status(200).send(response)
             })
     })
@@ -113,6 +114,8 @@ router.post('/horarios_reserva', login_usuario, (req, res) => {
         })
     })
 })
+
+
 
 router.post('/nova_reserva', login_gerente, (req, res) => {
     pool.getConnection((err, conn) => {
