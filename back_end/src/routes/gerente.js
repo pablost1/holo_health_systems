@@ -3,15 +3,15 @@ const router = express.Router()
 const pool = require('../mysql').pool
 const login_gerente = require('../middleware/login_gerente')
 const login_usuario = require('../middleware/login_usuario')
-
+const moment = require('moment')
 router.post('/reservas_especificas', login_usuario, (req, res) => {
     pool.getConnection((err, conn) => {
 
         if (!req.body.id_sala) { return res.status(406).send({ mensagem: "É necessário a sala" }) }
         console.log(req.body.id_sala)
         if (err) { return res.status(500).send({ error: err }) }
-        conn.query("SELECT * FROM reserva INNER JOIN medico ON reserva.id_medico=medico.crm INNER JOIN usuario ON medico.cpf_medico = usuario.cpf WHERE id_sala = ?",
-            [req.body.id_sala],
+        conn.query("SELECT * FROM reserva INNER JOIN medico ON reserva.id_medico=medico.crm INNER JOIN usuario ON medico.cpf_medico = usuario.cpf WHERE id_sala = ? AND data>=?",
+            [req.body.id_sala,moment().format()],
             (err, results, fields) => {
                 console.log(req.body.id_sala)
                 console.log(results)
