@@ -152,19 +152,6 @@ router.post('/nova_reserva', login_gerente, (req, res) => {
     })
 })
 
-<<<<<<< HEAD
-router.delete("/deletar_reserva",login_gerente,(req,res)=>{
-    console.log(req.body)
-    pool.getConnection((err,conn)=>{
-        if(err){return res.status(500).send({error:err})}
-        conn.query("SELECT *  FROM reserva INNER JOIN sala ON reserva.id_sala = sala.id_sala WHERE id_reserva=?",[req.body.id_reserva],(err,results)=>{
-            if(err){return res.status(500).send({error:err})}
-            if(results.length==0){return res.status(404).send({mensagem:"reserva não encontrada"})}
-            if(results[0].id_consultorio!=req.usuario.id_consultorio){return res.status(401).send({mensagem: "você não pode cancelar uma reserva que não é do seu consultório"})}
-            conn.query("DELETE FROM reserva WHERE id_reserva=?",[req.body.id_reserva],(err,results)=>{
-                if(err){return res.status(500).send({error:err})}
-                return res.status(202).send({mensagem:"reserva excluida com sucesso"})
-=======
 router.delete("/deletar_reserva", login_gerente, (req, res) => {
     pool.getConnection((err, conn) => {
         if (err) { return res.status(500).send({ error: err }) }
@@ -175,7 +162,6 @@ router.delete("/deletar_reserva", login_gerente, (req, res) => {
             conn.query("DELETE FROM reserva WHERE id_reserva=?", [req.body.id_reserva], (err, results) => {
                 if (err) { return res.status(500).send({ error: err }) }
                 return res.status(202).send({ mensagem: "reserva excluida com sucesso" })
->>>>>>> 22afacef794915fb97b09feda29e66a453ec21f6
             })
         })
     })
