@@ -10,8 +10,8 @@ router.post('/reservas_especificas', login_usuario, (req, res) => {
         if (!req.body.id_sala) { return res.status(406).send({ mensagem: "É necessário a sala" }) }
         console.log(req.body.id_sala)
         if (err) { return res.status(500).send({ error: err }) }
-        conn.query("SELECT * FROM reserva INNER JOIN medico ON reserva.id_medico=medico.crm INNER JOIN usuario ON medico.cpf_medico = usuario.cpf WHERE id_sala = ? AND data>=?",
-            [req.body.id_sala,moment().format()],
+        conn.query("SELECT * FROM reserva INNER JOIN medico ON reserva.id_medico=medico.crm INNER JOIN usuario ON medico.cpf_medico = usuario.cpf WHERE id_sala = ?",
+            [req.body.id_sala],
             (err, results, fields) => {
                 console.log(req.body.id_sala)
                 console.log(results)
