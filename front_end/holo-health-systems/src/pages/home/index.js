@@ -5,6 +5,8 @@ import ScheduleButton from '../../sharable-components/schedule-button/index';
 import Subtitle from '../../sharable-components/subtitle';
 import Consulta from '../../sharable-components/consulta';
 import { useHistory } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import http from '../../http/index';
 
 
 
@@ -13,7 +15,8 @@ import { useHistory } from 'react-router-dom';
 
 
 export default function Home() {
-    
+    const [ proximaConsulta, setProximaConsulta] = useState(undefined)
+
     const history = useHistory()
 
 
@@ -24,6 +27,23 @@ export default function Home() {
     function PaginaMinhasConsultas() {
         history.push('minhas-consultas')
     }
+
+    async function CarregarProximaConsulta() {
+
+        try {
+            const { data } = await  http.get('/paciente/proxima_consulta')
+            console.log(data)
+        } 
+
+        catch(err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        CarregarProximaConsulta()
+    }, [])
+
 
     
 
@@ -38,12 +58,6 @@ export default function Home() {
                 </div>
                 <Subtitle>Próxima consulta</Subtitle>
                 <Consulta />
-                <Subtitle>Consultas anteriores</Subtitle>
-                <div className="lista-consulta">
-                    <Consulta />
-                    <Consulta />
-                    <Consulta />
-                </div>
             </MainContainer>
         </div>
     )
