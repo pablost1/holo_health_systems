@@ -28,7 +28,7 @@ router.get("/minhas_reservas", login_medico, (req, res) => {
     pool.getConnection((err, conn) => {
         if (err) { return res.status(500).send({ error: err }) }
         conn.query(
-            "SELECT * FROM reserva INNER JOIN sala ON reserva.id_sala=sala.id_sala INNER JOIN consultorio ON sala.id_consultorio=consultorio.id_consultorio WHERE id_medico=? AND data>?",
+            "SELECT * FROM reserva INNER JOIN sala ON reserva.id_sala=sala.id_sala INNER JOIN consultorio ON sala.id_consultorio=consultorio.id_consultorio WHERE id_medico=? AND data>=?",
             [req.usuario.crm, moment().format()],
             (err, results) => {
                 if (err) { return res.status(500).send({ error: err }) }
