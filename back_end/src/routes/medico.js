@@ -29,7 +29,7 @@ router.get("/minhas_reservas", login_medico, (req, res) => {
         if (err) { return res.status(500).send({ error: err }) }
         conn.query(
             "SELECT * FROM reserva INNER JOIN sala ON reserva.id_sala=sala.id_sala INNER JOIN consultorio ON sala.id_consultorio=consultorio.id_consultorio WHERE id_medico=? AND data>=?",
-            [req.usuario.crm, moment().format()],
+            [req.usuario.crm, moment().format("YYYY-MM-DD")],
             (err, results) => {
                 if (err) { return res.status(500).send({ error: err }) }
                 const response = {
@@ -60,7 +60,7 @@ router.get("/reserva_em_andamento", login_medico, (req, res) => {
         if (err) { return res.status(500).send({ error: err }) }
         conn.query(
             "SELECT * FROM reserva INNER JOIN sala ON reserva.id_sala=sala.id_sala INNER JOIN consultorio ON sala.id_consultorio=consultorio.id_consultorio WHERE id_medico=? AND data>? AND ? BETWEEN hor_ini AND hor_fin",
-            [req.usuario.crm, moment().format(), moment().format('LTS')],
+            [req.usuario.crm, moment().format("YYYY-MM-DD"), moment().format('LTS')],
             (err, results) => {
                 if (err) { return res.status(500).send({ error: err }) }
                 if (results.length == 0) { return res.status(200).send({ mensagem: "Não há reservas em andamento :D" }) }

@@ -46,7 +46,7 @@ router.post("/reservas_disponiveis", login_paciente, (req, res) => {
                 AND
                 reserva.data>=?
                 `,
-                    [req.body.id_especialidade, req.body.id_cidade,moment().format()],
+                    [req.body.id_especialidade, req.body.id_cidade,moment().format("YYYY-MM-DD")],
                     (err, results) => {
                         if (err) { return res.status(500).send({ error: err }) }
                         const response = {
