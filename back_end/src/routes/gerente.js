@@ -129,7 +129,7 @@ router.post('/horarios_reserva', login_usuario, (req, res) => {
                 horaInicio[1] = 0
             }
 
-            conn.query("SELECT * FROM consulta WHERE id_reserva=?", [req.body.id_reserva], (err, results) => {
+            conn.query("SELECT * FROM consulta WHERE id_reserva=? AND status=0", [req.body.id_reserva], (err, results) => {
                 if (err) { return res.status(500).send({ error: err }) }
                 horariosMarcados = results.map(consulta => consulta.hor_marc)
                 horarios = horarios.map(horario => (horariosMarcados.includes(horario) ? [horario, 1] : [horario, 0]))
