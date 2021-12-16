@@ -56,8 +56,8 @@ export default function Home() {
                     <ScheduleButton onClick={PaginaMarcarConsulta}>Marcar consultas</ScheduleButton>
                     <ScheduleButton onClick={PaginaMinhasConsultas}>Minhas consultas</ScheduleButton>
                 </div>
-                <Subtitle>Próxima consulta</Subtitle>
-                <Consulta />
+                {/* <Subtitle>Próxima consulta</Subtitle>
+                <Consulta /> */}
             </MainContainer>
         </div>
     )

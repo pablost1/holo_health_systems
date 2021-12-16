@@ -91,6 +91,7 @@ export default function Consulta(props) {
 
 
 
+    console.log(props.consulta)
 
     return (
         <div className={`${props.type === 'delete'? 'consulta-apagavel' : 'consulta'}`}>
@@ -131,7 +132,7 @@ export default function Consulta(props) {
                 
                 {
 
-                    props.type === 'delete' && props.hasDeleteButton ? <Button size="small" status="danger">Cancelar consulta</Button> : null
+                    props.type === 'delete' && props.hasDeleteButton ? <Button hasEvent={true} onClick={() => props.deletarConsulta(props.consulta)} size="small" status="danger">Cancelar consulta</Button> : null
                 }
                 
                 

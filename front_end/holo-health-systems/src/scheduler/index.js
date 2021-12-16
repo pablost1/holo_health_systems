@@ -140,7 +140,7 @@ function Scheduler() {
     }, [showInitialDate, initialDate, registerCounter])
 
     return (
-        <div>
+        <div className="scheduler-container">
             <div className="scheduler">
                 <div className="scheduler-header">
                     <ArrowBackIos onClick={goBackwards} />

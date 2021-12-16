@@ -29,8 +29,8 @@ export default function MedicoHome() {
         (async () => {
 
             try {
-                const { data } = await http.get('/medico/reserva_em_andamento')
-                console.log(data)
+                const response = await http.get('/medico/reserva_em_andamento')
+                console.log(response)
             }
 
             catch(err) {

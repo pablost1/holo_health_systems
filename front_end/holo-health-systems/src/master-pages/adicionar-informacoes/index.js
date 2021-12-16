@@ -45,6 +45,27 @@ export default function AdicionarInformacoes() {
             alert(err)
         }
     }
+
+//     http.post('/estado', value)
+//                             .then( res => {
+// //                                CarregarEstados()
+//                                 handleError('Estado cadastrado com sucesso')
+//                                 resetForm()
+//                             })
+//                             .catch( error => handleError(error.response.data.mensagem))
+
+    async function CadastrarEstado(value) {
+
+        try {
+            const { data} = await http.post('/estado', value)
+            handleError('Estado cadastrado com sucesso')
+            CarregarEstados()
+        }
+
+        catch(err) {
+            handleError(err)
+        }
+    }
     
 
     useEffect( () => {
@@ -68,13 +89,8 @@ export default function AdicionarInformacoes() {
                     }}
 
                     onSubmit={(value, { resetForm}) => {
-                        http.post('/estado', value)
-                            .then( res => {
-//                                CarregarEstados()
-                                handleError('Estado cadastrado com sucesso')
-                                resetForm()
-                            })
-                            .catch( error => handleError(error.response.data.mensagem))
+                        CadastrarEstado(value)
+                        resetForm()
                         
                         
                     }}
@@ -131,12 +147,12 @@ export default function AdicionarInformacoes() {
                                         )) : ''
                                     }
                                 </Field >
-                                { errors.estado && touched.estado ? <p>{errors.estado}</p> : '' }
+                                { errors.id_estado && touched.id_estado ? <p>{errors.id_estado}</p> : '' }
                             </div>
                             <div className="form-group">
                                 <label>Nome da cidade</label>
                                 <Field name="nome" />
-                                { errors.cidade && touched.cidade ? <p>{errors.cidade}</p> : '' }
+                                { errors.nome && touched.nome ? <p>{errors.nome}</p> : '' }
                             </div>
                             <Button style={{ alignSelf: 'baseline'}} size="small">Cadastrar</Button>
                             

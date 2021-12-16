@@ -62,10 +62,8 @@ function AuthorizationContext({children}) {
 
         try {
             
-            const dados = await http.post('/usuario/login', user)
             const { data } = await http.post('/usuario/login', user)
-            console.log(dados)
-            
+            console.log(data)
             localStorage.setItem('token', JSON.stringify(data.token))
             localStorage.setItem("tipo",JSON.stringify(data.tipo))
             setisLoggedin(true)
@@ -76,9 +74,14 @@ function AuthorizationContext({children}) {
             
             
         } catch(error) {
-            const message = error.response.data.mensagem
-            handleError(message)
+            if(error.response) {
+                console.log(error.response.data)
+                console.log(error.response.status)
+                console.log(error.response.headers)
+            }
         }
+
+        
 
     }
 

@@ -120,8 +120,9 @@ export default function  NovoConsultorio() {
 
                 validationSchema={validation}
 
-                onSubmit={(value) => {
+                onSubmit={(value, {resetForm}) => {
                     CadastrarConsultorio(value)
+                    resetForm()
                 }} 
 
                 innerRef={formRef}
@@ -130,7 +131,6 @@ export default function  NovoConsultorio() {
 
                     
                     <Form className="consultorio-form">
-                        <button onClick={() => console.log(values)}>Check</button>
                         <div className="form-group">
                             <label>Nome</label>
                             <Field name="nome" className="input"/>
