@@ -118,8 +118,10 @@ router.get("/minhas_consultas", login_paciente, (req, res) => {
             especialidade.nome AS especialidade,
             reserva.data,
             reserva.id_sala,
-            consultorio.nome AS nome_consultorio
-
+            consultorio.nome AS nome_consultorio,
+            endereço.bairro,
+            endereço.rua,
+            endereço.numero
 
         FROM 
             consulta
@@ -148,6 +150,11 @@ router.get("/minhas_consultas", login_paciente, (req, res) => {
             consultorio
         ON
             sala.id_consultorio=consultorio.id_consultorio
+        INNER JOIN 
+            endereço
+        ON
+            consultorio.id_endereco=endereço.id_endereco
+
         WHERE 
             cpf_paciente=? 
         AND 
@@ -192,6 +199,20 @@ router.get("/proxima_consulta", login_paciente, (req, res) => {
                 })[0]
             }
             return res.status(200).send(response)
+        })
+    })
+})
+router.delete("/cancelar_consulta",login_paciente,(req,res)=>{
+    pool.getConnection((err,conn)=>{
+        if (err) { return res.status(500).send({ error: err }) }
+        if(!req.body.id_consulta){return res.status(406).send({mensagem:"Necessário informar consulta."})}
+        conn.query("SELECT * FROM consulta WHERE cpf_paciente = ? AND id_consulta = ?",[req.usuario.cpf,req.body.id_consulta],(err,results)=>{
+            if (err) { return res.status(500).send({ error: err }) }
+            if(!results.length){return res.status(401).send({mensagem:"Usuário não possui permissão de cancelar essa consulta."})}
+            conn.query("UPDATE consulta SET status=2 WHERE id_consulta = ?",[req.body.id_consulta],(err,results)=>{
+                if (err) { return res.status(500).send({ error: err }) }
+                return res.status(202).send({mensagem: "consulta cancelada com sucesso"})
+            })
         })
     })
 })
