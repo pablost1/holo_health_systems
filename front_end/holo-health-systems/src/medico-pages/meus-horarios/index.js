@@ -33,7 +33,12 @@ export default function MeusHorarios() {
         <div className="horarios-container">
             <DescriptionHeader path="/medico-home">Meus horários</DescriptionHeader>
             <div className="lista-horarios">
-                <Consulta />
+                {
+                    horarios.length > 0 ? horarios.map( (horario) => (
+                        <Consulta type="doctor" horario={horario} key={horario.id_reserva} />
+                    )) : ''
+                }
+                
             </div>
         </div>
     )

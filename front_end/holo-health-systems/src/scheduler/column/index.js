@@ -42,7 +42,7 @@ function Horario(props) {
     return (
         <div className="horario">
             <div className="horario__items">
-                <span className="medico">{props.schedule.profissional}</span>
+                <span className="medico">{props.schedule.nome_medico} {props.schedule.sobrenome_medico}</span>
                 <span className="especialidade-horario">{props.schedule.especialidade}</span>
                 <span className="especialidade-horario">{horaInicial} - {horaFinal}</span>
                 <Delete
@@ -267,8 +267,6 @@ function ScheduleForm(props) {
                                 </div>) : ''
                             }
                             
-                            
-                            <button onClick={() => console.log(values)}>check</button>
                             <Button size="medium">Marcar horário</Button>
                         </Form>
                     )}
