@@ -110,6 +110,43 @@ router.get("/minhas_consultas", login_medico, (req, res) => {
         })
     })
 })
+router.post("/minhas_consultas", login_medico, (req, res) => {
+    if(!req.body.id_reserva){return res.status(406).send({mensagem: "reserva necessária"})}
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        conn.query(`
+        SELECT consulta.id_consulta, consulta.cpf_paciente, consulta.id_medico, consulta.id_reserva, 
+               usuario.nome as nome_paciente, usuario.sobrenome, reserva.data, consulta.hor_marc,
+               consulta.status,reserva.id_sala
+        FROM consulta 
+        INNER JOIN reserva 
+        ON consulta.id_reserva=reserva.id_reserva 
+        INNER JOIN usuario ON consulta.cpf_paciente=usuario.cpf 
+        WHERE consulta.id_medico=? 
+        AND status=0 
+        AND consulta.id_reserva=?
+        `, [req.usuario.crm,req.body.id_reserva], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
+            const response = {
+                Consultas: results.map(consulta => {
+                    return {
+                        id_consulta: consulta.id_consulta,
+                        cpf_paciente: consulta.cpf_paciente,
+                        nome: consulta.nome_paciente,
+                        sobrenome: consulta.sobrenome,
+                        id_medico: consulta.id_medico,
+                        id_reserva: consulta.id_reserva,
+                        data: consulta.data,
+                        id_sala: consulta.id_sala,
+                        hor_marc: consulta.hor_marc,
+                        status: consulta.status
+                    }
+                })
+            }
+            return res.status(200).send(response)
+        })
+    })
+})
 router.get("/proxima_consulta", login_medico, (req, res) => {
     pool.getConnection((err, conn) => {
         if (err) { return res.status(500).send({ error: err }) }
