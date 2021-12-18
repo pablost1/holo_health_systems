@@ -37,13 +37,13 @@ function LoginForm() {
 
             validationSchema={schema}
 
-            onSubmit={(value) => {
+            onSubmit={(value, { setSubmitting }) => {
                 
-                handleLogin(value)
+                handleLogin(value, setSubmitting)
                 
             }}
         >
-            {({values, touched, errors }) => (
+            {({values, touched, errors, isSubmitting, setSubmitting }) => (
 
                 <Form className="form">
                     <div className="form-group">
@@ -59,7 +59,7 @@ function LoginForm() {
                         { errors.senha && touched.senha ? <p>{errors.senha} </p> : '' }
                     </div>
                     <div className="form-login">
-                        <Button size="medium">Login</Button>
+                        <Button loading={isSubmitting} size="medium">Login</Button>
                        
                         
                         

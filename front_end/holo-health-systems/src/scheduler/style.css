@@ -27,8 +27,8 @@ tr {
     padding: 2rem 1rem;
     position: fixed;
     top: 0;
-    
     background-color: var(--primary-color);
+    width: 100%;
 }
 
 .scheduler-date {

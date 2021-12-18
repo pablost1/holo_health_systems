@@ -147,7 +147,7 @@ export default function CadastroGerente() {
                             
                             <div className="form-group">
                                 <label>Senha</label>
-                                <Field  name="senha"/>
+                                <Field type="password" name="senha"/>
                                 {errors.senha && touched.senha? <p>{errors.senha}</p> : ''}
                             </div>
                             <div className="form-group">

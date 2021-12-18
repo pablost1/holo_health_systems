@@ -42,6 +42,13 @@ export default function Consulta(props) {
             setHora(moment(props.consulta.hor_marc, 'HH:mm:ss').format('HH:mm'))
 
         }
+
+        if(props.type === 'onGoing') {
+            setInicio(moment(props.consulta.hor_ini, 'HH:mm:ss').format('HH:mm'))
+            setFim(moment(props.consulta.hor_fin, 'HH:mm:ss').format('HH:mm'))
+            setData(moment(props.consulta.data, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('DD/MM/YYYY'))
+
+        }
         
         
     }, [])
@@ -50,7 +57,7 @@ export default function Consulta(props) {
 
         return (
 
-            <div onClick={IrParaEmAndamento} className="consulta consulta-doctor">
+            <div className="consulta consulta-doctor">
                 <div className="consulta__info">
                     <div className="consulta__local ">
                         <LocationOn fontSize="medium" />
@@ -91,7 +98,48 @@ export default function Consulta(props) {
 
 
 
-    console.log(props.consulta)
+    if(props.type === 'onGoing') {
+        return (
+            <div className="consulta" onClick={IrParaEmAndamento}>
+                <div className="consulta__info">
+                    <div className="consulta__local ">
+                        <LocationOn fontSize="medium" />
+                        <div className="local">
+                            <h3>Local</h3>
+                            <p>{props.consulta.nome_consultorio}</p>
+                        </div>
+                    </div>
+                    <div className="consulta__dia">
+                        <CalendarToday fontSize="medium" />
+                        <div className="dia">
+                            <h3>Dia</h3>
+                            <p>{data}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="consulta__actions">
+                    <span className={`${props.type === 'delete' ? 'consulta__horario-apagavel' : 'consulta__horario'}`}>
+                        <Timer fontSize="small"/>
+                        <span>{inicio} - {fim}</span>
+                    </span>
+                    {
+                        props.onGoing === true  ?
+                             (
+                                <span className="consulta__em-andamento consulta__horario">
+                                    <Timer fontSize="small"/>
+                                    <span>Em andamento</span>
+                                </span>
+                            ) :  ''
+                    }        
+                    
+                </div>
+                
+                
+                
+            </div>
+        )
+
+    }
 
     return (
         <div className={`${props.type === 'delete'? 'consulta-apagavel' : 'consulta'}`}>

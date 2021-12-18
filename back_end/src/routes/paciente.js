@@ -82,7 +82,7 @@ router.post("/marcar_consulta", login_paciente, (req, res) => {
             if (err) { return res.status(500).send({ error: err }) }
             if (results.length == 0) { return res.status(404).send({ mensagem: "Reserva não encontrada" }) }
             if (req.body.hor_marc > results[0].hor_fin || req.body.hor_marc < results[0].hor_ini) { return res.status(409).send({ mensagem: "horário invalido" }) }
-            conn.query("SELECT * FROM consulta WHERE id_reserva=? and cpf_paciente=?",[req.body.id_reserva,req.usuario.cpf],(err,result)=>{
+            conn.query("SELECT * FROM consulta WHERE id_reserva=? and cpf_paciente=? and status=0",[req.body.id_reserva,req.usuario.cpf],(err,result)=>{
                 if (err) { return res.status(500).send({ error: err }) }
                 if(result.length!=0){return res.status(409).send({mensagem:"Paciente já tem consulta nessa reserva."})}
                 conn.query("SELECT * FROM consulta WHERE id_reserva=? and hor_marc=? and status=0", [req.body.id_reserva, req.body.hor_marc], (err, result) => {

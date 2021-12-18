@@ -2,7 +2,7 @@ import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header/index';
 import Subtitle from '../../sharable-components/subtitle/index';
 import Button from '../../sharable-components/button/index';
-import { useHistory, useLocation } from 'react-router-dom';
+import {useLocation } from 'react-router-dom';
 
 
 
@@ -27,10 +27,7 @@ function Sala() {
 
 
 export default function ConsultorioPage() {
-
-    const history = useHistory()
     const location = useLocation()
-    console.log(location)
 
 
     return (

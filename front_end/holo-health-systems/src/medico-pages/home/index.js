@@ -4,7 +4,7 @@ import Subtitle from '../../sharable-components/subtitle/index'
 import ScheduleButton from '../../sharable-components/schedule-button/index'
 import Consulta from '../../sharable-components/consulta/index'
 import { useHistory } from 'react-router-dom';
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import http from '../../http/index';
 
 
@@ -12,6 +12,8 @@ import http from '../../http/index';
 
 
 export default function MedicoHome() {
+
+    const [ reservaEmAndamento, setReservaEmAndamento ] = useState(null)
 
     const history = useHistory()
     
@@ -29,8 +31,8 @@ export default function MedicoHome() {
         (async () => {
 
             try {
-                const response = await http.get('/medico/reserva_em_andamento')
-                console.log(response)
+                const {data} = await http.get('/medico/reserva_em_andamento')
+                setReservaEmAndamento(data.Reservas)
             }
 
             catch(err) {
@@ -50,7 +52,14 @@ export default function MedicoHome() {
                     <ScheduleButton onClick={IrParaVinculos} >Meus vínculos</ScheduleButton>
                     
                 </div>
-                <Subtitle>Em andamento</Subtitle>
+                {
+                    reservaEmAndamento ? (<>
+                        <Subtitle>Em andamento</Subtitle>
+                        <Consulta consulta={reservaEmAndamento} onGoing={true} type="onGoing"/>
+                    </>) : ''
+                }
+                
+
             </MainContainer>
         </div>
     )

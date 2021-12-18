@@ -15,16 +15,7 @@ function AuthorizationContext({children}) {
     const [modalState, setmodalState] = useState({ modalMode: ''})
     const [ userType, setUserType ] = useState('')
 
-    useEffect( () => {
-
-        const token = JSON.parse(localStorage.getItem('token'))
-        const tipo = JSON.parse(localStorage.getItem('tipo'))
-        http.defaults.headers.Authorization = `Bearer ${token}`
-        if(token && tipo) {
-            setisLoggedin(true)
-            setUserType(tipo)
-        }
-    }, [])
+    
 
     function RegisteSchedule(component) {
         setmodalState({
@@ -57,28 +48,29 @@ function AuthorizationContext({children}) {
     
     
     
-    async function handleLogin(user) {
+    async function handleLogin(user, setSubmitting) {
 
 
         try {
             
             const { data } = await http.post('/usuario/login', user)
-            console.log(data)
+
+            
             localStorage.setItem('token', JSON.stringify(data.token))
             localStorage.setItem("tipo",JSON.stringify(data.tipo))
             setisLoggedin(true)
             setUserType(data.tipo)
             http.defaults.headers.Authorization = `Bearer ${data.token}`
+            setSubmitting(false)
+            
+            
 
 
             
             
         } catch(error) {
-            if(error.response) {
-                console.log(error.response.data)
-                console.log(error.response.status)
-                console.log(error.response.headers)
-            }
+            setSubmitting(false)
+            
         }
 
         
@@ -93,7 +85,22 @@ function AuthorizationContext({children}) {
 
     }
 
+    useEffect( () => {
 
+        const token = JSON.parse(localStorage.getItem('token'))
+        const tipo = JSON.parse(localStorage.getItem('tipo'))
+        http.defaults.headers.Authorization = `Bearer ${token}`
+
+
+        if(token && tipo) {
+            setisLoggedin(true)
+            setUserType(tipo)
+        }
+
+        if(!token) {
+            handleLogout()
+        }
+    }, [])
 
     return (
         <AuthContext.Provider value={{

@@ -154,8 +154,9 @@ function Scheduler() {
                 <div className="scheduler-table">
 
                     {
-                        days.map( (day) => (
+                        days.map( (day, index) => (
                             <Column
+                                key={index}
                                 deleteSchedule={deleteSchedule}
                                 loadData={fetchData}
                                 dates={schedules} 

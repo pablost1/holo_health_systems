@@ -4,7 +4,6 @@ import DescriptionHeader from '../../sharable-components/description-header/inde
 import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
 import Button from '../../sharable-components/button/index';
-import axios from 'axios'
 import { useEffect, useState, useContext } from 'react';
 import http from '../../http/index';
 import { AuthContext } from '../../auth/authContext';
@@ -135,7 +134,7 @@ export default function AdicionarInformacoes() {
                     }}
 
                 >
-                    {({ errors, touched, values}) => (
+                    {({ errors, touched}) => (
                         <Form className="info-form">
                             <div className="form-group">
                                 <label>Estado da cidade</label>
