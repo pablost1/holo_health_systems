@@ -149,6 +149,7 @@ router.post('/nova_reserva', login_gerente, (req, res) => {
         if (!req.body.hor_fin) { return res.status(406).send({ mensagem: "É necessário a hora final." }) }
         if (!req.body.id_sala) { return res.status(406).send({ mensagem: "É necessário a sala." }) }
         if (!req.body.id_medico) { return res.status(406).send({ mensagem: "É necessário o médico." }) }
+        if (req.body.hor_fin<hor_ini){return res.status(409).send({mensagem:"Horário final não pode ser menor que horario inicial"})}
         conn.query("SELECT * FROM sala WHERE id_sala=?", [req.body.id_sala], (err, results) => {
             if (err) { return res.status(500).send({ error: err }) }
             if (results.length == 0) { return res.status(404).send({ mensagem: "sala não encontrada" }) }
