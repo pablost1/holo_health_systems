@@ -168,6 +168,13 @@ router.get("/minhas_consultas", login_paciente, (req, res) => {
                         id_medico: consulta.id_medico,
                         id_reserva: consulta.id_reserva,
                         data: consulta.data,
+                        nome_medico: consulta.nome_medico,
+                        sobrenome:consulta.sobrenome,
+                        especialidade:consulta.especialidade,
+                        consultorio: consulta.nome_consultorio,
+                        bairro: consulta.bairro,
+                        rua:consulta.rua,
+                        numero:consulta.numero,
                         id_sala: consulta.id_sala,
                         hor_marc: consulta.hor_marc,
                         status: consulta.status
