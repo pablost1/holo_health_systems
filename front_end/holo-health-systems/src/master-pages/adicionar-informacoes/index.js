@@ -56,15 +56,49 @@ export default function AdicionarInformacoes() {
     async function CadastrarEstado(value) {
 
         try {
-            const { data} = await http.post('/estado', value)
-            handleError('Estado cadastrado com sucesso')
+            const data = await http.post('/estado', value)
             CarregarEstados()
+            
+            if(data) {
+                handleError('Estado cadastrado com sucesso')
+            }
         }
 
         catch(err) {
-            handleError(err)
+           
         }
     }
+
+    // http.post('/cidade', value)
+    //                         .then( res => {
+    //                             handleError("Cidade cadastrada com sucesso")
+    //                             resetForm()
+    //                         })
+    //                         .catch( err => {
+                                
+    //                             handleError(err.response.data.mensagem)
+
+                                
+    //                         })
+
+    async function CadastrarCidade(value) {
+
+        try {
+            const { data } = await http.post('/cidade', value)
+
+            if(data) {
+                handleError('Cidade cadastrada com sucesso')
+            }
+        }
+
+        catch(err) {
+
+        }
+
+    }
+
+
+    
     
 
     useEffect( () => {
@@ -117,18 +151,8 @@ export default function AdicionarInformacoes() {
                         nome: ''
                     }}
                     onSubmit={(value, { resetForm}) => {
-                        console.log(value)
-                        http.post('/cidade', value)
-                            .then( res => {
-                                handleError("Cidade cadastrada com sucesso")
-                                resetForm()
-                            })
-                            .catch( err => {
-                                
-                                handleError(err.response.data.mensagem)
-
-                                
-                            })
+                        CadastrarCidade(value)
+                        resetForm()
                         
                         
                     }}

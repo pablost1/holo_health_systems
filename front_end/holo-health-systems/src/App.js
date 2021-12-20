@@ -11,10 +11,6 @@ import Error404 from './utils/404';
 import LoginPage from './pages/login';
 import { history } from './http/index';
 
-window.addEventListener('error', () => {
-  console.log('algum erro aconteceu')
-})
-
 
 
 
@@ -49,11 +45,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     }} />
   )
 
-  // return (
-  //   <Route {...rest} render={props => (
-  //     isLoggedin ? <Component /> : <Redirect to="/login"/>
-  //   )}/>
-  // )
+
 }
 
 

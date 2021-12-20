@@ -11,16 +11,6 @@ function Sala() {
     return (
         <div className="sala">
             <h3 className="numero-sala">Sala 1</h3>
-            <Button 
-                status="danger"
-                size="small"
-                style={{
-                    marginLeft: 'auto',
-                    marginRight: '20px'
-                }}
-            >
-                Fechar
-            </Button>
         </div>
     )
 }

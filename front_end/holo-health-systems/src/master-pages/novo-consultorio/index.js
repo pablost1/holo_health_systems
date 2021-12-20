@@ -56,7 +56,7 @@ export default function  NovoConsultorio() {
             }
     
             catch(err) {
-                console.log(err)
+                
             }
         })()
         
@@ -87,14 +87,11 @@ export default function  NovoConsultorio() {
         }
 
         catch(err) {
-            handleError(err.response.data.mensagem)
+           
         }
     }
 
-    function Mudanca() {
 
-        console.log(formRef.current.values)
-    }
 
     function TemEstados(e, handleChange) {
         CarregarCidades(e)

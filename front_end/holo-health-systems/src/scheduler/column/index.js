@@ -138,18 +138,32 @@ function ScheduleForm(props) {
     }
 
     async function CadastrarReserva(reserva) {
+        const horaInicial = moment(reserva.hor_ini, 'HH:mm')
+        const vemAntes = horaInicial.isBefore(moment(reserva.hor_fin, 'HH:mm'))
+
+
+        
 
         const novaReserva = {...reserva, data: moment(reserva.data, 'MM/DD/YYYY').format('YYYY-MM-DD')}
+        if(vemAntes) {
+
         
-        try {
-            const { data } =  await http.post('/gerente/nova_reserva', novaReserva)
-            handleError(data.mensagem)
-            setRegisterCounter(registerCounter + 1)
+            try {
+                const { data } =  await http.post('/gerente/nova_reserva', novaReserva)
+                handleError(data.mensagem)
+                setRegisterCounter(registerCounter + 1)
+            }
+
+            catch(err) {
+                
+            }
         }
 
-        catch(err) {
-            handleError(err.response.data.mensagem)
+        else {
+            handleError('Horário inicial precisa vim antes do final!')
         }
+
+
     }
 
 
@@ -322,10 +336,7 @@ export default function Column(props) {
     })
 
     const dataAtual = moment().format('DD/MM/YYYY')
-    
-  
     const compara = moment(dataAtual, 'DD/MM/YYYY')
-    
     const hasDelete = compara.isSame(moment(columnMoment, 'MM/DD/YYYY')) || !compara.isAfter(moment(columnMoment, 'MM/DD/YYYY'))
     
     

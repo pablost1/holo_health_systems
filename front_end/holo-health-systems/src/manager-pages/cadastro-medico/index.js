@@ -40,8 +40,7 @@ export default function CadastroMedico() {
         }
 
         catch(err) {
-            const message = err.response.data.mensagem
-            handleError(message)
+            
         }
     }
 

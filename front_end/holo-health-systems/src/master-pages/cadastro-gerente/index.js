@@ -47,7 +47,7 @@ export default function CadastroGerente() {
         }
 
         catch(err) {
-            handleError(err.response.data.mensagem)
+            
         }
         
     }
@@ -61,7 +61,7 @@ export default function CadastroGerente() {
         }
 
         catch(err) {
-            handleError(err.response.data.mensagem)
+           
         }
     }
     
@@ -86,8 +86,9 @@ export default function CadastroGerente() {
 
                     }}
 
-                    onSubmit={(values) => {
+                    onSubmit={(values, {resetForm}) => {
                         CadastrarGerente(values)
+                        
                     }}
 
                     validationSchema={validationSchema}

@@ -14,6 +14,7 @@
 .spinner {
     width: 20px;
     height: 20px;
+    margin: auto auto;
     border-top: 3px solid white;
     border-right: 3px solid white;
     border-radius: 50%;
@@ -25,4 +26,11 @@
     animation-timing-function: linear;
 
 
+}
+
+.big {
+    width: 60px;
+    height: 60px;
+    border-top: 3px solid rgb(0, 187, 255);
+    border-right: 3px solid rgb(0, 187, 255);
 }
