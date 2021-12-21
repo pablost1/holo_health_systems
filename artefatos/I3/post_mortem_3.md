@@ -32,7 +32,7 @@ Início da Iteração | Término da iteração
 * Finalização do projeto.
 
 ### Lições aprendidas
-* Mussum Ipsum, cacilds vidis litro abertis. Si num tem leite então bota uma pinga aí cumpadi!
-* Mussum Ipsum, cacilds vidis litro abertis. Si num tem leite então bota uma pinga aí cumpadi!
-* Mussum Ipsum, cacilds vidis litro abertis. Si num tem leite então bota uma pinga aí cumpadi!
-> **Nota:** Levante foi aprendido nesta iteração, seja de carácter individual e/ou coletivo.
+* Commits constantes
+* Revisões constantes
+* Validações com os membros da equipe
+* Tomar cuidado com os ditos "atalhos"

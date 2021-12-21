@@ -32,6 +32,13 @@ header {
     padding-left: .3rem;
 }
 
+.nome-paciente {
+    margin: 0;
+}
+
+.tipo-usuario{
+    color: white;
+}
 
 
 .home-header__input:focus {
@@ -55,14 +62,15 @@ header {
 
 .home-header__logout-button {
     display: block;
-    background-color: #ffffff;
-    padding:  .5em 1rem;
+    
     border-radius: 0px;
     border: none;
     margin-left: auto;
     margin-right: .5em;
     border-radius: 5px;
-    color: var(--primary-color);
+    color: #ffffff;
+    text-decoration: underline;
     cursor: pointer;
+    font-size: 1.3rem;
 
 }

@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cadastro_medico = require('../middleware/cadastro_medico');
 const cadastro_gerente = require('../middleware/cadastro_gerente');
+const tempo_validade = '1h'
 /**
 * Rota para cadastro dos usuários
 * 
@@ -250,7 +251,7 @@ router.post('/login', (req, res, next) => {
 
                                         if (result.length == 0) {
 
-                                            if (results[0].cpf == "62318902364" || results[0].cpf == "70186150466") {
+                                            if (results[0].cpf == "62318902364" || results[0].cpf == "701.861.504-66") {
                                                 key = process.env.MESTRE_JWT_KEY
                                                 tipo = "Mestre"
                                             }
@@ -266,7 +267,7 @@ router.post('/login', (req, res, next) => {
                                                 },
                                                 key,
                                                 {
-                                                    expiresIn: "1h"
+                                                    expiresIn: tempo_validade
                                                 })
 
                                             return res.status(200).send({
@@ -287,7 +288,7 @@ router.post('/login', (req, res, next) => {
                                                 },
                                                 key,
                                                 {
-                                                    expiresIn: "1h"
+                                                    expiresIn: tempo_validade
                                                 })
                                             return res.status(200).send({
                                                 mensagem: "autenticado com sucesso",
@@ -308,7 +309,7 @@ router.post('/login', (req, res, next) => {
                                         },
                                         key,
                                         {
-                                            expiresIn: "1h"
+                                            expiresIn: tempo_validade
                                         })
                                     return res.status(200).send({
                                         mensagem: "autenticado com sucesso",

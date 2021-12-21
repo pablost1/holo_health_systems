@@ -4,14 +4,31 @@ const pool = require('../mysql').pool
 const login_gerente = require('../middleware/login_gerente')
 const login_usuario = require('../middleware/login_usuario')
 const moment = require('moment')
+router.get("/info", login_gerente, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        conn.query("SELECT * FROM usuario where usuario.cpf=?", [req.usuario.cpf], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
+            const response = results.map(usuario => {
+                    return {
+                        nome: usuario.nome_medico,
+                        sobrenome: usuario.sobrenome,
+
+                    }
+                })[0]
+            
+            return res.status(200).send(response)
+        })
+    })
+})
 router.post('/reservas_especificas', login_usuario, (req, res) => {
     pool.getConnection((err, conn) => {
 
         if (!req.body.id_sala) { return res.status(406).send({ mensagem: "É necessário a sala" }) }
         console.log(req.body.id_sala)
         if (err) { return res.status(500).send({ error: err }) }
-        conn.query("SELECT * FROM reserva INNER JOIN medico ON reserva.id_medico=medico.crm INNER JOIN usuario ON medico.cpf_medico = usuario.cpf WHERE id_sala = ? AND data>=?",
-            [req.body.id_sala,moment().format()],
+        conn.query("SELECT * FROM reserva INNER JOIN medico ON reserva.id_medico=medico.crm INNER JOIN usuario ON medico.cpf_medico = usuario.cpf WHERE id_sala = ?",
+            [req.body.id_sala],
             (err, results, fields) => {
                 console.log(req.body.id_sala)
                 console.log(results)
@@ -129,7 +146,7 @@ router.post('/horarios_reserva', login_usuario, (req, res) => {
                 horaInicio[1] = 0
             }
 
-            conn.query("SELECT * FROM consulta WHERE id_reserva=?", [req.body.id_reserva], (err, results) => {
+            conn.query("SELECT * FROM consulta WHERE id_reserva=? AND status=0", [req.body.id_reserva], (err, results) => {
                 if (err) { return res.status(500).send({ error: err }) }
                 horariosMarcados = results.map(consulta => consulta.hor_marc)
                 horarios = horarios.map(horario => (horariosMarcados.includes(horario) ? [horario, 1] : [horario, 0]))
@@ -149,6 +166,7 @@ router.post('/nova_reserva', login_gerente, (req, res) => {
         if (!req.body.hor_fin) { return res.status(406).send({ mensagem: "É necessário a hora final." }) }
         if (!req.body.id_sala) { return res.status(406).send({ mensagem: "É necessário a sala." }) }
         if (!req.body.id_medico) { return res.status(406).send({ mensagem: "É necessário o médico." }) }
+        if (req.body.hor_fin< req.body.hor_ini){return res.status(409).send({mensagem:"Horário final não pode ser menor que horario inicial"})}
         conn.query("SELECT * FROM sala WHERE id_sala=?", [req.body.id_sala], (err, results) => {
             if (err) { return res.status(500).send({ error: err }) }
             if (results.length == 0) { return res.status(404).send({ mensagem: "sala não encontrada" }) }

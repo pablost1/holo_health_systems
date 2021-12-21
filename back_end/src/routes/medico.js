@@ -3,6 +3,26 @@ const router = express.Router();
 const pool = require("../mysql").pool;
 const login_medico = require('../middleware/login_medico');
 const moment = require('moment')
+moment.locale('pt-br')
+
+
+router.get("/info", login_medico, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        conn.query("SELECT * FROM usuario where usuario.cpf=?", [req.usuario.cpf], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
+            const response = results.map(usuario => {
+                    return {
+                        nome: usuario.nome_medico,
+                        sobrenome: usuario.sobrenome,
+
+                    }
+                })[0]
+            
+            return res.status(200).send(response)
+        })
+    })
+})
 
 router.post("/novo_consultorio", login_medico, (req, res) => {
     console.log(req.body)
@@ -28,8 +48,8 @@ router.get("/minhas_reservas", login_medico, (req, res) => {
     pool.getConnection((err, conn) => {
         if (err) { return res.status(500).send({ error: err }) }
         conn.query(
-            "SELECT * FROM reserva INNER JOIN sala ON reserva.id_sala=sala.id_sala INNER JOIN consultorio ON sala.id_consultorio=consultorio.id_consultorio WHERE id_medico=? AND data>?",
-            [req.usuario.crm, moment().format()],
+            "SELECT * FROM reserva INNER JOIN sala ON reserva.id_sala=sala.id_sala INNER JOIN consultorio ON sala.id_consultorio=consultorio.id_consultorio WHERE id_medico=? AND data>=?",
+            [req.usuario.crm, moment().format("YYYY-MM-DD")],
             (err, results) => {
                 if (err) { return res.status(500).send({ error: err }) }
                 const response = {
@@ -60,7 +80,7 @@ router.get("/reserva_em_andamento", login_medico, (req, res) => {
         if (err) { return res.status(500).send({ error: err }) }
         conn.query(
             "SELECT * FROM reserva INNER JOIN sala ON reserva.id_sala=sala.id_sala INNER JOIN consultorio ON sala.id_consultorio=consultorio.id_consultorio WHERE id_medico=? AND data>? AND ? BETWEEN hor_ini AND hor_fin",
-            [req.usuario.crm, moment().format(), moment().format('LTS')],
+            [req.usuario.crm, moment().format("YYYY-MM-DD"), moment().format('LTS')],
             (err, results) => {
                 if (err) { return res.status(500).send({ error: err }) }
                 if (results.length == 0) { return res.status(200).send({ mensagem: "Não há reservas em andamento :D" }) }
@@ -97,6 +117,43 @@ router.get("/minhas_consultas", login_medico, (req, res) => {
                     return {
                         id_consulta: consulta.id_consulta,
                         cpf_paciente: consulta.cpf_paciente,
+                        id_medico: consulta.id_medico,
+                        id_reserva: consulta.id_reserva,
+                        data: consulta.data,
+                        id_sala: consulta.id_sala,
+                        hor_marc: consulta.hor_marc,
+                        status: consulta.status
+                    }
+                })
+            }
+            return res.status(200).send(response)
+        })
+    })
+})
+router.post("/minhas_consultas", login_medico, (req, res) => {
+    if(!req.body.id_reserva){return res.status(406).send({mensagem: "reserva necessária"})}
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        conn.query(`
+        SELECT consulta.id_consulta, consulta.cpf_paciente, consulta.id_medico, consulta.id_reserva, 
+               usuario.nome as nome_paciente, usuario.sobrenome, reserva.data, consulta.hor_marc,
+               consulta.status,reserva.id_sala
+        FROM consulta 
+        INNER JOIN reserva 
+        ON consulta.id_reserva=reserva.id_reserva 
+        INNER JOIN usuario ON consulta.cpf_paciente=usuario.cpf 
+        WHERE consulta.id_medico=? 
+        AND status=0 
+        AND consulta.id_reserva=?
+        `, [req.usuario.crm,req.body.id_reserva], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
+            const response = {
+                Consultas: results.map(consulta => {
+                    return {
+                        id_consulta: consulta.id_consulta,
+                        cpf_paciente: consulta.cpf_paciente,
+                        nome: consulta.nome_paciente,
+                        sobrenome: consulta.sobrenome,
                         id_medico: consulta.id_medico,
                         id_reserva: consulta.id_reserva,
                         data: consulta.data,

@@ -5,12 +5,12 @@ import MainContainer from '../../sharable-components/main-container/index';
 import Subtitle from '../../sharable-components/subtitle';
 import { useHistory } from 'react-router';
 import http from '../../http/index';
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 
 
 
 export default function HomeManager() {
-    const [ consultorio, setConsultorio] = useState({})
+    // const [ consultorio, setConsultorio] = useState({})
 
     const history = useHistory();
     function redirecionarParaCadastro(){
@@ -29,12 +29,12 @@ export default function HomeManager() {
 
                 try {
                     const { data } = await http.get('/consultorio/meu_consultorio')
-                    setConsultorio(data)
-                    console.log(data)
+                    // setConsultorio(data)
+                    
                 }
                 
                 catch(err) {
-                    console.log(err)
+                    
                 }
             }
         )()

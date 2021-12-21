@@ -7,12 +7,7 @@ import { AuthContext } from '../../auth/authContext'
 import { Formik, Field, Form } from 'formik'
 import  * as Yup  from 'yup';
 import InputMask from 'react-input-mask';
-
-
-
-
-
-
+import { Link } from 'react-router-dom'
 
 
 
@@ -25,6 +20,8 @@ let schema = Yup.object().shape({
 function LoginForm() {
 
     
+    
+
     const {handleLogin} = useContext(AuthContext)
     
     
@@ -37,21 +34,28 @@ function LoginForm() {
 
             validationSchema={schema}
 
-            onSubmit={(value) => {
+            onSubmit={(value, { setSubmitting }) => {
                 
-                handleLogin(value)
+                handleLogin(value, setSubmitting)
                 
             }}
         >
-            {({values, touched, errors }) => (
+            {({values, touched, errors, isSubmitting, setSubmitting, handleChange }) => (
 
                 <Form className="form">
                     <div className="form-group">
                         <label>CPF</label>
                         <Field 
                             name="cpf"
+                            render={({field}) => (
+                                <InputMask
+                                    {...field}
+                                    onChange={handleChange}
+                                    mask="999.999.999-99"
+                                />
+                            )}
                         />
-                        { errors.email && touched.email ? <p>{errors.email}</p> : '' }
+                        { errors.cpf && touched.cpf ? <p>{errors.cpf}</p> : '' }
                     </div>
                     <div className="form-group">
                         <label>Senha</label>
@@ -59,7 +63,11 @@ function LoginForm() {
                         { errors.senha && touched.senha ? <p>{errors.senha} </p> : '' }
                     </div>
                     <div className="form-login">
-                        <Button size="medium">Login</Button>
+                        <Button loading={isSubmitting} size="medium">Login</Button>
+                        <Link to="/cadastro">
+                            <span className="has-account">Não tem uma conta? Cadastra-se.</span>
+                        </Link>
+                        
                        
                         
                         

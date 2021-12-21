@@ -74,7 +74,7 @@ function Scheduler() {
         }
 
         catch(err) {
-            console.log(err)
+            
         }
 
     }
@@ -83,11 +83,11 @@ function Scheduler() {
     async function addSchedule(schedule) {
         try {
             const { data } = http.post('/gerente/reserva', schedule)
-            console.log(data)
+            
         }
 
         catch(err) {
-            console.log(err)
+           
         }
         
 
@@ -140,7 +140,7 @@ function Scheduler() {
     }, [showInitialDate, initialDate, registerCounter])
 
     return (
-        <div>
+        <div className="scheduler-container">
             <div className="scheduler">
                 <div className="scheduler-header">
                     <ArrowBackIos onClick={goBackwards} />
@@ -154,8 +154,9 @@ function Scheduler() {
                 <div className="scheduler-table">
 
                     {
-                        days.map( (day) => (
+                        days.map( (day, index) => (
                             <Column
+                                key={index}
                                 deleteSchedule={deleteSchedule}
                                 loadData={fetchData}
                                 dates={schedules} 

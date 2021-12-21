@@ -2,15 +2,13 @@ import './style.css'
 import Button from '../../sharable-components/button/index';
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
-import axios from 'axios';
 import moment from 'moment'
 import InputMask  from 'react-input-mask';
+import http from '../../http/index';
+import { useContext } from 'react';
+import { AuthContext } from '../../auth/authContext';
 
 
-
-let http = axios.create({
-    baseURL: 'http://localhost:3001',
-})
 
 
 
@@ -26,7 +24,7 @@ function ValidationField({error}) {
 
 export default function Cadastro() {
 
-    
+    const { handleError } = useContext(AuthContext)
     
     
     
@@ -50,13 +48,20 @@ export default function Cadastro() {
         
     })
 
-//     "cpf"              : String,  // Numero do CPF do novo usuário
-//  *      "senha"            : String,   // Senha do usuario
-//  *      "email"            : String,   // E-mail de cadastro do novo usuario
-//  *      "nome"             : String,   // Nome principal do usuario
-//  *      "sobrenome"        : String,   // Ultimo nome do usuario
 
+    async function CadastrarPaciente(value, reset) {
 
+        try {
+            const { data }  = await http.post('/usuario/cadastro', value)
+            handleError(data.mensagem)
+            reset()
+
+        }
+
+        catch(err) {
+            
+        }
+    }
 
     return (
         <div className="cadastro-container">
@@ -75,11 +80,10 @@ export default function Cadastro() {
 
                 validationSchema={validation}
 
-                onSubmit={ (value) => {
+                onSubmit={ (value, {resetForm}) => {
                     
-                    http.post('/usuario/cadastro', value)
-                        .then(res => console.log(res))
-                        .catch( err => err.response.data.mensagem)
+                    CadastrarPaciente(value, resetForm)
+                    
                 }}
                 
             >
@@ -92,7 +96,6 @@ export default function Cadastro() {
                             
                             {errors.nome && touched.nome ? <ValidationField error={errors.nome} /> : ''}
                         </div>
-                        <button onClick={() => console.log(values)}>see</button>
                         <div className="form-group">
                             <label>Sobrenome</label>
                             <Field className="input" name="sobrenome" />
@@ -126,6 +129,7 @@ export default function Cadastro() {
                                 name="cpf" 
                                 render={({field}) => (
                                     <InputMask 
+                                        {...field}
                                         mask="999.999.999-99"
                                         onChange={handleChange}
                                     />

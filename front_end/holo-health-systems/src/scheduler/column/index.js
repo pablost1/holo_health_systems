@@ -1,7 +1,7 @@
 import './style.css'
 import moment from 'moment'
 import * as Yup from 'yup'
-import { Add, Delete } from '@material-ui/icons';
+import { Add, Close, Delete } from '@material-ui/icons';
 import { useState, useEffect, useContext } from 'react';
 import { Formik, Form, Field } from 'formik';
 import Button from '../../sharable-components/button/index';
@@ -16,6 +16,22 @@ import { AuthContext } from '../../auth/authContext';
 
 
 function Horario(props) { 
+    const horaAtual = moment().format('HH:mm:ss')
+    const dataAtual = moment().format('DD/MM/YYYY')
+    const dataHorario = moment(props.schedule.data, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('DD/MM/YYYY')
+  
+    const compara = moment(dataAtual, 'DD/MM/YYYY')
+    
+    const hasDelete = compara.isSame(moment(dataHorario, 'DD/MM/YYYY')) || !compara.isAfter(moment(dataHorario, 'DD/MM/YYYY'))
+    
+    
+    
+
+    
+    
+    
+    
+    
 
     const { handleError } = useContext(AuthContext)
 
@@ -23,7 +39,6 @@ function Horario(props) {
     const { setRegisterCounter, registerCounter, schedule } = props
 
     async function ApagarReserva() {
-        console.log(props.schedule.id_reserva)
         try {
             const { data } = await http.delete('/gerente/deletar_reserva', { data: { id_reserva:  props.schedule.id_reserva}})
             setRegisterCounter(registerCounter+1)
@@ -42,10 +57,10 @@ function Horario(props) {
     return (
         <div className="horario">
             <div className="horario__items">
-                <span className="medico">{props.schedule.profissional}</span>
+                <span className="medico">{props.schedule.nome_medico} {props.schedule.sobrenome_medico}</span>
                 <span className="especialidade-horario">{props.schedule.especialidade}</span>
                 <span className="especialidade-horario">{horaInicial} - {horaFinal}</span>
-                <Delete
+                { hasDelete ? (<Delete
                     style={{
                         
                         alignSelf: 'flex-end',
@@ -56,8 +71,8 @@ function Horario(props) {
 
                     onClick={() => ApagarReserva()}
                     
-                />
-                
+                />) : ''
+                }               
             </div>
             
         </div>
@@ -123,24 +138,35 @@ function ScheduleForm(props) {
     }
 
     async function CadastrarReserva(reserva) {
+        const horaInicial = moment(reserva.hor_ini, 'HH:mm')
+        const vemAntes = horaInicial.isBefore(moment(reserva.hor_fin, 'HH:mm'))
+
+
+        
 
         const novaReserva = {...reserva, data: moment(reserva.data, 'MM/DD/YYYY').format('YYYY-MM-DD')}
+        if(vemAntes) {
+
         
-        try {
-            const { data } =  await http.post('/gerente/nova_reserva', novaReserva)
-            handleError(data.mensagem)
-            setRegisterCounter(registerCounter + 1)
+            try {
+                const { data } =  await http.post('/gerente/nova_reserva', novaReserva)
+                handleError(data.mensagem)
+                setRegisterCounter(registerCounter + 1)
+            }
+
+            catch(err) {
+                
+            }
         }
 
-        catch(err) {
-            handleError(err.response.data.mensagem)
+        else {
+            handleError('Horário inicial precisa vim antes do final!')
         }
-    }
-
-    async function ApagarReserva() {
 
 
     }
+
+
 
 
     useEffect(() => {
@@ -152,7 +178,16 @@ function ScheduleForm(props) {
         <div className={`schedule-form`} >
             
             <div className="scheduler-form-inner-container">
-                <Button size="small" hasEvent={true} readonly={true} onClick={props.close}>fechar</Button>
+                
+                <Close style={{
+                    alignSelf: 'end',
+                    justifySelf: 'flex-end',
+                    cursor: 'pointer',
+                    
+                }}
+                    onClick={props.close}
+                 />
+            
                 <Formik
                     initialValues={{
                         data: props.thisDay,
@@ -267,8 +302,6 @@ function ScheduleForm(props) {
                                 </div>) : ''
                             }
                             
-                            
-                            <button onClick={() => console.log(values)}>check</button>
                             <Button size="medium">Marcar horário</Button>
                         </Form>
                     )}
@@ -291,7 +324,8 @@ export default function Column(props) {
     let monday
     let columnMoment
     let thisDaySchedules
-    // const { RegisteSchedule, handleError } =   useContext(AuthContext)  
+
+    
         
     monday = props.findMonday()
     columnMoment = moment(monday).add(props.day.id, 'days').format('L')
@@ -300,8 +334,13 @@ export default function Column(props) {
         
         return moment(schedule.data, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('MM/DD/YYYY') === columnMoment
     })
-    
 
+    const dataAtual = moment().format('DD/MM/YYYY')
+    const compara = moment(dataAtual, 'DD/MM/YYYY')
+    const hasDelete = compara.isSame(moment(columnMoment, 'MM/DD/YYYY')) || !compara.isAfter(moment(columnMoment, 'MM/DD/YYYY'))
+    
+    
+    
     
     function openRegister() {
         setisOpened(true)
@@ -320,12 +359,17 @@ export default function Column(props) {
             <div className="scheduler-column__description">
                 <span>{ moment(columnMoment).format('D') }</span>
                 <h3 className="day-description">{props.day.day}</h3>
-                <Add className="add-button" onClick={openRegister}  />
+                {hasDelete ? (<Add 
+                    className="add-button"
+                    onClick={openRegister}
+                    
+                />): ''}
             </div>
             <div className="scheduler-column__schedules">
                 {
                     thisDaySchedules.map( (schedule) => (
                         <Horario
+                            key={schedule.id_reserva}
                             schedule={schedule}
                             key={schedule.id} 
                             deleteSchedule={props.deleteSchedule}

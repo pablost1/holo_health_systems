@@ -19,7 +19,7 @@ export default function SalasConsultorio() {
             }
 
             catch(err) {
-                console.log(err)
+                
             }
             
             

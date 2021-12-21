@@ -47,21 +47,21 @@ export default function CadastroGerente() {
         }
 
         catch(err) {
-            handleError(err.response.data.mensagem)
+            
         }
         
     }
 
     async function CadastrarGerente(value) {
         try {
-            const gerente = {...value, id_consultorio: parseInt(value.id_consultorio), cpf: cpf.strip(value.cpf), dt_nascimento: moment(value.dt_nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD'),}
+            const gerente = {...value, id_consultorio: parseInt(value.id_consultorio), cpf: value.cpf, dt_nascimento: moment(value.dt_nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD'),}
             const { data } = await http.post('/usuario/cadastro/gerente', gerente)
             handleError(data.mensagem)
             
         }
 
         catch(err) {
-            handleError(err.response.data.mensagem)
+           
         }
     }
     
@@ -86,8 +86,9 @@ export default function CadastroGerente() {
 
                     }}
 
-                    onSubmit={(values) => {
+                    onSubmit={(values, {resetForm}) => {
                         CadastrarGerente(values)
+                        
                     }}
 
                     validationSchema={validationSchema}
@@ -147,7 +148,7 @@ export default function CadastroGerente() {
                             
                             <div className="form-group">
                                 <label>Senha</label>
-                                <Field  name="senha"/>
+                                <Field type="password" name="senha"/>
                                 {errors.senha && touched.senha? <p>{errors.senha}</p> : ''}
                             </div>
                             <div className="form-group">

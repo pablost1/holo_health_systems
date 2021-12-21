@@ -9,15 +9,12 @@ import { useContext } from 'react';
 import moment from 'moment'
 import Error404 from './utils/404';
 import LoginPage from './pages/login';
-import { useEffect } from "react"
-
-
+import { history } from './http/index';
 
 
 
 
 moment.locale('pt-br')    
-// import { AuthContext } from './auth/authContext' {  useContext };
 
 
 
@@ -29,7 +26,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
   return (
     <Route {...rest} render={ props => {
-      console.log('private route')
 
       if(!isLoggedin && rest.privacy !== '') return <Redirect to="/login" />
 
@@ -49,11 +45,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     }} />
   )
 
-  // return (
-  //   <Route {...rest} render={props => (
-  //     isLoggedin ? <Component /> : <Redirect to="/login"/>
-  //   )}/>
-  // )
+
 }
 
 
@@ -66,7 +58,7 @@ function App() {
 
   
   return (   
-    <Router>
+    <Router history={history}>
       <div className="App">
         <Switch>
           <Route exact path={["/", "/login"]} render={(props) => {

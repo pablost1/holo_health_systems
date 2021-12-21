@@ -4,7 +4,6 @@ import DescriptionHeader from '../../sharable-components/description-header/inde
 import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
 import Button from '../../sharable-components/button/index';
-import axios from 'axios'
 import { useEffect, useState, useContext } from 'react';
 import http from '../../http/index';
 import { AuthContext } from '../../auth/authContext';
@@ -45,6 +44,61 @@ export default function AdicionarInformacoes() {
             alert(err)
         }
     }
+
+//     http.post('/estado', value)
+//                             .then( res => {
+// //                                CarregarEstados()
+//                                 handleError('Estado cadastrado com sucesso')
+//                                 resetForm()
+//                             })
+//                             .catch( error => handleError(error.response.data.mensagem))
+
+    async function CadastrarEstado(value) {
+
+        try {
+            const data = await http.post('/estado', value)
+            CarregarEstados()
+            
+            if(data) {
+                handleError('Estado cadastrado com sucesso')
+            }
+        }
+
+        catch(err) {
+           
+        }
+    }
+
+    // http.post('/cidade', value)
+    //                         .then( res => {
+    //                             handleError("Cidade cadastrada com sucesso")
+    //                             resetForm()
+    //                         })
+    //                         .catch( err => {
+                                
+    //                             handleError(err.response.data.mensagem)
+
+                                
+    //                         })
+
+    async function CadastrarCidade(value) {
+
+        try {
+            const { data } = await http.post('/cidade', value)
+
+            if(data) {
+                handleError('Cidade cadastrada com sucesso')
+            }
+        }
+
+        catch(err) {
+
+        }
+
+    }
+
+
+    
     
 
     useEffect( () => {
@@ -68,13 +122,8 @@ export default function AdicionarInformacoes() {
                     }}
 
                     onSubmit={(value, { resetForm}) => {
-                        http.post('/estado', value)
-                            .then( res => {
-//                                CarregarEstados()
-                                handleError('Estado cadastrado com sucesso')
-                                resetForm()
-                            })
-                            .catch( error => handleError(error.response.data.mensagem))
+                        CadastrarEstado(value)
+                        resetForm()
                         
                         
                     }}
@@ -102,24 +151,14 @@ export default function AdicionarInformacoes() {
                         nome: ''
                     }}
                     onSubmit={(value, { resetForm}) => {
-                        console.log(value)
-                        http.post('/cidade', value)
-                            .then( res => {
-                                handleError("Cidade cadastrada com sucesso")
-                                resetForm()
-                            })
-                            .catch( err => {
-                                
-                                handleError(err.response.data.mensagem)
-
-                                
-                            })
+                        CadastrarCidade(value)
+                        resetForm()
                         
                         
                     }}
 
                 >
-                    {({ errors, touched, values}) => (
+                    {({ errors, touched}) => (
                         <Form className="info-form">
                             <div className="form-group">
                                 <label>Estado da cidade</label>
@@ -131,12 +170,12 @@ export default function AdicionarInformacoes() {
                                         )) : ''
                                     }
                                 </Field >
-                                { errors.estado && touched.estado ? <p>{errors.estado}</p> : '' }
+                                { errors.id_estado && touched.id_estado ? <p>{errors.id_estado}</p> : '' }
                             </div>
                             <div className="form-group">
                                 <label>Nome da cidade</label>
                                 <Field name="nome" />
-                                { errors.cidade && touched.cidade ? <p>{errors.cidade}</p> : '' }
+                                { errors.nome && touched.nome ? <p>{errors.nome}</p> : '' }
                             </div>
                             <Button style={{ alignSelf: 'baseline'}} size="small">Cadastrar</Button>
                             

@@ -40,8 +40,7 @@ export default function CadastroMedico() {
         }
 
         catch(err) {
-            const message = err.response.data.mensagem
-            handleError(message)
+            
         }
     }
 
@@ -164,13 +163,13 @@ export default function CadastroMedico() {
                                 { errors.geral && touched.geral ? <p>{errors.geral}</p> : ''}
                             </div>
                             <div className="form-group">
-                                <label>e-mail</label>
+                                <label>E-mail</label>
                                 <Field name="email"/>
                                 { errors.email && touched.email ? <p>{errors.email}</p> : ''}
                             </div>
                             <div className="form-group">
                                 <label>Senha</label>
-                                <Field name="senha"/>
+                                <Field type="password" name="senha"/>
                                 { errors.senha && touched.senha ? <p>{errors.senha}</p> : ''}
                             </div>
 

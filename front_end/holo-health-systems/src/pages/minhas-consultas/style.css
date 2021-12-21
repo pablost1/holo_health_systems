@@ -1,4 +1,9 @@
 .minhas-consultas__lista {
     margin-top: 5rem;
     padding-bottom: 3rem;
+    height: 100%;
+}
+
+.minhas-consultas {
+    height: 100%;
 }

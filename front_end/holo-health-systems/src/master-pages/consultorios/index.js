@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import http from '../../http/index';
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../auth/authContext'
+import Loading from '../../sharable-components/loading-animation';
 
 
 function Consultorio(props) {
@@ -29,17 +30,6 @@ function Consultorio(props) {
         <div className="consultorio" onClick={IrParaSalas}>
             <h3>{props.consultorio.nome}</h3>
             
-            <Button 
-                size="small"
-                status="danger"
-                style={{
-                    marginLeft: 'auto'
-                }}
-                hasEvent={true}
-                onClick={Deletar}
-                >
-                    Fechar
-            </Button>
             
         </div>
     )
@@ -73,7 +63,6 @@ export default function Consultorios() {
         try {
             const data = await http.delete('/consultorio', {data: payload })
             CarregarConsultorios()
-            console.log(data)
         }
 
         catch(err) {
@@ -94,10 +83,11 @@ export default function Consultorios() {
         <div className="consultorios-container">
             <DescriptionHeader path="/master-home">Consultórios</DescriptionHeader>
             <div className="consultorios">
+                
                 {
                     consultorios.length > 0 ? consultorios.map( (consultorio) => (
                         <Consultorio key={consultorio.id_consultorio} delete={DeletarConsultorio} consultorio={consultorio}/> 
-                    )) : ''
+                    )) : <Loading  big={true} />
                 }
                 
             </div>
