@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require("../mysql").pool;
 const login_medico = require('../middleware/login_medico');
 const moment = require('moment')
+moment.locale('pt-br')
 
 router.post("/novo_consultorio", login_medico, (req, res) => {
     console.log(req.body)
