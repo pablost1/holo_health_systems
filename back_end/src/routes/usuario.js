@@ -16,7 +16,6 @@ const tempo_validade = '1h'
 *      "email"            : String,   // E-mail de cadastro do novo usuario
 *      "nome"             : String,   // Nome principal do usuario
 *      "sobrenome"        : String,   // Ultimo nome do usuario
-*      
 * }
 */
 router.post('/cadastro', (req, res, next) => {
@@ -219,13 +218,16 @@ router.post("/cadastro/medico", cadastro_medico, (req, res, next) => {
  *  Formato para requisição
  * {
  *      "login" : Integer/String // Numero do CPF / Endereço de e-mail
- *      "senha" : Integer        // Senha de acesso   
+ *      "senha" : String        // Senha de acesso   
  * }
  */
 router.post('/login', (req, res, next) => {
-
+    if (req.body.cpf){login = true}
+    if (req.body.email){login = true}
+    if (!login) { return res.status(406).send({ mensagem: "É necessário inserir um dado de login(CPF ou E-mail)." }) }
+    if (!req.body.senha) { return res.status(406).send({ mensagem: "É necessário inserir uma senha." }) }
+    
     pool.getConnection((error, conn) => {
-
         if (error) { return res.status(500).send({ error: error }) }
         const sql_query = req.body.cpf ? "SELECT * FROM usuario WHERE cpf = ?" : "SELECT * FROM usuario WHERE email = ?"
         conn.query(
