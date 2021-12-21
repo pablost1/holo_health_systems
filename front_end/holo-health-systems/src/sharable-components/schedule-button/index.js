@@ -15,7 +15,6 @@ export default function ScheduleButton(props) {
 
     return (
         <button onClick={ExecuteAction} className="schedule-button">
-            <Alarm  className="schedule-button__icon"/>
             { props.children }
         </button>
     )

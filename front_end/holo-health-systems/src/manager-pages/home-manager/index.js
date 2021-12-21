@@ -30,11 +30,11 @@ export default function HomeManager() {
                 try {
                     const { data } = await http.get('/consultorio/meu_consultorio')
                     // setConsultorio(data)
-                    console.log(data)
+                    
                 }
                 
                 catch(err) {
-                    console.log(err)
+                    
                 }
             }
         )()
