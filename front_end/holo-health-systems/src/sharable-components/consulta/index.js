@@ -12,26 +12,25 @@ import { useState, useEffect } from "react"
 export default function Consulta(props) {   
     const history = useHistory()
 
-    function IrParaEmAndamento() {
-        history.push('/em-andamento')
-    }
 
     const [ inicio, setInicio] = useState('')
     const [ fim, setFim] = useState('')
     const [ data, setData] = useState('')
     const [ hora, setHora ] = useState('')
-    // console.log(`A data é${moment('2021-12-06T03:00:00.000Z', 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('MM/DD/YYYY')}`)
 
     
-    
-    // const inicio = moment(props.horario.hor_ini, 'HH:mm:ss').format('HH:mm')
-    // const fim = moment(props.horario.hor_fin, 'HH:mm:ss').format('HH:mm')
-    // const data = moment(props.horario.data, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('DD/MM/YYYY')
+    console.log(props.horario)
+    function IrParaEmAndamento() {
+        history.push({
+            pathname: '/em-andamento',
+            state: props.horario.id_reserva ? props.horario.id_reserva : ''
+        })
+    }
 
     useEffect(() => {
 
         if(props.type === 'doctor') {
-            console.log(props)
+            
             setInicio(moment(props.horario.hor_ini, 'HH:mm:ss').format('HH:mm'))
             setFim(moment(props.horario.hor_fin, 'HH:mm:ss').format('HH:mm'))
             setData(moment(props.horario.data, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('DD/MM/YYYY'))
@@ -52,12 +51,12 @@ export default function Consulta(props) {
         
         
     }, [])
-    
+
     if(props.type ===  'doctor') {
 
         return (
 
-            <div className="consulta consulta-doctor">
+            <div className="consulta consulta-doctor" onClick={IrParaEmAndamento}>
                 <div className="consulta__info">
                     <div className="consulta__local ">
                         <LocationOn fontSize="medium" />
@@ -144,15 +143,15 @@ export default function Consulta(props) {
     return (
         <div className={`${props.type === 'delete'? 'consulta-apagavel' : 'consulta'}`}>
             <div className="consulta__profissional">
-                <h3 className="profissional">Otorrinolaringologia</h3>
-                <span className="nome-profissional">Maria de fátima bezerra</span>
+                <h3 className="profissional">{props.consulta.especialidade}</h3>
+                <span className="nome-profissional">{props.consulta.nome_medico} {props.consulta.sobrenome}</span>
             </div>
             <div className="consulta__info">
                 <div className="consulta__local ">
                     <LocationOn fontSize="medium" />
                     <div className="local">
                         <h3>Local</h3>
-                        <p>Descrição do local</p>
+                        <p>{props.consulta.consultorio}</p>
                     </div>
                 </div>
                 <div className="consulta__dia">

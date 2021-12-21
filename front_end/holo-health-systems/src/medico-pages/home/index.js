@@ -36,7 +36,7 @@ export default function MedicoHome() {
             }
 
             catch(err) {
-                console.log(err)
+                
             }
         })()
     }, [])

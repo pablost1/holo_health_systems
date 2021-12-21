@@ -2,7 +2,6 @@ import './style.css'
 import Button from '../../sharable-components/button/index';
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
-import axios from 'axios';
 import moment from 'moment'
 import InputMask  from 'react-input-mask';
 import http from '../../http/index';
@@ -60,7 +59,7 @@ export default function Cadastro() {
         }
 
         catch(err) {
-            handleError(err.response.data.mensagem)
+            
         }
     }
 

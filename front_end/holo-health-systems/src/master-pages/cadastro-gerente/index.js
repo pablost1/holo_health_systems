@@ -54,7 +54,7 @@ export default function CadastroGerente() {
 
     async function CadastrarGerente(value) {
         try {
-            const gerente = {...value, id_consultorio: parseInt(value.id_consultorio), cpf: cpf.strip(value.cpf), dt_nascimento: moment(value.dt_nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD'),}
+            const gerente = {...value, id_consultorio: parseInt(value.id_consultorio), cpf: value.cpf, dt_nascimento: moment(value.dt_nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD'),}
             const { data } = await http.post('/usuario/cadastro/gerente', gerente)
             handleError(data.mensagem)
             

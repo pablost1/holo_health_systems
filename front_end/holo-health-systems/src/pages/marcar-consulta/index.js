@@ -8,6 +8,23 @@ import SelecionarConsulta from './selecionar-consulta/index';
 import Reserva from './reserva/index';
 import http from '../../http/index';
 import Button from '../../sharable-components/button/index';
+import Loading from '../../sharable-components/loading-animation';
+import NadaEncontrado from '../../sharable-components/nada-encontrado/index.js'
+import * as Yup from 'yup'
+
+// estado: '',
+//                     id_cidade: '',
+//                     id_especialidade: ''
+
+
+const schema = Yup.object().shape({
+    estado: Yup.string().required('É necessário um estado'),
+    id_cidade: Yup.string().required('É necessária uma cidade'),
+    id_especialidade: Yup.string().required('É necessária uma especialidade')
+})
+
+
+
 
 function MarcarConsulta() {
 
@@ -18,7 +35,8 @@ function MarcarConsulta() {
     const [ modalState, setModalState ] = useState(false)
     const [ horarios, setHorarios ] = useState([])
     const [ reservaSelecionada, setReservaSelecionada ] = useState(undefined)
-    
+    const [ nadaEncontrado, setNadaEncontrado ] = useState(false)
+   
 
 
     async function CarregarEstados() {
@@ -57,11 +75,11 @@ function MarcarConsulta() {
         }
 
         catch(err) {
-            console.log(err)
+            
         }
     }
 
-    async function CarregarReservas(filtro) {
+    async function CarregarReservas(filtro, setSubmiting) {
 
         const filtroAjustado = {id_especialidade: parseInt(filtro.id_especialidade), id_cidade: parseInt(filtro.id_cidade)}
 
@@ -69,17 +87,23 @@ function MarcarConsulta() {
 
             const { data } = await http.post('/paciente/reservas_disponiveis', filtroAjustado)
             setReservas(data.Reservas)
+            setSubmiting(false)
+
+            if(data.Reservas.length === 0) {
+                setNadaEncontrado(true)
+            }
+
+            if(data.Reservas.length > 0) {
+                setNadaEncontrado(false)
+            }
             
         }
 
         catch(err) {
-            console.log(err)
+            setSubmiting(false)
         }
     }
 
-    async function CarregarHorarios() {
-
-    }
 
     useEffect(() => {
         CarregarEstados()
@@ -108,12 +132,14 @@ function MarcarConsulta() {
                     id_especialidade: ''
                 }}
 
-                onSubmit={(value) => {
-                    CarregarReservas(value)
+                onSubmit={(value, { setSubmitting }) => {
+                    CarregarReservas(value, setSubmitting )
                 }}
 
+                validationSchema={schema}
+
             >
-                {({  values, handleChange, setFieldValue }) => (
+                {({  values, handleChange, setFieldValue, isSubmitting, errors, touched }) => (
                     <Form className="marcar-consulta__form">
                         <div className="form-group">
                             <label className="label-bigger">Selecione um estado estado</label>
@@ -153,6 +179,7 @@ function MarcarConsulta() {
                                 }
                                 
                             </Field>
+                            {errors.estado && touched.estado ? <p>{errors.estado}</p>: ''}
                         </div>
                         {
                             values.estado ? (<div className="form-group">
@@ -186,13 +213,17 @@ function MarcarConsulta() {
                                             <option value={cidade.id_cidade} key={cidade.id_cidade}>{cidade.nome}</option>
                                         )) : ''
                                     }
+
+                                    
                                     
                                 </Field>
+                                {errors.id_cidade && touched.id_cidade ? <p>{errors.id_cidade}</p>: ''}
+                                
                             </div>) : ''
                         }
                         
                         {
-                            values.id_cidade ?(<div className="form-group">
+                            values.id_cidade ? (<div className="form-group">
                                 <label className="label-bigger">Especialidade</label>
                                 <Field 
                                     name="id_especialidade" 
@@ -216,12 +247,21 @@ function MarcarConsulta() {
                                         )) : ''
                                     }
                                 </Field>
+                                {errors.id_especialidade && touched.id_especialidade ? <p>{errors.id_especialidade}</p>: ''}
                             </div>) : ''
+                            
                         }
-                        <Button size="medium" style={{
+                        
+                        <Button size="medium" loading={isSubmitting} style={{
                             alignSelf: 'baseline'
                         }}>Pesquisar</Button>
+                        {
+
+                            nadaEncontrado ?  <NadaEncontrado/> : ''
+                        }
                     </Form>
+
+                    
                 )}
                  
             </Formik>
@@ -241,6 +281,7 @@ function MarcarConsulta() {
                                 />
                             ))
                         }
+                        
                         
                     
                     </div>
@@ -262,12 +303,6 @@ function MarcarConsulta() {
             
         </div>  
     )
-}
-
-
-function SelecionarReserva() {
-
-
 }
 
 

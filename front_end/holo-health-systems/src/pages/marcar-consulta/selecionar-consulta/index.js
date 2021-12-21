@@ -3,17 +3,14 @@ import { useEffect, useState, useContext } from 'react';
 import Button from '../../../sharable-components/button/index';
 import http from '../../../http/index';
 import { AuthContext } from '../../../auth/authContext';
+import Loading from '../../../sharable-components/loading-animation';
+import moment from 'moment';
 
 
 
-const consultas = [
-    '12:40',
-    '12:50',
-    '13:00',
-    '13:10',
-    '13:20',
-    '13:30'
-]
+
+
+
 
 export default function SelecionarConsulta(props) {
 
@@ -27,11 +24,10 @@ export default function SelecionarConsulta(props) {
         try {
             const { data } = await http.post('/gerente/horarios_reserva', {id_reserva: props.reservaSelecionada})
             setHorarios(data.Horarios)
-            console.log(data.Horarios)
         }
 
         catch(err) {
-            console.log(err)
+            
         }
     }
 
@@ -46,7 +42,6 @@ export default function SelecionarConsulta(props) {
         }
 
         catch(err) {
-            handleError(err.response.data.mensagem)
         }
     }
 
@@ -56,11 +51,6 @@ export default function SelecionarConsulta(props) {
         setSelected(consulta)
     }
 
-
-
-    // useEffect( () => {
-    //     console.log(props.reservaSelecioanda)
-    // }, [props.reservaSelecioanda])
 
     useEffect(() => {
         GetConsultas()
@@ -78,9 +68,9 @@ export default function SelecionarConsulta(props) {
 
 
                         >
-                            {consulta[0]}
+                            {moment(consulta[0], 'HH:mm:ss').format('HH:mm')}
                         </li>
-                    )): ''
+                    )): <Loading />
                 }
             </ul>
             <Button hasEvent={true} onClick={MarcarConsulta} size="small">Marcar horário</Button>

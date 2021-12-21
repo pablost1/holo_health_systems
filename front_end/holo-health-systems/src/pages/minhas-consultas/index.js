@@ -4,27 +4,38 @@ import Consulta from '../../sharable-components/consulta';
 import http from '../../http/index';
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../auth/authContext';
+import Loading from '../../sharable-components/loading-animation';
+import NadaEncontrado from '../../sharable-components/nada-encontrado';
+
 
 
 
 export default function MinhasConsultas(props) {
 
     const { handleError } = useContext(AuthContext)
-
     const [ consultas, setConsultas] = useState([])
+    const [ isLoading, setIsLoading ] = useState(false)
+    const [ nothingFound, setNothingFound ] = useState(false)
+
 
     async function CarregarConsultas() {
         try {
+            setIsLoading(true)
             const { data } = await http.get('/paciente/minhas_consultas')
             setConsultas(data.Consultas)
-            console.log(data)
+            setIsLoading(false)
+            console.log(data.Consultas)
             
+
+            if(data.Consultas.length === 0 ) {
+                setNothingFound(true)
+                setIsLoading(false)
+            }
         }
 
         catch(err) {
 
-            
-            console.log(err)
+            setIsLoading(false)
         }
     }
 
@@ -37,7 +48,7 @@ export default function MinhasConsultas(props) {
         }
 
         catch(err) {
-            console.log(err)
+            
         }
         
     }
@@ -56,7 +67,14 @@ export default function MinhasConsultas(props) {
                         <Consulta type="delete" hasDeleteButton={true} consulta={consulta} deletarConsulta={DeletarConsultas} />
                     )) : ''
                 }
+
+                {
+                    isLoading ? <Loading big={true} /> : ''
+                }
                 
+                {
+                    nothingFound ? <NadaEncontrado /> : ''
+                }
                 
             </div>
         </div>

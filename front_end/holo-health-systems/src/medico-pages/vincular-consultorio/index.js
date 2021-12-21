@@ -1,44 +1,31 @@
 import './style.css'
 import DescriptionHeader from '../../sharable-components/description-header/index';
-import { Formik, Field, Form } from 'formik';
-import * as Yup  from 'yup';
-import { useState, useEffect } from 'react';
+// import { Formik, Field, Form } from 'formik';
+// import * as Yup  from 'yup';
+import { useState, useEffect, useContext, } from 'react';
 import { Add, Delete} from '@material-ui/icons';
 import http from '../../http/index';
-
+import {  AuthContext } from '../../auth/authContext'
 
 
 
 
 export default function VincularConsultorio() {
-
-
-
-    const listaConsultorios = [
-        {nome: 'Boa vista', id: 0},
-        {nome: 'Boa viagem', id: 1},
-        {nome: 'Jaboatão', id: 2},
-        {nome: 'Jeceaba', id: 3},
-        {nome: 'Amazônia', id: 4},
-        {nome: 'Amapá', id: 5},
-
-    ]
-
     
-
+    const { handleError } = useContext(AuthContext)
     const [consultorios, setConsultorios ] = useState([])
     const [vinculos, setVinculos ] = useState([])
 
 
     async function VincularAoConsultorio(vinculo) {
-        console.log(vinculo)
+        
         try {
             const { data } = await http.post('/medico/novo_consultorio', vinculo)
-            console.log(data)
+            handleError(data.mensagem)
         }
 
         catch(err) {
-            console.log(err)
+            
         }        
     }
 
@@ -81,9 +68,6 @@ export default function VincularConsultorio() {
         </div>
     )
 }
-
-
-const itemsInitialState = []
   
   function ListaItems(props) {
     

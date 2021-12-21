@@ -8,6 +8,18 @@ const http = axios.create({
 const history = createBrowserHistory()
 
 
+function OpenModalInterceptor(mensagem) {
+
+    const component = `<div id="interceptor-modal" class="modal-container"><div class="modal-message"><p>${mensagem}</p></div></div>`
+    const body = document.body 
+    body.innerHTML = component + body.innerHTML
+
+    setTimeout(() => {
+        document.getElementById('interceptor-modal').remove()
+    }, 2000)
+}
+
+
 
 const responseErrorHandler = (error) => {
 
@@ -17,24 +29,23 @@ const responseErrorHandler = (error) => {
 
     if(!error.response) {
         alert('Sem conexão')
+
     }
 
     if(error.response.status === 401) {
 
-        if(history.location.pathname === '/login') {
+        if(window.location.pathname === '/login' || window.location.pathname === '/') {
             alert(error.response.data.mensagem)
-            alert(history.location.pathname)
+            
 
 
         }
-
-
 
         else {
 
             alert(`Sua sessão expirou! Retornando para o início`)
             localStorage.removeItem('token')
-            history.push('/login')
+            window.location.reload()
 
         }
         

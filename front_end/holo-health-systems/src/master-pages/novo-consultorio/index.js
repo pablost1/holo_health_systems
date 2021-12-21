@@ -73,7 +73,7 @@ export default function  NovoConsultorio() {
         }
 
         catch(err) {
-            console.log(err)
+
         }
     }
 

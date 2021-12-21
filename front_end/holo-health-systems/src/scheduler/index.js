@@ -74,7 +74,7 @@ function Scheduler() {
         }
 
         catch(err) {
-            console.log(err)
+            
         }
 
     }
@@ -83,11 +83,11 @@ function Scheduler() {
     async function addSchedule(schedule) {
         try {
             const { data } = http.post('/gerente/reserva', schedule)
-            console.log(data)
+            
         }
 
         catch(err) {
-            console.log(err)
+           
         }
         
 
