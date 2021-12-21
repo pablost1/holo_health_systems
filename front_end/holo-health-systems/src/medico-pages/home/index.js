@@ -14,6 +14,7 @@ import http from '../../http/index';
 export default function MedicoHome() {
 
     const [ reservaEmAndamento, setReservaEmAndamento ] = useState(null)
+    const [ nomeMedico, setNomeMedico ] = useState('')
 
     const history = useHistory()
     
@@ -24,6 +25,21 @@ export default function MedicoHome() {
 
     function IrParaVinculos() {
         history.push('/vincular-consultorio')
+    }
+
+    async function CarregarNome(){
+
+        try {
+            const { data } = await http.get('/medico/info')
+            setNomeMedico(nomeMedico + data.sobrenome)
+    
+        }
+
+        catch(err) {
+            
+        }
+        
+        
     }
 
 
@@ -39,12 +55,13 @@ export default function MedicoHome() {
                 
             }
         })()
+        CarregarNome()
     }, [])
 
 
     return (
         <div className="home-container">
-            <HomeHeader />
+            <HomeHeader usuario={nomeMedico} />
             <MainContainer>
             <Subtitle>O que deseja fazer?</Subtitle>
                 <div className="lista-afazeres">

@@ -9,7 +9,7 @@ import { AuthContext } from "../../auth/authContext";
 
 
 
-function HomeHeader() {
+function HomeHeader(props) {
 
 
 
@@ -25,7 +25,7 @@ function HomeHeader() {
             <header>
                 <Person fontSize="large"className="home-header__icon"/>
                 <div className="tipo-usuario">
-                   <span>Cirlene Moreira</span> 
+                   <span>{props.usuario}</span> 
                    <h3 className="nome-paciente">Paciente</h3>
                 </div>
                 
