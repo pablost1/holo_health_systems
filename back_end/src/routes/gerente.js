@@ -4,6 +4,23 @@ const pool = require('../mysql').pool
 const login_gerente = require('../middleware/login_gerente')
 const login_usuario = require('../middleware/login_usuario')
 const moment = require('moment')
+router.get("/info", login_gerente, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        conn.query("SELECT * FROM usuario where usuario.cpf=?", [req.usuario.cpf], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
+            const response = results.map(usuario => {
+                    return {
+                        nome: usuario.nome_medico,
+                        sobrenome: usuario.sobrenome,
+
+                    }
+                })[0]
+            
+            return res.status(200).send(response)
+        })
+    })
+})
 router.post('/reservas_especificas', login_usuario, (req, res) => {
     pool.getConnection((err, conn) => {
 

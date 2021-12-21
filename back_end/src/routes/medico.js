@@ -4,6 +4,25 @@ const pool = require("../mysql").pool;
 const login_medico = require('../middleware/login_medico');
 const moment = require('moment')
 
+
+router.get("/info", login_medico, (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) { return res.status(500).send({ error: err }) }
+        conn.query("SELECT * FROM usuario where usuario.cpf=?", [req.usuario.cpf], (err, results) => {
+            if (err) { return res.status(500).send({ error: err }) }
+            const response = results.map(usuario => {
+                    return {
+                        nome: usuario.nome_medico,
+                        sobrenome: usuario.sobrenome,
+
+                    }
+                })[0]
+            
+            return res.status(200).send(response)
+        })
+    })
+})
+
 router.post("/novo_consultorio", login_medico, (req, res) => {
     console.log(req.body)
 
