@@ -12,13 +12,13 @@ router.get("/info", login_medico, (req, res) => {
         conn.query("SELECT * FROM usuario where usuario.cpf=?", [req.usuario.cpf], (err, results) => {
             if (err) { return res.status(500).send({ error: err }) }
             const response = results.map(usuario => {
-                    return {
-                        nome: usuario.nome_medico,
-                        sobrenome: usuario.sobrenome,
+                return {
+                    nome: usuario.nome,
+                    sobrenome: usuario.sobrenome,
 
-                    }
-                })[0]
-            
+                }
+            })[0]
+
             return res.status(200).send(response)
         })
     })
@@ -131,7 +131,7 @@ router.get("/minhas_consultas", login_medico, (req, res) => {
     })
 })
 router.post("/minhas_consultas", login_medico, (req, res) => {
-    if(!req.body.id_reserva){return res.status(406).send({mensagem: "reserva necessária"})}
+    if (!req.body.id_reserva) { return res.status(406).send({ mensagem: "reserva necessária" }) }
     pool.getConnection((err, conn) => {
         if (err) { return res.status(500).send({ error: err }) }
         conn.query(`
@@ -145,7 +145,7 @@ router.post("/minhas_consultas", login_medico, (req, res) => {
         WHERE consulta.id_medico=? 
         AND status=0 
         AND consulta.id_reserva=?
-        `, [req.usuario.crm,req.body.id_reserva], (err, results) => {
+        `, [req.usuario.crm, req.body.id_reserva], (err, results) => {
             if (err) { return res.status(500).send({ error: err }) }
             const response = {
                 Consultas: results.map(consulta => {
