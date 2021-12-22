@@ -2,4 +2,3 @@ node_modules/
 __tests__/
 nodemon.json
 jest.config.js
-coverage/
