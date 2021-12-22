@@ -41,6 +41,7 @@ Basicamente, desejamos ligar as pontas interessadas em uma consulta médica da m
 ## Para começar a desenvolver...
 Scripts para criação do banco de dados: 
 [HHS-BD-SCRIPTS.zip](https://github.com/pablost1/holo_health_systems/files/7764679/HHS-BD-SCRIPTS.zip)
+
 Como sugestão, use o Docker para criação do servidor do banco de dados.
 
 # Na sua Máquina
