@@ -24,7 +24,7 @@ Início da Iteração | Término da iteração
 
 ### O que não foi feito
 * Os testes: não pudemos concluir os testes, graças a alguns contratempos com o ambiente de desenvolvimento.
-* Todas as integrações necessárias: basicamente, houveram vários contra-tempos, pequenos problemas que atrasaram as integrações: problemas e bugs.
+* Finalizar toda a aplicação: pela parte funcional do app, o que falta é basicamente uma forma de desativar entidades como: consultorio, médico e gerente.
 * As rotas para desativar entidades: no meio da semana, pensamos em mais funcionalidades que seriam interessantes de serem implementadas no app, e por isso, a lista de rotas a implementar acabou crescendo um pouco mais.
 
 ### Planejado para próxima iteração
