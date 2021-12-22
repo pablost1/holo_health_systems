@@ -37,7 +37,7 @@ function LoginPage() {
     return (
         <div className="login-page">
             <div className="hero-container">
-                <p >Frase de efeito que ainda vou decidir qual será</p>
+                <p >Garanta já a sua saúde!</p>
                 <img alt="jovem-saudavel" className="img"src="https://www.healthpeople.org/wp-content/uploads/2015/01/HLtop.jpg" />
             </div>
             
