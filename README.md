@@ -33,7 +33,30 @@ Basicamente, desejamos ligar as pontas interessadas em uma consulta médica da m
 * Docker
 
 ## Testes
+* Chai
+* Mocha
+* nyc
 * Postman
+
+## Para começar a desenvolver...
+Scripts para criação do banco de dados: 
+[HHS-BD-SCRIPTS.zip](https://github.com/pablost1/holo_health_systems/files/7764679/HHS-BD-SCRIPTS.zip)
+Como sugestão, use o Docker para criação do servidor do banco de dados.
+
+# Na sua Máquina
+* Instale o node
+* Instale o git
+* Escolha um diretório para clonar este repositório usando o comando "git clone https://github.com/pablost1/holo_health_systems"
+* Rode o comando "npm install" nas pastas:
+- holo_health_systems/back-end
+- holo_health_systems/front-end/holo_health_systems
+* Rode o comando "npm start" para ligar o servidor
+
+# Para rodar os testes
+
+O código dos testes estão todos no diretório
+* Ligue o servidor
+* Rode o comando "npm run test" no diretório "holo_health_systems/back-end"
 -------------------------------
 ## História dos Usuários
 
