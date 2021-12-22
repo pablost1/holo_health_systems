@@ -4,9 +4,6 @@ import http from '../http'
 import { useEffect } from 'react';
 
 
-
-
-
 const AuthContext = createContext()
 
 

@@ -56,7 +56,7 @@ export default function Consulta(props) {
 
         return (
 
-            <div className="consulta consulta-doctor" onClick={IrParaEmAndamento}>
+            <div className="consulta consulta-doctor">
                 <div className="consulta__info">
                     <div className="consulta__local ">
                         <LocationOn fontSize="medium" />
