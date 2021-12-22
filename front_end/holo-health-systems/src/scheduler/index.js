@@ -141,6 +141,7 @@ function Scheduler() {
 
     return (
         <div className="scheduler-container">
+            <ArrowBackIos />
             <div className="scheduler">
                 <div className="scheduler-header">
                     <ArrowBackIos onClick={goBackwards} />
