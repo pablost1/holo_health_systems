@@ -503,13 +503,13 @@ router.get("/info", login_gerente, <span class="fstat-no" title="function not co
 <span class="cstat-no" title="statement not covered" >        conn.query("SELECT * FROM usuario where usuario.cpf=?", [req.usuario.cpf], <span class="fstat-no" title="function not covered" >(e</span>rr, results) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >            if (err) { <span class="cstat-no" title="statement not covered" >return res.status(500).send({ error: err }) </span>}</span>
             const response = <span class="cstat-no" title="statement not covered" >results.map(<span class="fstat-no" title="function not covered" >us</span>uario =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >                    return {</span>
-                        nome: usuario.nome_medico,
-                        sobrenome: usuario.sobrenome,
+<span class="cstat-no" title="statement not covered" >                return {</span>
+                    nome: usuario.nome,
+                    sobrenome: usuario.sobrenome,
 &nbsp;
-                    }
-                })[0]
-            
+                }
+            })[0]
+&nbsp;
 <span class="cstat-no" title="statement not covered" >            return res.status(200).send(response)</span>
         })
     })
@@ -569,23 +569,23 @@ router.get("/medicos_consultorio", login_gerente, <span class="fstat-no" title="
     })
 })
 &nbsp;
-router.post("/medicos_consultorio_especialidade",login_gerente,<span class="fstat-no" title="function not covered" >(r</span>eq,res)=&gt;{
-<span class="cstat-no" title="statement not covered" >    if(!req.body.id_especialidade){<span class="cstat-no" title="statement not covered" >return res.status(406).send({mensagem:"É necessário a especialidade"})}</span></span>
-<span class="cstat-no" title="statement not covered" >    pool.getConnection(<span class="fstat-no" title="function not covered" >(e</span>rr,conn)=&gt;{</span>
-<span class="cstat-no" title="statement not covered" >        if(err){<span class="cstat-no" title="statement not covered" >return res.status(500).send({error:err})}</span></span>
-<span class="cstat-no" title="statement not covered" >        conn.query("SELECT medico.crm, medico_consultorio.id_consultorio, especialidade.id_especialidade, usuario.nome as nome_medico, usuario.sobrenome, especialidade.nome as especialidade FROM medico_consultorio INNER JOIN medico ON medico_consultorio.id_medico = medico.crm  INNER JOIN usuario ON medico.cpf_medico = usuario.cpf INNER JOIN especialidade ON medico.especialidade=especialidade.id_especialidade WHERE medico_consultorio.id_consultorio=? AND medico.especialidade=?",[req.usuario.id_consultorio,req.body.id_especialidade],<span class="fstat-no" title="function not covered" >(e</span>rr,results)=&gt;{</span>
-<span class="cstat-no" title="statement not covered" >            if(err){<span class="cstat-no" title="statement not covered" >return res.status(500).send({error:err})}</span></span>
+router.post("/medicos_consultorio_especialidade", login_gerente, <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
+<span class="cstat-no" title="statement not covered" >    if (!req.body.id_especialidade) { <span class="cstat-no" title="statement not covered" >return res.status(406).send({ mensagem: "É necessário a especialidade" }) </span>}</span>
+<span class="cstat-no" title="statement not covered" >    pool.getConnection(<span class="fstat-no" title="function not covered" >(e</span>rr, conn) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        if (err) { <span class="cstat-no" title="statement not covered" >return res.status(500).send({ error: err }) </span>}</span>
+<span class="cstat-no" title="statement not covered" >        conn.query("SELECT medico.crm, medico_consultorio.id_consultorio, especialidade.id_especialidade, usuario.nome as nome_medico, usuario.sobrenome, especialidade.nome as especialidade FROM medico_consultorio INNER JOIN medico ON medico_consultorio.id_medico = medico.crm  INNER JOIN usuario ON medico.cpf_medico = usuario.cpf INNER JOIN especialidade ON medico.especialidade=especialidade.id_especialidade WHERE medico_consultorio.id_consultorio=? AND medico.especialidade=?", [req.usuario.id_consultorio, req.body.id_especialidade], <span class="fstat-no" title="function not covered" >(e</span>rr, results) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            if (err) { <span class="cstat-no" title="statement not covered" >return res.status(500).send({ error: err }) </span>}</span>
             const response = <span class="cstat-no" title="statement not covered" >{</span>
                 medicos: results.map(<span class="fstat-no" title="function not covered" >me</span>dico =&gt; {
-<span class="cstat-no" title="statement not covered" >                return {</span>
-                    crm: medico.crm,
-                    nome: medico.nome_medico,
-                    sobrenome: medico.sobrenome,
-                    especialidade: medico.nome,
-                    
-                }
-            })
-        }
+<span class="cstat-no" title="statement not covered" >                    return {</span>
+                        crm: medico.crm,
+                        nome: medico.nome_medico,
+                        sobrenome: medico.sobrenome,
+                        especialidade: medico.nome,
+&nbsp;
+                    }
+                })
+            }
 <span class="cstat-no" title="statement not covered" >            return res.status(200).send(response)</span>
         })
     })
@@ -659,7 +659,7 @@ router.post('/nova_reserva', login_gerente, <span class="fstat-no" title="functi
 <span class="cstat-no" title="statement not covered" >        if (!req.body.hor_fin) { <span class="cstat-no" title="statement not covered" >return res.status(406).send({ mensagem: "É necessário a hora final." }) </span>}</span>
 <span class="cstat-no" title="statement not covered" >        if (!req.body.id_sala) { <span class="cstat-no" title="statement not covered" >return res.status(406).send({ mensagem: "É necessário a sala." }) </span>}</span>
 <span class="cstat-no" title="statement not covered" >        if (!req.body.id_medico) { <span class="cstat-no" title="statement not covered" >return res.status(406).send({ mensagem: "É necessário o médico." }) </span>}</span>
-<span class="cstat-no" title="statement not covered" >        if (req.body.hor_fin&lt; req.body.hor_ini){<span class="cstat-no" title="statement not covered" >return res.status(409).send({mensagem:"Horário final não pode ser menor que horario inicial"})}</span></span>
+<span class="cstat-no" title="statement not covered" >        if (req.body.hor_fin &lt; req.body.hor_ini) { <span class="cstat-no" title="statement not covered" >return res.status(409).send({ mensagem: "Horário final não pode ser menor que horario inicial" }) </span>}</span>
 <span class="cstat-no" title="statement not covered" >        conn.query("SELECT * FROM sala WHERE id_sala=?", [req.body.id_sala], <span class="fstat-no" title="function not covered" >(e</span>rr, results) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >            if (err) { <span class="cstat-no" title="statement not covered" >return res.status(500).send({ error: err }) </span>}</span>
 <span class="cstat-no" title="statement not covered" >            if (results.length == 0) { <span class="cstat-no" title="statement not covered" >return res.status(404).send({ mensagem: "sala não encontrada" }) </span>}</span>
@@ -712,7 +712,7 @@ module.exports = router</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Wed Dec 22 2021 15:16:43 GMT-0300 (Horário Padrão de Brasília)
+                at Wed Dec 22 2021 17:23:00 GMT-0300 (Horário Padrão de Brasília)
             </div>
         </div>
         <script src="../../prettify.js"></script>
