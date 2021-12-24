@@ -3,6 +3,7 @@ const morgan =  require('morgan');
 
 const app = express();
 
+
 const routerUsuario = require('./routes/usuario')
 const routerEstado = require('./routes/estado')
 const routerCidade = require('./routes/cidade')
