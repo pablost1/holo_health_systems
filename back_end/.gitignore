@@ -2,3 +2,6 @@ node_modules/
 __tests__/
 nodemon.json
 jest.config.js
+.nyc_output/
+tests/
+coverage/
