@@ -2,7 +2,7 @@ import axios from 'axios'
 import { createBrowserHistory } from 'history'
 
 const http = axios.create({
-    baseURL: 'http://localhost:3001'
+    baseURL: 'https://holo-health-back.herokuapp.com'
 })
 
 const history = createBrowserHistory()
