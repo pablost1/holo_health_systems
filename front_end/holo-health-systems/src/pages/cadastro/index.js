@@ -7,8 +7,7 @@ import InputMask  from 'react-input-mask';
 import http from '../../http/index';
 import { useContext } from 'react';
 import { AuthContext } from '../../auth/authContext';
-
-
+import DescriptionHeader from '../../sharable-components/description-header';
 
 
 
@@ -25,7 +24,6 @@ function ValidationField({error}) {
 export default function Cadastro() {
 
     const { handleError } = useContext(AuthContext)
-    
     
     
     const validation = Yup.object().shape({
@@ -49,12 +47,14 @@ export default function Cadastro() {
     })
 
 
-    async function CadastrarPaciente(value, reset) {
+    async function CadastrarPaciente(value, reset, setSubmitting) {
 
         try {
             const { data }  = await http.post('/usuario/cadastro', value)
+            
             handleError(data.mensagem)
             reset()
+            setSubmitting(false)
 
         }
 
@@ -65,7 +65,9 @@ export default function Cadastro() {
 
     return (
         <div className="cadastro-container">
-            <h1>Cadastro </h1>
+            <DescriptionHeader path="login">
+                Cadastro
+            </DescriptionHeader>
             
             <Formik
                 initialValues={{
@@ -80,15 +82,15 @@ export default function Cadastro() {
 
                 validationSchema={validation}
 
-                onSubmit={ (value, {resetForm}) => {
+                onSubmit={ (value, {resetForm, setSubmitting},) => {
                     
-                    CadastrarPaciente(value, resetForm)
+                    CadastrarPaciente(value, resetForm, setSubmitting)
                     
                 }}
                 
             >
                 
-                {({errors, touched, handleChange, values}) => (
+                {({errors, touched, handleChange, values, isSubmitting}) => (
                     <Form className="cadastro-container__form">
                         <div className="form-group">
                             <label>Nome</label>
@@ -142,7 +144,7 @@ export default function Cadastro() {
                             <Field className="input" name="senha" type="password" />
                             {errors.senha && touched.senha ? <ValidationField error={errors.senha} /> : ''}
                         </div>
-                        <Button size="medium">Registrar</Button>
+                        <Button loading={isSubmitting}size="medium">Registrar</Button>
                     </Form>    
                 )}
             </Formik>
